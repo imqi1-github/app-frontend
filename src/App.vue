@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import Button from "@/components/Button.vue";
 import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
+import viteLogo from "@/assets/logo.png"
 
 let number = ref<string | number>("获取中");
 
@@ -27,10 +28,10 @@ onMounted(async () => {
   <div class="flex items-center justify-center w-screen h-screen">
     <div class="text-center">
       <header>
-        <img src="./assets/logo.png" alt="logo" class="max-w-[200px]"/>
+        <img :src="viteLogo" alt="logo" class="max-w-[200px]"/>
       </header>
       <main class="my-4">
-        <p>本项目实现是一个计数器</p>
+        <p>本项目实现了一个计数器</p>
         <p>当前数字：{{ number }}</p>
       </main>
       <footer class="flex items-center justify-center gap-4">
