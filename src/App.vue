@@ -9,7 +9,7 @@ import Footer from "@/components/Footer.vue";
   <div class="row-start-2 flex items-center justify-center p-8">
     <RouterView/>
   </div>
-  <div class="row-start-3 px-32 py-2 flex justify-center border-t-gray-300 border-b-1">
+  <div class="row-start-3 px-32 py-2 flex justify-center border-t-gray-300 border-t-1">
     <Footer/>
   </div>
 </template>

@@ -12,7 +12,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     tailwindcss(),
-    svgr()
+    svgr(),
   ],
   resolve: {
     alias: {

@@ -3,3 +3,17 @@
 * {
   @apply font-sans;
 }
+
+.Vue-Toastification__toast {
+  min-height: 40px;
+  padding: 10px;
+  align-items: center;
+}
+
+.Vue-Toastification__icon {
+  margin: 0
+}
+
+.Vue-Toastification__toast-body {
+  padding-left: 10px
+}
