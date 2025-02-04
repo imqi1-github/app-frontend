@@ -25,7 +25,7 @@ class request {
       });
       return getResult(response);
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(`访问${url}时遇到错误：${error.message}`);
       throw error;
     }
   }
@@ -42,7 +42,7 @@ class request {
       });
       return getResult(response);
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(`访问${url}时遇到错误：${error.message}`);
       throw error;
     }
   }

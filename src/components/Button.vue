@@ -1,5 +1,6 @@
 <template>
-  <button @click="onClick" class="bg-teal-500 text-white p-2.5 px-3 rounded cursor-pointer min-h-[1.25rem] min-w-[1.5rem]">
+  <button @click="onClick"
+          class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded-md cursor-pointer min-h-[1.25rem] min-w-[1.5rem]">
     {{ text }}
   </button>
 </template>

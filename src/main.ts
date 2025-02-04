@@ -3,13 +3,16 @@ import "vue-toastification/dist/index.css";
 
 import {createApp} from 'vue'
 import Toast, {type PluginOptions, POSITION} from "vue-toastification";
+import router from "@/routes";
 import App from './App.vue'
 
 const app = createApp(App);
-app.mount('#app')
 
 const options: PluginOptions = {
-    position: POSITION.BOTTOM_CENTER,
+  position: POSITION.BOTTOM_CENTER,
 };
 
 app.use(Toast, options);
+app.use(router);
+
+app.mount('#app')

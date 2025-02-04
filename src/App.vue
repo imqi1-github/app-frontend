@@ -1,51 +1,15 @@
-<script lang="ts" setup>
-import {onMounted, ref} from "vue";
-import Button from "@/components/Button.vue";
-import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
-import viteLogo from "@/assets/logo.svg"
-import {useToast} from "vue-toastification";
-import {new_user} from "@/api/user";
-
-let number = ref<string | number>("获取中");
-let toast = useToast();
-
-const setNumber = async () => {
-  let response = await _setNumber();
-  number.value = response.number;
-}
-
-const plusNumber = async () => {
-  let response = await _plusNumber();
-  number.value = response.number;
-}
-
-const notify = () => {
-  toast.info("这是弹窗内容");
-}
-
-onMounted(async () => {
-  console.log(`项目渲染完成，后端地址为 ${import.meta.env.VITE_API_URL}`);
-
-  let response = await getNumber();
-  number.value = response.number;
-})
+<script setup lang="ts">
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
 </script>
-
 <template>
-  <div class="flex items-center justify-center w-screen h-screen text-center">
-    <div>
-      <header>
-        <img :src="viteLogo" alt="logo" class="max-w-[200px] m-auto"/>
-      </header>
-      <main class="my-4">
-        <p>本项目实现了一个计数器</p>
-        <p>当前数字：{{ number }}</p>
-      </main>
-      <footer class="flex items-center justify-center gap-4">
-        <Button :on-click="plusNumber" text="数字加一"/>
-        <Button :on-click="setNumber" text="重置数字"/>
-        <Button :on-click="new_user" text="弹窗"/>
-      </footer>
-    </div>
+  <div class="row-start-1 px-32 py-2 flex justify-center border-b-gray-300 border-b-1">
+    <Header/>
+  </div>
+  <div class="row-start-2 flex items-center justify-center p-8">
+    <RouterView/>
+  </div>
+  <div class="row-start-3 px-32 py-2 flex justify-center border-t-gray-300 border-b-1">
+    <Footer/>
   </div>
 </template>
