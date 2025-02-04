@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import Button from "@/components/Button.vue";
 import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
-import viteLogo from "@/assets/logo.png"
+import viteLogo from "@/assets/logo.svg"
 import {useToast} from "vue-toastification";
 import {new_user} from "@/api/user";
 
@@ -32,10 +32,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center w-screen h-screen">
-    <div class="text-center">
+  <div class="flex items-center justify-center w-screen h-screen text-center">
+    <div>
       <header>
-        <img :src="viteLogo" alt="logo" class="max-w-[200px]"/>
+        <img :src="viteLogo" alt="logo" class="max-w-[200px] m-auto"/>
       </header>
       <main class="my-4">
         <p>本项目实现了一个计数器</p>

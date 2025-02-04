@@ -19,22 +19,32 @@ const getResult = async (response: Response) => {
 class request {
   // GET请求
   static async get(url: string): Promise<any> {
-    const response = await fetch(url, {
-      method: 'GET',
-    });
-    return getResult(response);
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+      });
+      return getResult(response);
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
   }
 
   // POST请求
   static async post(url: string, data: any): Promise<any> {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    return getResult(response);
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      return getResult(response);
+    } catch (error: any) {
+      toast.error(error.message);
+      throw error;
+    }
   }
 }
 
