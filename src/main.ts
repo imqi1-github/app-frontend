@@ -1,6 +1,15 @@
 import './assets/main.css'
+import "vue-toastification/dist/index.css";
 
 import {createApp} from 'vue'
+import Toast, {type PluginOptions, POSITION} from "vue-toastification";
 import App from './App.vue'
 
-createApp(App).mount('#app')
+const app = createApp(App);
+app.mount('#app')
+
+const options: PluginOptions = {
+    position: POSITION.BOTTOM_CENTER,
+};
+
+app.use(Toast, options);

@@ -1,16 +1,28 @@
+import {useToast} from "vue-toastification";
+
+const toast = useToast();
+
+const getResult = async (response: Response) => {
+  if (response.ok)
+    return await response.json();
+
+  const json = await response.json();
+  if ("undefined" != typeof json["error"]) {
+    toast.error(json["error"]);
+    return json["error"];
+  } else {
+    toast.error(await response.text());
+    return await response.text();
+  }
+}
+
 class request {
   // GET请求
   static async get(url: string): Promise<any> {
     const response = await fetch(url, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
-    if (!response.ok)
-      throw new Error(`HTTP错误: ${response.status}`);
-    else
-      return await response.json();
+    return getResult(response);
   }
 
   // POST请求
@@ -22,10 +34,7 @@ class request {
       },
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      throw new Error(`HTTP错误: ${response.status}`);
-    } else
-      return await response.json();
+    return getResult(response);
   }
 }
 
