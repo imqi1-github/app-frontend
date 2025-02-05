@@ -28,9 +28,12 @@ const routes = [
       <span class="font-bold text-gray-600 ml-2">本地宝</span>
     </RouterLink>
     <div class="flex items-baseline justify-between gap-6">
-      <RouterLink class="hover:text-blue-600" v-for="route of routes" :to="route.path" active-class="text-blue-600"
-                  v-html="route.name">
-      </RouterLink>
+      <span v-for="route of routes">
+        <RouterLink class="hover:text-blue-600" :to="route.path" active-class="text-blue-600"
+                    v-html="route.name" v-if="route.path.startsWith('/')">
+        </RouterLink>
+        <a :href="route.path" target="_blank" class="hover:text-blue-600" v-else v-html="route.name"></a>
+      </span>
     </div>
   </div>
 </template>
