@@ -1,6 +1,6 @@
 <template>
   <button @click="onClick"
-          class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-1 rounded-md cursor-pointer min-h-[1.25rem] min-w-[1.5rem]">
+          class="bg-blue-500 hover:bg-blue-400 text-white px-2 py-0.75 rounded-md cursor-pointer min-h-[1.25rem] min-w-[1.5rem]">
     {{ text }}
   </button>
 </template>
@@ -11,7 +11,11 @@ import {type PropType} from "vue";
 defineProps({
   onClick: {
     type: Function as PropType<() => void>,
+    required: true,
   },
-  text: String,
+  text: {
+    type: String,
+    required: true,
+  }
 })
 </script>

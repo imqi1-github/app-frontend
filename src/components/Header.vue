@@ -9,6 +9,10 @@ const routes = [
   {
     "name": "数字",
     "path": "/number",
+  },
+  {
+    "name": "登录",
+    "path": "/login",
   }
 ]
 </script>

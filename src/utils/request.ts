@@ -3,17 +3,25 @@ import {useToast} from "vue-toastification";
 const toast = useToast();
 
 const getResult = async (response: Response) => {
-  if (response.ok)
-    return await response.json();
+  let json = await response.json();
 
-  const json = await response.json();
-  if ("undefined" != typeof json["error"]) {
-    toast.error(json["error"]);
-    return json["error"];
-  } else {
-    toast.error(await response.text());
-    return await response.text();
+  if (!json) {
+    let text = await response.text();
+    if (text) {
+      toast.error(`访问 ${response.url} 时遇到错误：${text}`);
+    }
+    else {
+      toast.error(`访问 ${response.url} 时遇到错误：${response.status} ${response.statusText}`);
+    }
+    return
   }
+
+  if (json.error) {
+    toast.error(json.error);
+    return;
+  }
+
+  return json;
 }
 
 class request {
@@ -26,7 +34,6 @@ class request {
       return getResult(response);
     } catch (error: any) {
       toast.error(`访问${url}时遇到错误：${error.message}`);
-      throw error;
     }
   }
 
@@ -43,7 +50,6 @@ class request {
       return getResult(response);
     } catch (error: any) {
       toast.error(`访问${url}时遇到错误：${error.message}`);
-      throw error;
     }
   }
 }

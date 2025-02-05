@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
-import Button from "@/components/Button.vue";
+import PushButton from "@components/inputs/PushButton.vue";
 import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
 import viteLogo from "@/assets/logo.svg"
 import {useToast} from "vue-toastification";
@@ -41,9 +41,9 @@ onMounted(async () => {
         <p>当前数字：{{ number }}</p>
       </div>
       <div class="flex items-center justify-center gap-4">
-        <Button :on-click="plusNumber" text="数字加一"/>
-        <Button :on-click="setNumber" text="重置数字"/>
-        <Button :on-click="notify" text="弹窗"/>
+        <PushButton :onClick="plusNumber" text="数字加一"/>
+        <PushButton :onClick="setNumber" text="重置数字"/>
+        <PushButton :onClick="notify" text="弹窗"/>
       </div>
     </div>
   </div>

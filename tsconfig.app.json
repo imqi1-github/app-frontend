@@ -6,6 +6,18 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
       ]
     },
     "types": ["vite/client"],
