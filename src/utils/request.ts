@@ -9,8 +9,7 @@ const getResult = async (response: Response) => {
     let text = await response.text();
     if (text) {
       toast.error(`访问 ${response.url} 时遇到错误：${text}`);
-    }
-    else {
+    } else {
       toast.error(`访问 ${response.url} 时遇到错误：${response.status} ${response.statusText}`);
     }
     return
@@ -24,35 +23,28 @@ const getResult = async (response: Response) => {
   return json;
 }
 
-class request {
-  // GET请求
-  static async get(url: string): Promise<any> {
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-      });
-      return getResult(response);
-    } catch (error: any) {
-      toast.error(`访问${url}时遇到错误：${error.message}`);
-    }
-  }
-
-  // POST请求
-  static async post(url: string, data: any): Promise<any> {
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      return getResult(response);
-    } catch (error: any) {
-      toast.error(`访问${url}时遇到错误：${error.message}`);
-    }
+export const get = async (url: string): Promise<any> => {
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+    });
+    return getResult(response);
+  } catch (error: any) {
+    toast.error(`访问${url}时遇到错误：${error.message}`);
   }
 }
 
-export const get: Function = request.get
-export const post: Function = request.post
+export const post = async (url: string, data: any): Promise<any> => {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return getResult(response);
+  } catch (error: any) {
+    toast.error(`访问${url}时遇到错误：${error.message}`);
+  }
+}
