@@ -1,5 +1,5 @@
 import "vue-toastification/dist/index.css";
-import './assets/main.css'
+import '@/assets/main.css'
 
 import {createApp} from 'vue'
 import Toast, {type PluginOptions, POSITION} from "vue-toastification";

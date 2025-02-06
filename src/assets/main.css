@@ -2,7 +2,7 @@
 @import "remixicon/fonts/remixicon.css";
 
 * {
-  @apply font-sans;
+  font-family: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC-Light, Microsoft YaHei, sans-serif;
 }
 
 .Vue-Toastification__toast {

@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import PushButton from "@components/inputs/PushButton.vue";
 import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
-import viteLogo from "@/assets/logo.svg"
+import viteLogo from "@assets/logo.jpg"
 import {useToast} from "vue-toastification";
 
 let number = ref<string | number>("获取中");
@@ -34,7 +34,7 @@ onMounted(async () => {
   <div class="flex items-center justify-center text-center">
     <div>
       <div>
-        <img :src="viteLogo" alt="logo" class="max-w-[200px] m-auto"/>
+        <img :src="viteLogo" alt="logo" class="max-w-48 m-auto rounded-full"/>
       </div>
       <div class="my-4">
         <p>该页面实现了一个计数器</p>

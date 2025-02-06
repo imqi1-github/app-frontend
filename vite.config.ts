@@ -26,5 +26,5 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,  // 开启 CSS 分离
     minify: 'esbuild',  // 使用 esbuild 进行压缩
-  },
+  }
 })
