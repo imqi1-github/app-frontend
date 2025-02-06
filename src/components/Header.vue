@@ -22,7 +22,7 @@ const routes = [
 </script>
 
 <template>
-  <div class="flex items-center justify-between w-full text-sm bg-transparent max-w-6xl mx-auto">
+  <div class="flex items-center justify-between w-full text-sm max-w-6xl mx-auto">
     <RouterLink class="flex items-center justify-center" :to="$router.resolve({ name: 'home' }).href">
       <img class="rounded-full overflow-hidden" width="24" height="24" :src="Logo" alt="logo"/>
       <span class="font-bold text-gray-600 ml-2">本地宝</span>

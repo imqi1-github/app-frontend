@@ -22,6 +22,6 @@ const handleInput = (event: Event) => {
 </script>
 
 <template>
-  <input class="w-full border-blue-600 border-2 rounded py-1 px-2" type="text" @input="handleInput"
+  <input class="w-full border-blue-600 border-[1px] rounded-xl py-1 px-2" type="text" @input="handleInput"
          :placeholder="placeholder"/>
 </template>
