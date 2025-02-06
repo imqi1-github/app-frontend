@@ -54,26 +54,28 @@ const items = [
       <div>
         <div class="text-6xl font-bold">秦皇岛本地宝</div>
         <div class="text-xl font-bold my-8">天气查询、便捷出行、互帮互助、智能AI</div>
-        <RouterLink to="/about" class="group bg-black px-6 py-3 shadow hover:bg-red-600 text-white transition-colors duration-200 rounded-3xl">
+        <RouterLink to="/about"
+                    class="group bg-black px-6 py-3 shadow hover:bg-red-600 text-white transition-colors duration-200 rounded-3xl">
           了解我们
         </RouterLink>
       </div>
-      <div class="w-48 h-48">
-        <img :src="Logo" alt="Logo" class="h-full w-full rounded-full overflow-hidden"/>
+      <div class="w-56 h-56 mr-56 relative">
+        <div class="-inset-12 absolute bg-gradient-favicon"></div>
+        <img :src="Logo" alt="Logo" class="relative h-full w-full rounded-full overflow-hidden z-10"/>
       </div>
     </section>
     <section class="my-20">
       <div class="font-bold text-xl">服务</div>
       <div class="text-gray-600">致力于提供便民的服务</div>
       <div class="grid grid-cols-3 gap-6 mt-10">
-        <AppItem v-for="item in items" :item="item" />
+        <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>
     <section>
       <div class="font-bold text-xl">应用</div>
       <div class="text-gray-600">致力于提供便民的应用</div>
       <div class="grid grid-cols-3 gap-6 mt-10">
-        <AppItem v-for="item in items" :item="item" />
+        <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>
   </div>

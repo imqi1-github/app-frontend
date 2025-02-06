@@ -3,7 +3,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import {ref, onMounted, onBeforeUnmount} from 'vue';
 
-const isScrolled = ref(false);  // 用来控制是否滚动过
+const isScrolled = ref(true);  // 用来控制是否滚动过
 onMounted(() => {
   console.log(`项目渲染完成，后端 API 地址为：${import.meta.env.VITE_API_URL}`);
 });
