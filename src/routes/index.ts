@@ -1,36 +1,45 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
+import {userRoute} from './userRoute'
+import {dashboardRoute} from './dashboardRoute'
 
 const routes: RouteRecordRaw[] = [
   {
+    path: '/dashboard/login',
+    name: 'dashboard-login',
+    component: () => import("@views/dashboard/Login.vue"),
+    children: []
+  },
+  {
     path: '/',
-    name: 'home',
-    component: () => import("@views/HomeView.vue")
-  },
-  {
-    path: '/number',
-    name: 'number',
-    component: () => import("@views/NumberView.vue")
-  },
-  {
-    path: "/user",
-    name: "user",
+    component: () => import("@views/Main.vue"),
     children: [
       {
-        path: "/login",
-        name: "login",
-        component: () => import("@views/user/LoginView.vue")
+        path: '',
+        name: 'home',
+        component: () => import("@views/HomeView.vue")
       },
       {
-        path: "/register",
-        name: "register",
-        component: () => import("@views/user/RegisterView.vue")
-      }
+        path: 'number',
+        name: 'number',
+        component: () => import("@views/NumberView.vue")
+      },
+      {
+        path: 'user',
+        name: 'user',
+        children: userRoute
+      },
     ]
   },
   {
-    path: '/:pathMatch(.*)*',  // 捕获所有路径
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import("@views/Dashboard.vue"),
+    children: dashboardRoute,
+  },
+  {
+    path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component:  () => import("@/NotFound.vue")  // 404页面
+    component: () => import("@views/NotFound.vue")  // 404页面
   }
 ]
 

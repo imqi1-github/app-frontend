@@ -4,7 +4,7 @@ import '@/assets/main.css'
 import {createApp} from 'vue'
 import Toast, {type PluginOptions, POSITION} from "vue-toastification";
 import router from "@/routes";
-import App from './App.vue'
+import App from '@/App.vue'
 
 const app = createApp(App);
 

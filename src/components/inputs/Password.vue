@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineEmits, ref } from 'vue';
+import {ref} from 'vue';
 
 defineProps({
   placeholder: {
@@ -7,6 +7,8 @@ defineProps({
     default: '密码',
   }
 });
+
+const password = ref<boolean>(true);
 
 const emit = defineEmits<{
   (event: 'updateValue', value: string): void;
@@ -40,18 +42,19 @@ const handleBlur = () => {
 <template>
   <div class="relative bg-inherit w-full">
     <input
-        type="password"
-        class="w-full border border-gray-400 outline-none px-3.5 pt-4 pb-0.75 text-lg leading-2 focus:border-blue-500 rounded-2xl"
+        :type="password ? 'password' : 'text'"
+        class="w-full outline outline-gray-400 px-4 pt-4 pb-0.75 text-lg leading-2 focus:outline-blue-500 rounded-2xl"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"
         ref="inputElement"
     />
-    <div
-        class="absolute inset-0 px-4 py-2.5 text-gray-500 pointer-events-none select-none duration-300 transition-all"
-        :class="{'pt-1 text-[0.6rem]': isInputing}"
-    >
+    <div class="absolute inset-0 px-4 py-2.5 text-gray-500 pointer-events-none select-none duration-300 transition-all"
+         :class="{'pt-1 text-[0.6rem]': isInputing}">
       {{ placeholder }}
     </div>
+    <div class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
+         v-html="password?'<i class=\'ri-eye-line text-xl\'></i>':'<i class=\'ri-eye-close-line text-xl\'></i>'"
+         @click="()=>password=!password"></div>
   </div>
 </template>

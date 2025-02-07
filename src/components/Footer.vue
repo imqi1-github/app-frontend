@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import {testApi} from "@api/test.ts";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 let available = ref<boolean>(false);
-(async () => {
-  available.value = await testApi();
-})()
+
+onMounted(async () => {
+  try {
+    available.value = await testApi();
+  } catch {
+  }
+})
 
 </script>
 <template>

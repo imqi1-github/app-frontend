@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 
 defineProps({
   placeholder: {
@@ -41,7 +41,7 @@ const handleBlur = () => {
   <div class="relative bg-inherit w-full">
     <input
         type="text"
-        class="w-full border border-gray-400 outline-none px-3.5 pt-4 pb-0.75 text-lg leading-2 focus:border-blue-500 rounded-2xl"
+        class="w-full outline outline-gray-400 px-4 pt-4 pb-0.75 text-lg leading-2 focus:outline-blue-500 rounded-2xl"
         @input="handleInput"
         @focus="handleFocus"
         @blur="handleBlur"

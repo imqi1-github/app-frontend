@@ -29,11 +29,12 @@ const routes = [
     </RouterLink>
     <div class="flex items-baseline justify-between gap-6">
       <span v-for="route of routes">
-        <RouterLink class="hover:text-blue-600" :to="route.path" active-class="text-blue-600"
+        <RouterLink class="hover:text-blue-600" :to="route.path" exact-active-class="text-blue-600"
                     v-html="route.name" v-if="route.path.startsWith('/')">
         </RouterLink>
         <a :href="route.path" target="_blank" class="hover:text-blue-600" v-else v-html="route.name"></a>
       </span>
+      <a href="/dashboard/login" target="_blank" class="hover:text-blue-600">控制台 <i class='ri-sm ri-external-link-line'></i></a>
     </div>
   </div>
 </template>
