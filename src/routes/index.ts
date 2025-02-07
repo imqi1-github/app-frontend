@@ -21,11 +21,16 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@views/user/LoginView.vue")
       },
       {
-        path: '/:pathMatch(.*)*',  // 捕获所有路径
-        name: 'NotFound',
-        component:  () => import("@/NotFound.vue")  // 404页面
+        path: "/register",
+        name: "register",
+        component: () => import("@views/user/RegisterView.vue")
       }
     ]
+  },
+  {
+    path: '/:pathMatch(.*)*',  // 捕获所有路径
+    name: 'NotFound',
+    component:  () => import("@/NotFound.vue")  // 404页面
   }
 ]
 

@@ -22,7 +22,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="row-start-1 px-32 py-4 flex justify-center sticky top-0 duration-200"
+  <div class="row-start-1 px-32 py-4 flex justify-center sticky top-0 duration-200 z-20"
        :class="{'border-b-transparent': isScrolled, 'border-b-[1px] bg-white border-b-gray-200': !isScrolled}">
     <Header/>
   </div>
