@@ -23,8 +23,6 @@ const notify = () => {
 }
 
 onMounted(async () => {
-  console.log(`项目渲染完成，后端地址为 ${import.meta.env.VITE_API_URL}`);
-
   let response = await getNumber();
   number.value = response.number;
 })

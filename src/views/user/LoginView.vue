@@ -40,6 +40,6 @@ const submit = async () => {
       <PushButton :onClick="submit" text="登录"/>
     </div>
     <div class="text-center text-gray-500 text-sm">用户名：admin 密码：123456</div>
-    <div class="text-center text-gray-500 text-sm">还没有账号？前去<RouterLink class="text-blue-600 hover:underline" :to="$router.resolve({'name': 'register'}).href">注册</RouterLink></div>
+    <div class="text-center text-gray-500 text-sm">还没有账号？前去 <RouterLink class="text-blue-600 hover:underline" :to="$router.resolve({'name': 'register'}).href">注册</RouterLink></div>
   </div>
 </template>

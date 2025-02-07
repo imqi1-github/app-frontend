@@ -80,7 +80,7 @@ const submit = async () => {
     <Password @updateValue="confirmPassword" placeholder="确认密码 *"/>
     <LineEdit @updateValue="updateEmail" placeholder="邮箱 *"/>
     <div class="flex items-center justify-center w-full">
-      <PushButton :onClick="submit" text="登录"/>
+      <PushButton :onClick="submit" text="注册"/>
     </div>
     <div class="text-center text-gray-500 text-sm">已有账号？前去
       <RouterLink class="text-blue-600 hover:underline" :to="$router.resolve({'name': 'login'}).href">登录</RouterLink>

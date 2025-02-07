@@ -3,7 +3,7 @@
 
 @layer utilities {
   .bg-gradient-favicon {
-    background-image: linear-gradient(-45deg, #ffc669 50%, #fff4a9 50%);
+    background-image: linear-gradient(-45deg, #ffab22 50%, #ffcf2a 50%);
     filter: blur(72px)
   }
 }
