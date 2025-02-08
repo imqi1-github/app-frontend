@@ -52,6 +52,7 @@ onMounted(async () => {
       <div class="w-full *:my-4">
         <LineEdit @updateValue="updateUsername" placeholder="用户名"/>
         <Password @updateValue="updatePassword" placeholder="密码"/>
+        <p class="text-xs text-gray-600 text-center">用户名：admin 密码：123456</p>
         <div class="text-center">
           <PushButton :onClick="dashboardLogin" text="登录"/>
         </div>
