@@ -20,7 +20,7 @@ defineProps<{
         <div class="text-xl font-bold">{{ item.name }}</div>
         <div class="text-sm text-gray-600">{{ item.description }}</div>
       </div>
-      <RouterLink :to="item.to" class="px-4 py-1 text-white bg-blue-700 w-fit rounded-xl hover:bg-blue-500 duration-300 text-sm">前往</RouterLink>
+      <RouterLink :to="item.to" class="px-4 py-1 text-white bg-blue-700 w-fit rounded-lg hover:bg-blue-500 duration-300 text-sm">前往</RouterLink>
     </div>
   </div>
 </template>

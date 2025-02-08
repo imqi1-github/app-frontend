@@ -59,7 +59,7 @@ const items = [
           了解我们
         </RouterLink>
       </div>
-      <div class="w-56 h-56 mr-56 relative">
+      <div class="size-56 mr-56 relative">
         <div class="-inset-12 absolute bg-gradient-favicon"></div>
         <img :src="Logo" alt="Logo" class="relative h-full w-full rounded-full overflow-hidden z-10"/>
       </div>

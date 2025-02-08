@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import {ref} from 'vue';
+import {EyeIcon} from "@heroicons/vue/16/solid";
+import {EyeSlashIcon} from "@heroicons/vue/16/solid";
+
 
 defineProps({
   placeholder: {
@@ -49,12 +52,14 @@ const handleBlur = () => {
         @blur="handleBlur"
         ref="inputElement"
     />
-    <div class="absolute inset-0 px-4 py-2.5 text-gray-500 pointer-events-none select-none duration-300 transition-all"
-         :class="{'pt-1 text-[0.6rem]': isInputing}">
+    <div class="absolute inset-0 px-4 py-2 text-gray-500 pointer-events-none select-none duration-300 transition-all"
+         :class="{'pt-0.5 text-[0.6rem]': isInputing}">
       {{ placeholder }}
     </div>
     <div class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
-         v-html="password?'<i class=\'ri-eye-line text-xl\'></i>':'<i class=\'ri-eye-close-line text-xl\'></i>'"
-         @click="()=>password=!password"></div>
+         @click="()=>password=!password">
+      <EyeIcon class="w-4 h-4" v-if="password"/>
+      <EyeSlashIcon class="w-4 h-4" v-else/>
+    </div>
   </div>
 </template>

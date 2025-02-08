@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Logo from "@assets/logo.jpg";
+import {ArrowTopRightOnSquareIcon} from "@heroicons/vue/16/solid";
 
 const routes = [
   {
@@ -15,7 +16,7 @@ const routes = [
     "path": "/login",
   },
   {
-    "name": "访问ImQi1 <i class='ri-sm ri-external-link-line'></i>",
+    "name": "访问ImQi1",
     "path": "https://imqi1.com"
   }
 ]
@@ -32,9 +33,13 @@ const routes = [
         <RouterLink class="hover:text-blue-600" :to="route.path" exact-active-class="text-blue-600"
                     v-html="route.name" v-if="route.path.startsWith('/')">
         </RouterLink>
-        <a :href="route.path" target="_blank" class="hover:text-blue-600" v-else v-html="route.name"></a>
+        <a :href="route.path" target="_blank" class="hover:text-blue-600 inline-flex items-center" v-else>
+          {{ route.name }} <ArrowTopRightOnSquareIcon class="w-3 h-3" v-if="!route.path.startsWith('/')"/>
+        </a>
       </span>
-      <a href="/dashboard/login" target="_blank" class="hover:text-blue-600">控制台 <i class='ri-sm ri-external-link-line'></i></a>
+      <a href="/dashboard/login" target="_blank" class="hover:text-blue-600 inline-flex items-center">
+        控制台 <ArrowTopRightOnSquareIcon class="w-3 h-3"/>
+      </a>
     </div>
   </div>
 </template>

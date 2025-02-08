@@ -48,8 +48,8 @@ const handleBlur = () => {
         ref="inputElement"
     />
     <div
-        class="absolute inset-0 px-4 py-2.5 text-gray-500 pointer-events-none select-none duration-300 transition-all"
-        :class="{'pt-1 text-[0.6rem]': isInputing}"
+        class="absolute inset-0 px-4 py-2 text-gray-500 pointer-events-none select-none duration-200 transition-all"
+        :class="{'pt-0.5 text-[0.6rem]': isInputing}"
     >
       {{ placeholder }}
     </div>
