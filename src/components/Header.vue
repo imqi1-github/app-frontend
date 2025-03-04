@@ -35,13 +35,13 @@ let menuShow = ref<boolean>(false);
          :class="{'max-md:hidden': !menuShow, 'max-md:flex': menuShow}">
       <span v-for="route of routes">
         <RouterLink class="hover:text-blue-600" :to="route.path" exact-active-class="text-blue-600"
-                    v-html="route.name" v-if="route.path.startsWith('/')">
+                    v-html="route.name" v-if="route.path.startsWith('/')" @click="menuShow = false">
         </RouterLink>
         <a :href="route.path" target="_blank" class="hover:text-blue-600 inline-flex items-center" v-else>
-          {{ route.name }} <ArrowTopRightOnSquareIcon class="size-3 max-md:size-4" v-if="!route.path.startsWith('/')"/>
+          {{ route.name }} <ArrowTopRightOnSquareIcon class="size-3 max-md:size-4" v-if="!route.path.startsWith('/')" @click="menuShow = false"/>
         </a>
       </span>
-      <a href="/dashboard/login" target="_blank" class="hover:text-blue-600 inline-flex items-center">
+      <a href="/dashboard/login" target="_blank" class="hover:text-blue-600 inline-flex items-center" @click="menuShow = false">
         控制台
         <ArrowTopRightOnSquareIcon class="size-3 max-md:size-4"/>
       </a>
