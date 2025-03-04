@@ -11,11 +11,11 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="flex gap-x-12">
-    <div class="w-24 h-24">
+  <div class="flex gap-x-12 max-md:gap-x-4">
+    <div class="size-24">
       <img :src="item.icon" :alt="item.name" class="rounded-3xl overflow-hidden"/>
     </div>
-    <div class="flex flex-col justify-between py-0.5">
+    <div class="flex flex-col justify-between py-0.5 max-md:flex-row max-md:items-center max-md:justify-between flex-auto">
       <div>
         <div class="text-xl font-bold">{{ item.name }}</div>
         <div class="text-sm text-gray-600">{{ item.description }}</div>

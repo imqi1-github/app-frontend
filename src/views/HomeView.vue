@@ -50,8 +50,8 @@ const items = [
 </script>
 <template>
   <div class="max-w-6xl w-full">
-    <section class="w-full h-full my-24 flex justify-between items-center">
-      <div>
+    <section class="w-full h-full my-24 flex justify-between items-center max-md:flex-col-reverse max-md:items-center gap-20">
+      <div class="max-md:text-center">
         <div class="text-6xl font-bold">秦皇岛本地宝</div>
         <div class="text-xl font-bold my-8">天气查询、便捷出行、互帮互助、智能AI</div>
         <RouterLink to="/about"
@@ -59,7 +59,7 @@ const items = [
           了解我们
         </RouterLink>
       </div>
-      <div class="size-56 mr-56 relative">
+      <div class="size-44 mr-44 relative max-xl:mr-22 max-md:mr-0">
         <div class="-inset-12 absolute bg-gradient-favicon"></div>
         <img :src="Logo" alt="Logo" class="relative h-full w-full rounded-full overflow-hidden z-10"/>
       </div>
@@ -67,14 +67,14 @@ const items = [
     <section class="my-20">
       <div class="font-bold text-xl">服务</div>
       <div class="text-gray-600">致力于提供便民的服务</div>
-      <div class="grid grid-cols-3 gap-6 mt-10">
+      <div class="grid grid-cols-3 gap-6 mt-10 md:max-xl:grid-cols-2 max-md:grid-cols-1">
         <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>
     <section>
       <div class="font-bold text-xl">应用</div>
       <div class="text-gray-600">致力于提供便民的应用</div>
-      <div class="grid grid-cols-3 gap-6 mt-10">
+      <div class="grid grid-cols-3 gap-6 mt-10 md:max-xl:grid-cols-2 max-md:grid-cols-1">
         <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>

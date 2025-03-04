@@ -1,4 +1,4 @@
-import {useToast} from "vue-toastification";
+import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 
@@ -10,9 +10,12 @@ const getResult = async (response: Response, error: boolean) => {
     if (text) {
       error && toast.error(`访问 ${response.url} 时遇到错误：${text}`);
     } else {
-      error && toast.error(`访问 ${response.url} 时遇到错误：${response.status} ${response.statusText}`);
+      error &&
+        toast.error(
+          `访问 ${response.url} 时遇到错误：${response.status} ${response.statusText}`
+        );
     }
-    return
+    return;
   }
 
   if (json.error) {
@@ -21,25 +24,29 @@ const getResult = async (response: Response, error: boolean) => {
   }
 
   return json;
-}
+};
 
 export const get = async (url: string, error: boolean = true): Promise<any> => {
   try {
     const response = await fetch(url, {
       method: 'GET',
-      credentials: 'include'  // 确保携带 Cookie
+      credentials: 'include', // 确保携带 Cookie
     });
     return getResult(response, error);
   } catch (error: any) {
     toast.error(`访问${url}时遇到错误：${error.message}`);
   }
-}
+};
 
-export const post = async (url: string, data: any, error = true): Promise<any> => {
+export const post = async (
+  url: string,
+  data: any,
+  error = true
+): Promise<any> => {
   try {
     const response = await fetch(url, {
       method: 'POST',
-      credentials: 'include',  // 确保携带 Cookie
+      credentials: 'include', // 确保携带 Cookie
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,4 +56,4 @@ export const post = async (url: string, data: any, error = true): Promise<any> =
   } catch (error: any) {
     toast.error(`访问${url}时遇到错误：${error.message}`);
   }
-}
+};

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Logo from "@assets/logo.jpg";
-import {ArrowTopRightOnSquareIcon} from "@heroicons/vue/16/solid";
+import {ArrowTopRightOnSquareIcon, Bars3Icon, XMarkIcon} from "@heroicons/vue/16/solid";
+import {ref} from "vue";
 
 const routes = [
   {
@@ -20,6 +21,8 @@ const routes = [
     "path": "https://imqi1.com"
   }
 ]
+
+let menuShow = ref<boolean>(false);
 </script>
 
 <template>
@@ -28,18 +31,26 @@ const routes = [
       <img class="rounded-full overflow-hidden" width="24" height="24" :src="Logo" alt="logo"/>
       <span class="font-bold text-gray-600 ml-2">本地宝</span>
     </RouterLink>
-    <div class="flex items-baseline justify-between gap-6">
+    <div class="flex items-baseline justify-between gap-6 max-md:fixed max-md:inset-0 max-md:flex-col max-md:items-start max-md:p-12 max-md:gap-y-4 max-md:justify-start max-md:bg-gray-50 max-md:text-xl max-md:font-bold"
+         :class="{'max-md:hidden': !menuShow, 'max-md:flex': menuShow}">
       <span v-for="route of routes">
         <RouterLink class="hover:text-blue-600" :to="route.path" exact-active-class="text-blue-600"
                     v-html="route.name" v-if="route.path.startsWith('/')">
         </RouterLink>
         <a :href="route.path" target="_blank" class="hover:text-blue-600 inline-flex items-center" v-else>
-          {{ route.name }} <ArrowTopRightOnSquareIcon class="w-3 h-3" v-if="!route.path.startsWith('/')"/>
+          {{ route.name }} <ArrowTopRightOnSquareIcon class="size-3 max-md:size-4" v-if="!route.path.startsWith('/')"/>
         </a>
       </span>
       <a href="/dashboard/login" target="_blank" class="hover:text-blue-600 inline-flex items-center">
-        控制台 <ArrowTopRightOnSquareIcon class="w-3 h-3"/>
+        控制台
+        <ArrowTopRightOnSquareIcon class="size-3 max-md:size-4"/>
       </a>
     </div>
+  </div>
+  <div class="hidden cursor-pointer items-center justify-center" :class="{'max-md:flex': !menuShow, 'max-md:hidden': menuShow}" @click="()=>menuShow=true">
+    <Bars3Icon class="size-4"/>
+  </div>
+  <div class="hidden fixed top-4 right-4 cursor-pointer" :class="{'max-md:block': menuShow, 'max-md:hidden': !menuShow}" @click="()=>menuShow=false">
+    <XMarkIcon class="size-6" />
   </div>
 </template>
