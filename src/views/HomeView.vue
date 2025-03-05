@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Logo from "@assets/logo.jpg";
+import Logo from "@assets/logo.webp";
 import Logo1 from "@assets/icons/icon1.jpg";
 import Logo2 from "@assets/icons/icon2.jpg";
 import Logo3 from "@assets/icons/icon3.jpg";
@@ -49,13 +49,13 @@ const items = [
 
 </script>
 <template>
-  <div class="max-w-6xl w-full">
+  <div class="max-w-6xl w-full p-8">
     <section class="w-full h-full my-24 flex justify-between items-center max-md:flex-col-reverse max-md:items-center gap-20">
       <div class="max-md:text-center">
-        <div class="text-6xl font-bold">秦皇岛本地宝</div>
-        <div class="text-xl font-bold my-8">天气查询、便捷出行、互帮互助、智能AI</div>
+        <div class="text-6xl/16 font-bold">秦皇岛本地宝</div>
+        <div class="text-xl/6 font-bold my-4">天气查询、便捷出行、互帮互助、智能AI</div>
         <RouterLink to="/about"
-                    class="group bg-black px-6 py-3 shadow hover:bg-red-600 text-white transition-colors duration-200 rounded-3xl">
+                    class="group bg-black px-6 py-3 shadow hover:bg-red-600 leading-12 text-white transition-colors duration-200 rounded-3xl">
           了解我们
         </RouterLink>
       </div>

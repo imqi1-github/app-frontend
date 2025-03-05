@@ -32,7 +32,7 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="max-w-[400px] w-full [&>*]:my-2">
+  <div class="max-w-[400px] w-full [&>*]:my-2 p-4">
     <div class="font-bold text-3xl text-gray-600 text-center">登录</div>
     <LineEdit @updateValue="updateUsername" placeholder="用户名"/>
     <Password @updateValue="updatePassword"/>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import logo from "@assets/logo.jpg"
+import logo from "@assets/logo.webp"
 import { onMounted } from "vue";
 import { adminInfo, adminLogout } from "@api/dashboard.ts";
 import { useToast } from "vue-toastification";
@@ -70,9 +70,9 @@ onMounted(async () => {
       </div>
       <button @click="dashboardLogout"
         class="w-full cursor-pointer hover:bg-gray-200 duration-200 mt-auto p-4 border-t border-gray-200 text-center">
-        <div class="flex items-center justify-center gap-2">
+        <span class="flex items-center justify-center gap-2">
           <ArrowRightEndOnRectangleIcon class="size-4" /> 退出登录
-        </div>
+        </span>
       </button>
     </div>
     <div class="flex-auto p-4 min-h-full">

@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
          :class="{'border-b-transparent': isScrolled, 'border-b-[1px] bg-white border-b-gray-200': !isScrolled}">
       <Header/>
     </div>
-    <div class="row-start-2 flex items-center justify-center p-8">
+    <div class="row-start-2 flex items-center justify-center">
       <RouterView/>
     </div>
     <div class="row-start-3 px-16 py-12 flex justify-center">

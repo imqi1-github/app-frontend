@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Logo from "@assets/logo.jpg";
+import Logo from "@assets/logo.webp";
 import {ArrowTopRightOnSquareIcon, Bars3Icon, XMarkIcon} from "@heroicons/vue/16/solid";
 import {ref} from "vue";
 

@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import PushButton from "@components/inputs/PushButton.vue";
 import {getNumber, setNumber as _setNumber, plusNumber as _plusNumber} from "@/api/number";
-import viteLogo from "@assets/logo.jpg"
+import viteLogo from "@assets/logo.webp"
 import {useToast} from "vue-toastification";
 
 let number = ref<string | number>("获取中");
@@ -29,7 +29,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center text-center">
+  <div class="flex items-center justify-center text-center p-8">
     <div>
       <div>
         <img :src="viteLogo" alt="logo" class="max-w-48 m-auto rounded-full"/>
