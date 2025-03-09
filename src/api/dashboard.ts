@@ -8,7 +8,7 @@ export const adminLogin = async (data: any) => {
 
 export const adminLogout = async () => {
 
-  return await get(`${import.meta.env.VITE_API_URL}/dashboard/logout`)
+  return await get(`${adminUrl}/dashboard/logout`)
 }
 
 export const adminInfo = async (error = true) => {

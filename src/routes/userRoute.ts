@@ -10,5 +10,10 @@ export const userRoute: RouteRecordRaw[] = [
     path: "/register",
     name: "register",
     component: () => import("@views/user/RegisterView.vue")
+  },
+  {
+    path: "/me",
+    name: "me",
+    component: () => import("@views/user/Me.vue")
   }
 ];

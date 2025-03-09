@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import {userRoute} from './userRoute'
 import {dashboardRoute} from './dashboardRoute'
+import {weatherRoute} from './weatherRoute'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -27,6 +28,11 @@ const routes: RouteRecordRaw[] = [
         path: 'user',
         name: 'user',
         children: userRoute
+      },
+      {
+        path: "weather",
+        name: "weather",
+        children: weatherRoute
       },
     ]
   },

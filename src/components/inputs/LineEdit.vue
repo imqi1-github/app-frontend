@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
 
 defineProps({
   placeholder: {
@@ -12,9 +11,6 @@ const emit = defineEmits<{
   (event: 'updateValue', value: string): void;
 }>();
 
-const isInputing = ref<boolean>(false);
-const inputElement = ref<HTMLInputElement | null>(null);
-
 // 处理输入事件
 const handleInput = (event: Event) => {
   const input = event.target as HTMLInputElement;
@@ -22,36 +18,22 @@ const handleInput = (event: Event) => {
 
   emit('updateValue', newValue);
 };
-
-// 处理焦点事件
-const handleFocus = () => {
-  isInputing.value = true;
-};
-
-// 处理失去焦点事件
-const handleBlur = () => {
-  // 空值检查，确保 inputElement 不为 null
-  if (inputElement.value) {
-    isInputing.value = inputElement.value.value.length > 0;
-  }
-};
 </script>
 
 <template>
-  <div class="relative bg-inherit w-full">
-    <input
-        type="text"
-        class="w-full outline outline-gray-400 px-4 pt-4 pb-0.75 text-lg leading-2 focus:outline-blue-500 rounded-2xl"
-        @input="handleInput"
-        @focus="handleFocus"
-        @blur="handleBlur"
-        ref="inputElement"
-    />
-    <div
-        class="absolute inset-0 px-4 py-2 text-gray-500 pointer-events-none select-none duration-200 transition-all"
-        :class="{'pt-0.5 text-[0.6rem]': isInputing}"
-    >
-      {{ placeholder }}
-    </div>
+  <div class="relative w-full">
+    <label :for="`form-${placeholder}`"
+           class="box-content relative block rounded-md border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
+      <input type="text"
+             :id="`form-${placeholder}`"
+             @input="handleInput"
+             class="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:ring-0 focus:outline-hidden p-1.5"
+             :placeholder="placeholder"/>
+
+      <span
+          class="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-gray-50 p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+          {{ placeholder }}
+      </span>
+    </label>
   </div>
 </template>

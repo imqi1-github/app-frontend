@@ -5,6 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import svgr from 'vite-plugin-svgr';
 import {VitePWA} from 'vite-plugin-pwa'
+import {readFileSync} from "fs"
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -44,5 +45,13 @@ export default defineConfig({
   build: {
     cssCodeSplit: true,  // 开启 CSS 分离
     minify: 'esbuild',  // 使用 esbuild 进行压缩
-  }
+  },
+  server: {
+    https: {
+      key: readFileSync('./https/localhost-key.pem'),
+      cert: readFileSync('./https/localhost.pem'),
+    },
+    host: 'localhost', // 可选，指定主机
+    port: 5173, // 可选，指定端口
+  },
 })

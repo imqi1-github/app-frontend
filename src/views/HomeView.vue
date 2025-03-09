@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Logo from "@assets/logo.webp";
-import Logo1 from "@assets/icons/icon1.jpg";
+import WeatherIcon from "@assets/icons/weather.png";
 import Logo2 from "@assets/icons/icon2.jpg";
 import Logo3 from "@assets/icons/icon3.jpg";
 import Logo4 from "@assets/icons/icon4.jpg";
@@ -10,10 +10,10 @@ import AppItem from "@components/home/AppItem.vue";
 
 const items = [
   {
-    icon: Logo1,
-    name: "应用一",
-    description: "应用描述一",
-    to: "/number",
+    icon: WeatherIcon,
+    name: "天气",
+    description: "天气随时查，出行更潇洒",
+    to: "/weather",
   },
   {
     icon: Logo2,
@@ -64,16 +64,9 @@ const items = [
         <img :src="Logo" alt="Logo" class="relative h-full w-full rounded-full overflow-hidden z-10"/>
       </div>
     </section>
-    <section class="my-20">
+    <section class="my-8">
       <div class="font-bold text-xl">服务</div>
       <div class="text-gray-600">致力于提供便民的服务</div>
-      <div class="grid grid-cols-3 gap-6 mt-10 md:max-xl:grid-cols-2 max-md:grid-cols-1">
-        <AppItem v-for="item in items" :item="item"/>
-      </div>
-    </section>
-    <section>
-      <div class="font-bold text-xl">应用</div>
-      <div class="text-gray-600">致力于提供便民的应用</div>
       <div class="grid grid-cols-3 gap-6 mt-10 md:max-xl:grid-cols-2 max-md:grid-cols-1">
         <AppItem v-for="item in items" :item="item"/>
       </div>
