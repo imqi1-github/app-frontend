@@ -16,7 +16,7 @@ onMounted(async () => {
 
 </script>
 <template>
-  <div class="text-gray-400 text-sm max-w-6xl w-full flex gap-x-2.5 justify-between items-center">
+  <div class="text-gray-400 text-sm max-w-6xl w-full flex gap-x-2.5 justify-between items-center max-md:flex-col gap-y-2">
     <div>2025 &copy; 棋</div>
     <div>秦皇岛本地宝 - 致力于给小岛的居民提供更方便的服务</div>
     <div class="flex items-center gap-1">

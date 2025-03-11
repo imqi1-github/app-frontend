@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {useRouter} from "vue-router"
 import LineEdit from '@components/inputs/LineEdit.vue';
 import Password from "@components/inputs/Password.vue";

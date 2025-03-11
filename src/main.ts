@@ -1,5 +1,6 @@
 import "@assets/css/vue-toastification.css";
 import '@/assets/main.css'
+import "qweather-icons/font/qweather-icons.css"
 
 import {createApp} from 'vue'
 import {createPinia} from "pinia";

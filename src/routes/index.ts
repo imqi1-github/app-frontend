@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, type RouteRecordRaw} from 'vue-router'
 import {userRoute} from './userRoute'
 import {dashboardRoute} from './dashboardRoute'
 import {weatherRoute} from './weatherRoute'
+import {useUserStore} from "@/stores/user.ts";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -53,5 +54,28 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+
+router.beforeEach((to, _, next) => {
+  const userStore = useUserStore();
+
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!userStore.isLogin) {
+      // 如果用户未登录，阻止跳转到 /me
+      next('/login');
+    } else {
+      next();
+    }
+  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+    if (userStore.isLogin) {
+      // 如果用户已登录，阻止跳转到 /login 或 /register
+      next('/me');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

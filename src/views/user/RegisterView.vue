@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import LineEdit from '@components/inputs/LineEdit.vue';
 import Password from "@components/inputs/Password.vue";
 import PushButton from "@components/inputs/PushButton.vue";
 import {register} from "@api/user";
 import {useToast} from "vue-toastification";
 import {useRouter} from "vue-router";
+import {useUserStore} from "@/stores/user.ts";
 
 const router = useRouter();
 const toast = useToast();
+const userStore = useUserStore();
 
 const username = ref("");
 const password = ref("");
@@ -25,10 +27,6 @@ const updatePassword = (newValue: string): void => {
 
 const confirmPassword = (newValue: string): void => {
   confirmPasswordValue.value = newValue;
-}
-
-const updateEmail = (newValue: string): void => {
-  email.value = newValue;
 }
 
 const submit = async () => {
@@ -54,14 +52,6 @@ const submit = async () => {
     toast.error("确认密码不能为空")
     return;
   }
-  if (email.value === "") {
-    toast.error("邮箱不能为空");
-    return;
-  }
-  if (!email.value.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)) {
-    toast.error("邮箱格式不正确");
-    return;
-  }
   let result = await register(data);
   if (result) {
     toast.success(`注册成功, 三秒后跳转至登录界面。\nuser_id: ${result.user_id}`);
@@ -70,6 +60,16 @@ const submit = async () => {
     }, 3000)
   }
 }
+
+watch(() => userStore.isLogin, () => {
+  router.push(router.resolve({'name': 'me'}).href);
+})
+
+onMounted(() => {
+  if (userStore.isLogin) {
+    router.push(router.resolve({'name': 'me'}).href);
+  }
+})
 </script>
 
 <template>
@@ -78,7 +78,6 @@ const submit = async () => {
     <LineEdit @updateValue="updateUsername" placeholder="用户名 *"/>
     <Password @updateValue="updatePassword" placeholder="密码 *"/>
     <Password @updateValue="confirmPassword" placeholder="确认密码 *"/>
-    <LineEdit @updateValue="updateEmail" placeholder="邮箱 *"/>
     <div class="flex items-center justify-center w-full">
       <PushButton :onClick="submit" text="注册"/>
     </div>

@@ -7,7 +7,8 @@ export const useUserStore = defineStore("user", () => {
 
   function setUser(newUser: any) {
     user.value = newUser;
-    console.dir(`user被改变：${newUser}`);
+    console.log('user被改变');
+    console.log(newUser);
   }
 
   function setLogin(newValue: boolean) {

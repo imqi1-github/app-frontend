@@ -70,3 +70,10 @@ export function getByCityName(cityName: string) {
     provinceName: provinceInfo?.provinceName
   };
 }
+
+export function formatCoordinates(latitude: number, longitude: number): string {
+  const latDirection = latitude >= 0 ? 'N' : 'S';
+  const lonDirection = longitude >= 0 ? 'E' : 'W';
+
+  return `${Math.abs(latitude).toFixed(2)}°${latDirection} ${Math.abs(longitude).toFixed(2)}°${lonDirection}`;
+}

@@ -7,7 +7,6 @@ export const adminLogin = async (data: any) => {
 }
 
 export const adminLogout = async () => {
-
   return await get(`${adminUrl}/dashboard/logout`)
 }
 

@@ -33,7 +33,7 @@ const handleInput = (event: Event) => {
       <input :type="password ? 'password' : 'text'"
              :id="`form-${placeholder}`"
              @input="handleInput"
-             class="peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:ring-0 focus:outline-hidden p-1.5"
+             class="w-full peer border-none bg-transparent placeholder-transparent focus:border-transparent focus:ring-0 focus:outline-hidden py-1.5 px-3"
              :placeholder="placeholder"/>
 
       <span

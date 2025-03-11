@@ -2,8 +2,7 @@
 import Header from "@components/Header.vue";
 import Footer from "@components/Footer.vue";
 
-import {onBeforeUnmount, onMounted, reactive, ref} from "vue";
-import {testLogin} from "@api/user.ts";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import PushButton from "@components/inputs/PushButton.vue";
 
 const isScrolled = ref<boolean>(true);  // 用来控制是否滚动过

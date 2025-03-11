@@ -5,6 +5,7 @@ import Footer from "@components/Footer.vue";
 import {onBeforeUnmount, onMounted, ref} from "vue";
 import {testLogin} from "@api/user.ts";
 import {useUserStore} from "@/stores/user.ts";
+import {throttle} from "@/utils/func.ts";
 
 const isScrolled = ref(true);  // 用来控制是否滚动过
 
@@ -15,7 +16,7 @@ const handleScroll = () => {
 };
 
 onMounted(async () => {
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('scroll', throttle(handleScroll));
   try {
     const response = await testLogin();
     if (response?.user != null) {
@@ -44,7 +45,7 @@ onBeforeUnmount(() => {
     <div class="row-start-2 flex items-center justify-center">
       <RouterView/>
     </div>
-    <div class="row-start-3 px-12 py-4 flex justify-center border-t-[1px] bg-white border-t-gray-200">
+    <div class="row-start-3 px-12 py-4 flex justify-center border-t-[1px] bg-gray-50 border-t-gray-200">
       <Footer/>
     </div>
   </div>
