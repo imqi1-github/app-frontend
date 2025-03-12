@@ -32,15 +32,17 @@ const userAvatar = ref()
 
 const logout = async () => {
   await logoutApi();
-  userMenuShow.value = false
-  toast.success("成功退出登录")
   await router.push(router.resolve({'name': 'login'}).href);
+  userMenuShow.value = false
+  userStore.setLogin(false);
+  userStore.setUser(null);
+  toast.success("成功退出登录")
 }
 
 const closeUserMenu = (event: MouseEvent) => {
   if (
       userMenu.value && !userMenu.value.contains(event.target as Node) &&
-      userAvatar.value && !userAvatar.value.contains(event.target as Node) // 这里排除 userAvatar
+      userAvatar.value && !userAvatar.value.contains(event.target as Node)
   ) {
     userMenuShow.value = false;
   }
@@ -60,7 +62,7 @@ onUnmounted(() => {
   <div class="flex items-center justify-between w-full text-sm max-w-6xl mx-auto">
     <RouterLink class="flex items-center justify-center" :to="$router.resolve({ name: 'home' }).href">
       <img class="rounded-full overflow-hidden" width="24" height="24" :src="Logo" alt="logo"/>
-      <span class="font-bold text-gray-600 ml-2">本地宝</span>
+      <span class="font-bold text-gray-800 ml-2">秦皇岛本地宝</span>
     </RouterLink>
     <div
         class="flex items-center justify-between gap-6 max-md:fixed max-md:inset-0 max-md:flex-col max-md:items-start max-md:p-12 max-md:gap-y-4 max-md:justify-start max-md:bg-gray-50 max-md:text-xl max-md:font-bold"

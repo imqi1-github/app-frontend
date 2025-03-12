@@ -11,7 +11,7 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="flex gap-x-12 max-md:gap-x-4">
+  <div class="flex gap-x-12 max-md:gap-x-4 w-fit">
     <div class="size-24">
       <img :src="item.icon" :alt="item.name" class="rounded-3xl overflow-hidden"/>
     </div>

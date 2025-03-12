@@ -50,7 +50,7 @@ watch(() => userStore.isLogin, (newValue) => {
 <template>
   <div class="max-w-100 w-full p-4">
     <div class="font-bold text-3xl text-gray-600 text-center mb-4">登录</div>
-    <LineEdit @updateValue="updateUsername" class="mb-2" placeholder="用户名"/>
+    <LineEdit @updateValue="updateUsername" class="mb-4" placeholder="用户名"/>
     <Password @updateValue="updatePassword" class="mb-4"/>
     <div class="flex items-center justify-center w-full mb-4">
       <PushButton :onClick="submit" text="登录"/>

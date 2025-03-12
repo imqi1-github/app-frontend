@@ -13,6 +13,16 @@ import {useUserStore} from "@/stores/user.ts";
 import {formatDateFromQWeather, formatDateToChinese, formatTimeFromQWeather, getDayAfter} from "@/utils/time"
 import {formatCoordinates} from "@/utils/city.ts";
 import {getAQILevel} from "@/utils/weather"
+import Cloth from "@assets/icons/cloth.png"
+import Emotion from "@assets/icons/emotion.png"
+import Makeup from "@assets/icons/makeup.png"
+import Pollution from "@assets/icons/pollution.png"
+import Sick from "@assets/icons/sick.png"
+import Sun from "@assets/icons/sun.png"
+import Sunglasses from "@assets/icons/sunglasses.png"
+import Traffic from "@assets/icons/traffic.png"
+import Travel from "@assets/icons/travel.png"
+import Uv from "@assets/icons/uv.png"
 
 const userStore = useUserStore();
 const information = ref(null);
@@ -23,6 +33,19 @@ const weatherHourly = ref<any>(null);
 const minutelyPrecipitation = ref<any>(null);
 const sevenDaysWeather = ref<any>(null);
 const indices = ref<any>(null);
+
+const indicesIcon: Record<number, string> = {
+  3: Cloth,
+  5: Uv,
+  6: Travel,
+  8: Emotion,
+  9: Sick,
+  10: Pollution,
+  12: Sunglasses,
+  13: Makeup,
+  15: Traffic,
+  16: Sun,
+}
 
 const minimumTemp = computed(() => {
   const numbers = weatherHourly.value?.hourly
@@ -54,28 +77,82 @@ watch(() => [userStore.isLogin, userStore.user], () => {
   information.value = userStore.user?.information[0];
 })
 
-onMounted(async () => {
-  information.value = userStore.user?.information[0] || {};
-  positionInformation.value = await getCoordinates(information.value?.position_city || "秦皇岛")
-  console.log("位置信息：", toRaw(positionInformation.value));
-  weatherInformation.value = await getWeatherNow(information.value?.position_city || "秦皇岛");
-  console.log("天气信息：", toRaw(weatherInformation.value));
-  airQuality.value = await getCurrentAirQuality(information.value?.position_city || "秦皇岛");
-  console.log("空气质量：", toRaw(airQuality.value));
-  weatherHourly.value = await getWeatherHourly(information.value?.position_city || "秦皇岛");
-  console.log("小时天气预报：", toRaw(weatherHourly.value));
-  minutelyPrecipitation.value = await getMinutelyPrecipitation(information.value?.position_city || "秦皇岛");
-  console.log("分钟降水预告：", toRaw(minutelyPrecipitation.value));
-  sevenDaysWeather.value = await getSevenDaysWeather(information.value?.position_city || "秦皇岛");
-  console.log("7天天气预报：", toRaw(sevenDaysWeather.value));
-  indices.value = await getIndices(information.value?.position_city || "秦皇岛");
-  console.log("天气指数：", toRaw(indices.value));
-})
+onMounted(() => {
+  try {
+    // 获取基础信息
+    information.value = userStore.user?.information[0] || {};
+    const city = information.value?.position_city || "秦皇岛";
+
+    // 定义所有异步函数并立即执行
+    const fetchData = async () => {
+      // 获取坐标
+      getCoordinates(city)
+          .then(result => {
+            positionInformation.value = result;
+            console.log("位置信息：", toRaw(positionInformation.value));
+          })
+          .catch(error => console.error("获取坐标失败：", error));
+
+      // 获取当前天气
+      getWeatherNow(city)
+          .then(result => {
+            weatherInformation.value = result;
+            console.log("天气信息：", toRaw(weatherInformation.value));
+          })
+          .catch(error => console.error("获取当前天气失败：", error));
+
+      // 获取空气质量
+      getCurrentAirQuality(city)
+          .then(result => {
+            airQuality.value = result;
+            console.log("空气质量：", toRaw(airQuality.value));
+          })
+          .catch(error => console.error("获取空气质量失败：", error));
+
+      // 获取小时天气预报
+      getWeatherHourly(city)
+          .then(result => {
+            weatherHourly.value = result;
+            console.log("小时天气预报：", toRaw(weatherHourly.value));
+          })
+          .catch(error => console.error("获取小时天气失败：", error));
+
+      // 获取分钟降水预告
+      getMinutelyPrecipitation(city)
+          .then(result => {
+            minutelyPrecipitation.value = result;
+            console.log("分钟降水预告：", toRaw(minutelyPrecipitation.value));
+          })
+          .catch(error => console.error("获取分钟降水失败：", error));
+
+      // 获取7天天气预报
+      getSevenDaysWeather(city)
+          .then(result => {
+            sevenDaysWeather.value = result;
+            console.log("7天天气预报：", toRaw(sevenDaysWeather.value));
+          })
+          .catch(error => console.error("获取7天天气失败：", error));
+
+      // 获取天气指数
+      getIndices(city)
+          .then(result => {
+            indices.value = result;
+            console.log("天气指数：", toRaw(indices.value));
+          })
+          .catch(error => console.error("获取天气指数失败：", error));
+    };
+
+    // 立即执行并行请求
+    fetchData();
+  } catch (error) {
+    console.error("初始化时发生错误：", error);
+  }
+});
 
 </script>
 <template>
-  <div class="bg-white w-full h-full flex items-start justify-center">
-    <div class="max-w-225 w-full p-4 pb-8 mt-6">
+  <div class="w-full h-full flex items-start justify-center">
+    <div class="max-w-225 w-full p-4 mt-6">
       <div class="text-xs text-gray-600">
         {{ information?.position_province || "河北省" }}
         {{ formatDateFromQWeather(weatherInformation?.updateTime) || "获取中" }}
@@ -170,7 +247,7 @@ onMounted(async () => {
           <div class="w-full h-20 bg-gray-200 rounded-3xl"></div>
         </div>
       </div>
-      <div class="bg-zinc-50 w-full p-4 mt-4 rounded-2xl" v-if="weatherInformation">
+      <div class="bg-white w-full p-4 mt-4 rounded-2xl" v-if="weatherInformation">
         <div class="text-center text-lg">24小时天气预报</div>
         <div class="flex justify-around items-end pt-12 gap-0.5 overflow-hidden">
           <div class="flex flex-col items-center gap-1.5 max-[850px]:even:hidden"
@@ -190,13 +267,13 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="bg-zinc-50 w-full mt-4 p-4 rounded-2xl h-50 flex" v-else>
+      <div class="bg-white w-full mt-4 p-4 rounded-2xl h-50 flex" v-else>
         <div class="mt-auto w-full flex gap-0.5 justify-around">
           <div class="w-2 h-16 bg-blue-200 rounded animate-pulse"
                v-for="_ of Array.from({length: 24}, (_, i) => i)"></div>
         </div>
       </div>
-      <div class="mt-6 bg-gray-50 w-full rounded-2xl" v-if="sevenDaysWeather">
+      <div class="mt-6 bg-white w-full rounded-2xl" v-if="sevenDaysWeather">
         <div class="text-center text-xl p-4">7天天气预报</div>
         <div class="px-4 py-2 flex items-center justify-between gap-10 w-fit max-md:gap-4"
              v-for="(weather, index) of sevenDaysWeather.daily" :key="index">
@@ -218,7 +295,7 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-      <div class="mt-6 p-4 bg-gray-50 w-full rounded-2xl flex flex-col gap-2 pt-18" v-else>
+      <div class="mt-6 p-4 bg-white w-full rounded-2xl flex flex-col gap-2 pt-18" v-else>
         <div class="animate-pulse flex gap-12 items-center"
              v-for="_ of Array.from({length: 7}, (_, item) => item)">
           <div class="text-lg w-16 h-4 rounded-2xl bg-gray-200"></div>
@@ -230,7 +307,7 @@ onMounted(async () => {
         <div class="text-center text-2xl mt-4   mb-9">生活指数</div>
         <div class="grid grid-cols-2 gap-2 max-md:grid-cols-1">
           <div class="flex gap-4 items-center bg-white px-4 py-5 rounded-2xl" v-for="item of indices.daily">
-            <div class="size-12 bg-gray-100 rounded-full"></div>
+            <img :src="indicesIcon[item.type as number]" class="size-12 bg-gray-100 rounded-full" :alt="item.name">
             <div class="flex flex-col">
               <div class="text-xl">{{ item.name }}</div>
               <div class="text-sm text-gray-700">{{ item.category }}</div>
@@ -241,7 +318,8 @@ onMounted(async () => {
       <div class="mt-6 p-4 w-full rounded-2xl bg-gray-50" v-else>
         <div class="text-center text-2xl my-18"></div>
         <div class="grid grid-cols-2 gap-2 animate-pulse max-md:grid-cols-1">
-          <div class="flex gap-4 items-center bg-white px-4 py-5 rounded-2xl" v-for="_ of Array.from({length:10}, (_, i) => i)">
+          <div class="flex gap-4 items-center bg-white px-4 py-5 rounded-2xl"
+               v-for="_ of Array.from({length:10}, (_, i) => i)">
             <div class="size-12 bg-gray-100 rounded-full"></div>
           </div>
         </div>

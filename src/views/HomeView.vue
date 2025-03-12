@@ -49,8 +49,8 @@ const items = [
 
 </script>
 <template>
-  <div class="max-w-6xl w-full p-8">
-    <section class="w-full h-full my-24 flex justify-between items-center max-md:flex-col-reverse max-md:items-center gap-20">
+  <div class="max-w-6xl w-full p-8 flex flex-col items-center">
+    <section class="w-full h-full my-24 flex justify-around items-center max-md:flex-col-reverse max-md:items-center gap-20">
       <div class="max-md:text-center">
         <div class="text-6xl/16 font-bold">秦皇岛本地宝</div>
         <div class="text-xl/6 font-bold my-4">天气查询、便捷出行、互帮互助、智能AI</div>
@@ -64,10 +64,10 @@ const items = [
         <img :src="Logo" alt="Logo" class="relative h-full w-full rounded-full overflow-hidden z-10"/>
       </div>
     </section>
-    <section class="my-8">
+    <section class="my-8 max-w-225 w-full">
       <div class="font-bold text-xl">服务</div>
       <div class="text-gray-600">致力于提供便民的服务</div>
-      <div class="grid grid-cols-3 gap-6 mt-10 md:max-xl:grid-cols-2 max-md:grid-cols-1">
+      <div class="grid justify-around grid-cols-2 gap-6 mt-10 max-md:grid-cols-1">
         <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>

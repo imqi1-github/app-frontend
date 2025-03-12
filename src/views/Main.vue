@@ -11,9 +11,9 @@ const isScrolled = ref(true);  // 用来控制是否滚动过
 
 const userStore = useUserStore();
 
-const handleScroll = () => {
+const handleScroll = throttle(() => {
   isScrolled.value = window.scrollY < 50;
-};
+});
 
 onMounted(async () => {
   window.addEventListener('scroll', throttle(handleScroll));
@@ -39,14 +39,16 @@ onBeforeUnmount(() => {
 <template>
   <div class="relative bg-gray-50 grid grid-rows-[max-content_1fr_max-content] min-h-screen">
     <div class="row-start-1 px-32 py-4 flex justify-center sticky top-0 duration-200 z-20 max-xl:px-12"
-         :class="{'border-b-transparent': isScrolled, 'border-b-[1px] bg-white border-b-gray-200': !isScrolled}">
+         :class="{'border-b-transparent bg-transparent': isScrolled, 'border-b-[1px] border-b-gray-200 bg-white': !isScrolled}">
       <Header/>
     </div>
     <div class="row-start-2 flex items-center justify-center">
       <RouterView/>
     </div>
-    <div class="row-start-3 px-12 py-4 flex justify-center border-t-[1px] bg-gray-50 border-t-gray-200">
-      <Footer/>
+    <div class="row-start-3 flex flex-col gap-10 justify-center">
+      <div class="px-12 py-5 w-full flex items-center justify-center bg-gray-50">
+        <Footer/>
+      </div>
     </div>
   </div>
 </template>
