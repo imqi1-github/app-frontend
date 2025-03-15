@@ -14,6 +14,10 @@ export const getCurrentAirQuality = async (location: string) => {
   return await get(`${weather_api}/air-quality-current?location=${location}`);
 }
 
+export const getDailyAirQuality = async (location: string) => {
+  return await get(`${weather_api}/air-quality-daily?location=${location}`);
+}
+
 export const getWeatherHourly = async (location: string) => {
   return await get(`${weather_api}/forecast-hourly?location=${location}`);
 }
@@ -28,4 +32,7 @@ export const getSevenDaysWeather = async (location: string) => {
 
 export const getIndices = async (location: string) => {
   return await get(`${weather_api}/get_indices?location=${location}`);
+}
+export const getIndicesDaily = async (location: string) => {
+  return await get(`${weather_api}/get_indices_daily?location=${location}`);
 }

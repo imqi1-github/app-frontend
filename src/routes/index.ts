@@ -33,7 +33,8 @@ const routes: RouteRecordRaw[] = [
       {
         path: "weather",
         name: "weather",
-        children: weatherRoute
+        children: weatherRoute,
+        component: () => import("@views/weather/WeatherView.vue")
       },
     ]
   },

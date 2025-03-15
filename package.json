@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
+    "echarts": "^5.6.0",
     "pinia": "^3.0.1",
     "qweather-icons": "^1.6.0",
     "vue": "^3.5.13",

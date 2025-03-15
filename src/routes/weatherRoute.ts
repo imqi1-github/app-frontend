@@ -4,6 +4,33 @@ export const weatherRoute: RouteRecordRaw[] = [
   {
     path: "",
     name: "weather-home",
-    component: () => import("@views/weather/WeatherView.vue")
+    component: () => import("@components/weather/WeatherHome.vue"),
+    meta: {
+      title: '天气'
+    }
   },
+  {
+    path: "hourly",
+    name: "weather-hourly",
+    component: () => import("@components/weather/WeatherHourly.vue"),
+    meta: {
+      title: '小时预报'
+    }
+  },
+  {
+    path: "air",
+    name: "weather-air",
+    component: () => import("@components/weather/WeatherAir.vue"),
+    meta: {
+      title: '空气质量'
+    }
+  },
+  {
+    path: "indices",
+    name: "weather-indices",
+    component: () => import("@components/weather/WeatherIndices.vue"),
+    meta: {
+      title: '生活指数'
+    }
+  }
 ]

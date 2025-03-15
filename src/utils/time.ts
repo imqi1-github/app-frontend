@@ -37,15 +37,70 @@ export function formatDateFromQWeather(isoString: string): string {
   return `${year}年${month}月${day}日 ${weekday}`;
 }
 
+/**
+ * 格式化 ISO 8601 形式的时间，包含日期和星期，如 2025年03月09日 星期日
+ * @param isoString
+ */
+export function formatOnlyDateFromQWeather(isoString: string): string {
+  if (!isoString) {
+    return undefined;
+  }
+
+  const date = new Date(isoString);
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，所以要 +1
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${month}月${day}日`;
+}
+
+/**
+ * 格式化 ISO 8601 形式的时间，如 2025-03-09T16:01+08:00
+ * 如果日期超过一天，则在时间前加上对应的天数描述
+ * @param isoString ISO 8601 格式的时间字符串
+ * @returns 格式化后的时间字符串，例如 "今天 16:01" 或 "3天后 16:01"
+ */
+export function formatTime2FromQWeather(isoString: string): string {
+  if (!isoString) {
+    return undefined;
+  }
+
+  // 解析输入时间
+  const date = new Date(isoString);
+  const now = new Date(); // 当前时间
+
+  // 计算日期差（忽略时间部分，只比较日期）
+  const inputDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const timeDiff = inputDate.getTime() - currentDate.getTime();
+  const dayDiff = Math.round(timeDiff / (1000 * 60 * 60 * 24)); // 天数差，四舍五入处理毫秒级误差
+
+  // 格式化小时和分钟
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const timeStr = `${hours}:${minutes}`;
+
+  // 根据天数差调用 getDayAfter 获取描述
+  const dayDescription = dayDiff > 0 ? `+${dayDiff}` : "";
+
+  // 返回带天数描述的时间字符串
+  return `${timeStr}${dayDescription}`;
+}
+
+/**
+ * 根据天数间隔返回描述
+ * @param interval 天数间隔
+ * @returns 天数描述，例如 "今天"、"明天" 或 "N天后"
+ */
 export function getDayAfter(interval: number): string {
-  if (interval == 0) {
+  if (interval === 0) {
     return "今天";
-  } else if (interval == 1) {
+  } else if (interval === 1) {
     return "明天";
-  } else if (interval == 2) {
+  } else if (interval === 2) {
     return "后天";
+  } else if (interval < 0) {
+    return `${Math.abs(interval)}天前`; // 处理过去的时间
   } else {
-    return interval + "天后";
+    return `${interval}天后`;
   }
 }
 

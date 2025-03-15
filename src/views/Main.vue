@@ -38,7 +38,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="relative bg-gray-50 grid grid-rows-[max-content_1fr_max-content] min-h-screen">
-    <div class="row-start-1 px-32 py-4 flex justify-center sticky top-0 duration-200 z-20 max-xl:px-12"
+    <div class="row-start-1 px-32 py-4 flex justify-center sticky top-0 duration-200 z-20 max-md:px-4 max-xl:px-12"
          :class="{'border-b-transparent bg-transparent': isScrolled, 'border-b-[1px] border-b-gray-200 bg-white': !isScrolled}">
       <Header/>
     </div>
