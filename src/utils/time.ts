@@ -129,3 +129,41 @@ export function formatDateToChinese(dateStr: string): string {
     return "日期处理错误";
   }
 }
+
+/**
+ * 格式化相对时间
+ * @param timestamp 时间戳（毫秒）
+ */
+export const formatRelativeTime = (timestamp: number): string => {
+  const now = new Date();
+  const date = new Date(timestamp);
+  const diffMs = now.getTime() - date.getTime();
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffMonths = Math.floor(diffDays / 30);
+  const diffYears = Math.floor(diffDays / 365);
+
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const timeStr = `${hours}:${minutes}`;
+
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const targetDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const dayDiff = Math.floor((today.getTime() - targetDay.getTime()) / (1000 * 60 * 60 * 24));
+
+  if (diffYears > 0) return `${diffYears} 年前`;
+  if (diffMonths > 0) return `${diffMonths} 月前`;
+  if (diffDays > 2) return `${diffDays} 天前`;
+  if (dayDiff === 2) return `前天 ${timeStr}`;
+  if (dayDiff === 1) return `昨天 ${timeStr}`;
+  if (dayDiff === 0) return `今天 ${timeStr}`;
+  return date.toLocaleString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+};

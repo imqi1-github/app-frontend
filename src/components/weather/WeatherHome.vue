@@ -64,13 +64,13 @@ const minimumDailyTemp = computed(() => {
 })
 
 watch(() => [userStore.isLogin, userStore.user], () => {
-  information.value = userStore.user?.information[0];
+  information.value = userStore.user?.information;
 })
 
 onMounted(() => {
   try {
     // 获取基础信息
-    information.value = userStore.user?.information[0] || {};
+    information.value = userStore.user?.information || {};
     const city = information.value?.position_city || "秦皇岛";
 
     // 定义所有异步函数并立即执行
@@ -143,7 +143,7 @@ onMounted(() => {
 <template>
 
   <div v-if="weatherInformation"
-       class="mt-6 bg-[linear-gradient(225deg,_#fee5ca,_#e9f0ff_55%,_#dce3fb)] p-4 rounded-xl space-y-10">
+       class="mt-6 bg-[linear-gradient(225deg,_#fee5ca,_#e9f0ff_55%,_#dce3fb)] p-4 rounded-xl">
     <div class="text-right text-xs">更新于 {{ formatTimeFromQWeather(weatherInformation?.updateTime) ?? "获取中" }}</div>
     <div class="w-full relative mt-6">
       <div v-if="airQuality?.indexes?.[0]?.aqi"
@@ -289,6 +289,11 @@ onMounted(() => {
           <div class="text-sm text-gray-700">{{ item.category }}</div>
         </div>
       </div>
+    </div>
+    <div class="text-right mt-2">
+      <RouterLink :to="router.resolve({'name': 'weather-indices'})" class="text-sm text-blue-400"><span
+          class="inline-flex items-center group">查看<ChevronRightIcon
+          class="size-4 group-hover:translate-x-1 duration-100 "/></span></RouterLink>
     </div>
   </div>
   <div v-else class="mt-6 p-4 w-full rounded-2xl bg-gray-50">

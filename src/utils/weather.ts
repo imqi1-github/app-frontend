@@ -14,9 +14,9 @@ export function getAQILevel(aqi: number): { level: string; colorClass: string } 
   if (aqi >= 0 && aqi <= 50) {
     return { level: "优", colorClass: "green" };
   } else if (aqi <= 100) {
-    return { level: "良", colorClass: "yellow" };
+    return { level: "良", colorClass: "orange" };
   } else if (aqi <= 150) {
-    return { level: "轻度污染", colorClass: "orange" };
+    return { level: "轻度污染", colorClass: "brown" };
   } else if (aqi <= 200) {
     return { level: "中度污染", colorClass: "red" };
   } else if (aqi <= 300) {

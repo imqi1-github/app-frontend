@@ -71,7 +71,7 @@ const indices = [
   }
 ];
 const indicesDaily = ref<any>(null);
-const city = userStore.user?.information[0].position_city || "秦皇岛";
+const city = userStore.user?.information.position_city || "秦皇岛";
 const selectedIndex = ref(0);
 
 onMounted(() => {

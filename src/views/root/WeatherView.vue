@@ -3,7 +3,7 @@ import {onMounted, ref, toRaw, watch,} from "vue";
 import {useRouter} from "vue-router";
 import {getCoordinates, getWeatherNow,} from "@api/weather.ts";
 import {useUserStore} from "@/stores/user.ts";
-import {formatDateFromQWeather} from "@/utils/time"
+import {formatDateFromQWeather} from "@/utils/time.ts"
 import {formatCoordinates} from "@/utils/city.ts";
 import {weatherRoute} from "@/routes/weatherRoute.ts";
 
@@ -15,13 +15,13 @@ const positionInformation = ref(null);
 const router = useRouter();
 
 watch(() => [userStore.isLogin, userStore.user], () => {
-  information.value = userStore.user?.information[0];
+  information.value = userStore.user?.information;
 })
 
 onMounted(() => {
   try {
     // 获取基础信息
-    information.value = userStore.user?.information[0] || {};
+    information.value = userStore.user?.information || {};
     const city = information.value?.position_city || "秦皇岛";
 
     // 定义所有异步函数并立即执行
@@ -52,7 +52,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="w-full h-full flex items-start justify-center min-md:justify-around">
+  <div class="size-full flex items-start justify-center min-md:justify-around">
     <div class="max-w-225 w-full p-4 mt-6 space-y-2">
       <div class="text-xs text-gray-600">
         {{ information?.position_province || "河北省" }}

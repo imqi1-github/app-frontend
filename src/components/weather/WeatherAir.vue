@@ -8,7 +8,7 @@ import {formatOnlyDateFromQWeather, getDayAfter} from "@/utils/time.ts";
 const userStore = useUserStore();
 const airQuality = ref<any>(null);
 const dailyQuality = ref<any>(null);
-const city = userStore.user?.information[0].position_city || "秦皇岛";
+const city = userStore.user?.information.position_city || "秦皇岛";
 
 
 onMounted(() => {

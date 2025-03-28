@@ -72,3 +72,7 @@ export const setPosition = async (data: any): Promise<any> => {
 export const logout = async () => {
   return await get(`${user_api}/logout`);
 }
+
+export const getInformation = async (id: any) => {
+  return await get(`${user_api}/information?user_id=${id}`);
+}

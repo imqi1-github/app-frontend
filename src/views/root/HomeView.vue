@@ -1,7 +1,7 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import Logo from "@assets/logo.webp";
 import WeatherIcon from "@assets/icons/weather.png";
-import Logo2 from "@assets/icons/icon2.jpg";
+import MapLogo from "@assets/icons/map.png"
 import Logo3 from "@assets/icons/icon3.jpg";
 import Logo4 from "@assets/icons/icon4.jpg";
 import Logo5 from "@assets/icons/icon5.jpg";
@@ -13,19 +13,19 @@ const items = [
     icon: WeatherIcon,
     name: "天气",
     description: "天气随时查，出行更潇洒",
-    to: "/weather",
+    to: {"name": "weather-home"},
   },
   {
-    icon: Logo2,
-    name: "应用二",
-    description: "应用描述二",
-    to: "/number",
+    icon: MapLogo,
+    name: "地图",
+    description: "导航寻路，出行更方便",
+    to: {"name": "map"},
   },
   {
     icon: Logo3,
-    name: "应用三",
-    description: "应用描述三",
-    to: "/number",
+    name: "帖子",
+    description: "网友的意见更清楚",
+    to: {name: "post-home"},
   },
   {
     icon: Logo4,
@@ -50,12 +50,14 @@ const items = [
 </script>
 <template>
   <div class="max-w-6xl w-full p-8 flex flex-col items-center">
-    <section class="w-full h-full my-24 flex justify-around items-center max-md:flex-col-reverse max-md:items-center gap-20">
+    <section
+        class="size-full my-24 flex justify-around items-center max-md:flex-col-reverse max-md:items-center gap-20">
       <div class="max-md:text-center">
         <div class="text-6xl/16 font-bold">秦皇岛本地宝</div>
         <div class="text-xl/6 font-bold my-4">天气查询、便捷出行、互帮互助、智能AI</div>
-        <RouterLink to="/about"
-                    class="group bg-black px-6 py-3 shadow hover:bg-red-600 leading-12 text-white transition-colors duration-200 rounded-3xl">
+        <RouterLink
+            class="group bg-black px-6 py-3 shadow hover:bg-red-600 leading-12 text-white transition-colors duration-200 rounded-3xl"
+            to="/about">
           了解我们
         </RouterLink>
       </div>

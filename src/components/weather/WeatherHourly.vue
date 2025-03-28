@@ -9,7 +9,7 @@ import WeatherHourlyWindChart from "@components/weather/charts/WeatherHourlyWind
 
 const userStore = useUserStore();
 const weatherHourly = ref<any>(null);
-const city = userStore.user?.information[0].position_city || "秦皇岛";
+const city = userStore.user?.information.position_city || "秦皇岛";
 onMounted(() => {
   // 获取小时天气预报
   getWeatherHourly(city)

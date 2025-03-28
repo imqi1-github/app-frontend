@@ -13,12 +13,12 @@ const userStore = useUserStore();
 const router = useRouter();
 
 const userInput = ref(null)
-const provinceSelect = ref<string>(userStore.user?.information[0].position_province ?? "河北省")
-const citySelect = ref(userStore.user?.information[0].position_city ?? "秦皇岛市")
+const provinceSelect = ref<string>(userStore.user?.information.position_province ?? "河北省")
+const citySelect = ref(userStore.user?.information.position_city ?? "秦皇岛市")
 
 const cityData = computed(() => {
   const data = getByProvinceName(provinceSelect.value);
-  if (provinceSelect.value != userStore.user?.information[0].position_province) {
+  if (provinceSelect.value != userStore.user?.information.position_province) {
     citySelect.value = data.cityNames[0]
   }
   return data
@@ -27,9 +27,9 @@ const cityData = computed(() => {
 watch(
     () => userStore.user,
     (newUser) => {
-      if (newUser?.information?.[0]) {
-        provinceSelect.value = newUser.information[0].position_province || "河北省";
-        citySelect.value = newUser.information[0].position_city || "秦皇岛市";
+      if (newUser?.information) {
+        provinceSelect.value = newUser.information.position_province || "河北省";
+        citySelect.value = newUser.information.position_city || "秦皇岛市";
       }
     },
     {deep: true} // 如果user是个深层对象需要deep监听
@@ -37,7 +37,7 @@ watch(
 
 onMounted(() => {
   if (userStore.user) {
-    citySelect.value = userStore.user?.information[0].position_city;
+    citySelect.value = userStore.user?.information.position_city;
   }
 })
 
@@ -70,7 +70,7 @@ watch(() => userStore.isLogin, (newValue) => {
       <div class="max-w-5xl w-full p-12 pt-24 max-md:text-center max-md:p-4">账户设置</div>
     </div>
     <div class="p-12 w-full max-w-5xl h-full flex flex-col gap-12 items-center justify-center max-md:p-3 max-md:gap-3">
-      <div class="w-full h-full border-1 border-gray-200 rounded-lg overflow-hidden">
+      <div class="size-full border-1 border-gray-200 rounded-lg overflow-hidden">
         <div class="p-6 bg-white">
           <p class="text-xl font-bold text-gray-800">昵称</p>
           <p class="text-gray-600 text-sm my-3">请输入你的全名或你喜欢的显示名称。</p>
@@ -78,7 +78,7 @@ watch(() => userStore.isLogin, (newValue) => {
                  ref="userInput"
                  type="text"
                  class="block max-w-60 w-full border-1 border-gray-200 rounded px-3 py-1 focus:outline-blue-700"
-                 :value="userStore.user?.information[0].nickname">
+                 :value="userStore.user?.information.nickname">
         </div>
         <div class="flex justify-between gap-3 items-center w-full px-6 py-4 border-t-1 border-t-gray-200 max-md:flex-col max-md:p-6">
           <div class="text-sm text-gray-500">昵称长度不可超过64字符。</div>
@@ -87,11 +87,11 @@ watch(() => userStore.isLogin, (newValue) => {
           </button>
         </div>
       </div>
-      <div class="w-full h-full border-1 border-gray-200 rounded-lg overflow-hidden">
+      <div class="size-full border-1 border-gray-200 rounded-lg overflow-hidden">
         <div class="p-6 bg-white">
           <span class="relative float-end hover:brightness-95 duration-125">
             <button @click="uploadAvatar" class="absolute inset-0 bg-transparent cursor-pointer"></button>
-            <img :src="userStore.user?.information[0].avatar_path ?? '/img/default_avatar.png'" alt="头像"
+            <img :src="userStore.user?.information.avatar_path ?? '/img/default_avatar.png'" alt="头像"
                  class="rounded-full border-1 border-gray-100 size-16"/>
           </span>
           <p class="text-xl font-bold text-gray-800">头像</p>
@@ -101,7 +101,7 @@ watch(() => userStore.isLogin, (newValue) => {
           头像可选但强烈建议上传一个。
         </div>
       </div>
-      <div class="w-full h-full border-1 border-gray-200 rounded-lg overflow-hidden">
+      <div class="size-full border-1 border-gray-200 rounded-lg overflow-hidden">
         <div class="p-6 bg-white">
           <p class="text-xl font-bold text-gray-800">地区</p>
           <p class="text-gray-600 text-sm my-3">请输入你所在的省市名称。</p>
