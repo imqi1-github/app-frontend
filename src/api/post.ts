@@ -54,6 +54,7 @@ export const uploadAttachment = async () => {
       multiple: false,
     });
 
+    console.log(fileHandle);
     if (!fileHandle) return;
 
     // 获取文件
@@ -101,4 +102,12 @@ export const deletePost = async (id: number) => {
 
 export const getSubscribed = async (user_id: number, subscribed_user_id: number) => {
   return await get(`${postUrl}/subscribed?user_id=${user_id}&subscribed_user_id=${subscribed_user_id}`)
+}
+
+export const editPost = async (data: any) => {
+  return await post(`${postUrl}/edit`, data);
+}
+
+export const searchPost = async (keywords: string) => {
+  return await get(`${postUrl}/search?keywords=${keywords}`);
 }

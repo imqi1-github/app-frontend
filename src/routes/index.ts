@@ -3,6 +3,7 @@ import {userRoute} from './userRoute'
 import {dashboardRoute} from './dashboardRoute'
 import {weatherRoute} from './weatherRoute'
 import {postRoute} from "./postRoute"
+import {spotRoute} from "./spotRoute"
 import {useUserStore} from "@/stores/user.ts";
 
 const routes: RouteRecordRaw[] = [
@@ -19,12 +20,18 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'home',
-        component: () => import("@views/root/HomeView.vue")
+        component: () => import("@views/root/HomeView.vue"),
+        meta: {
+          title: '首页'
+        }
       },
       {
         path: 'number',
         name: 'number',
-        component: () => import("@views/NumberView.vue")
+        component: () => import("@views/NumberView.vue"),
+        meta: {
+          title: '数字'
+        }
       },
       {
         path: 'user',
@@ -35,18 +42,36 @@ const routes: RouteRecordRaw[] = [
         path: "weather",
         name: "weather",
         children: weatherRoute,
-        component: () => import("@views/root/WeatherView.vue")
+        component: () => import("@views/root/WeatherView.vue"),
+        meta: {
+          title: '天气'
+        }
       },
       {
-        path: "/post",
+        path: "post",
         name: "post",
         children: postRoute,
-        component: () => import("@views/root/PostView.vue")
+        component: () => import("@views/root/PostView.vue"),
+        meta: {
+          title: '帖子'
+        }
+      },
+      {
+        path: "spot",
+        name: "spot",
+        children: spotRoute,
+        component: () => import("@views/root/SpotView.vue"),
+        meta: {
+          title: '景点'
+        }
       },
       {
         path: "map",
         name: "map",
-        component: () => import("@views/root/MapView.vue" as any)
+        component: () => import("@views/root/MapView.vue" as any),
+        meta: {
+          title: '地图'
+        }
       }
     ]
   },
@@ -54,12 +79,19 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard',
     name: 'dashboard',
     component: () => import("@views/root/Dashboard.vue"),
+    meta: {
+      requiresAuth: true,
+      title: '仪表盘'
+    },
     children: dashboardRoute,
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import("@views/NotFound.vue")  // 404页面
+    component: () => import("@views/NotFound.vue"),  // 404页面
+    meta: {
+      title: '页面未找到 '
+    }
   }
 ]
 
@@ -70,6 +102,7 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
+  document.title = to.meta.title as string || 'Vue App'; // 默认标题为 'Vue App'
   const userStore = useUserStore();
 
   // 确保用户状态已初始化

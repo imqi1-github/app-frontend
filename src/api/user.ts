@@ -30,6 +30,7 @@ export const uploadAvatar = async () => {
       multiple: false,
     });
 
+    console.log(fileHandle);
     if (!fileHandle) return;
 
     // 获取文件
@@ -75,4 +76,8 @@ export const logout = async () => {
 
 export const getInformation = async (id: any) => {
   return await get(`${user_api}/information?user_id=${id}`);
+}
+
+export const getMyUploads = async (id: any) => {
+  return await get(`${user_api}/my-uploads?user_id=${id}`);
 }

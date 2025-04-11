@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, nextTick, onMounted, ref, watch} from "vue";
+import {computed, nextTick, onMounted, onUnmounted, ref, toRaw, watch} from "vue";
 import {useRoute} from "vue-router";
 import {comment, comments, getPost, likePost, subscribe} from "@api/post.ts";
 import Swiper from "swiper";
@@ -7,19 +7,22 @@ import {Navigation, Pagination} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {HeartIcon, XMarkIcon} from "@heroicons/vue/24/outline";
-import {HeartIcon as HeartIconSolid} from "@heroicons/vue/24/solid";
+import {RiCloseLine, RiHeartFill, RiHeartLine, RiMapPinLine} from "@remixicon/vue";
 import MarkdownIt from "markdown-it";
 import {formatRelativeTime} from "@/utils/time.ts";
 import {useToast} from "vue-toastification";
 import {useUserStore} from "@/stores/user.ts";
 import CommentNode from "@components/post/CommentNode.vue";
+import {getWeatherNow} from "@api/weather.ts";
+import {Fancybox} from '@fancyapps/ui';
+import '@fancyapps/ui/dist/fancybox/fancybox.css'; // 引入默认样式
 
 const route = useRoute();
 const post = ref<any>({});
-let swiperInstance: Swiper | null = null
-const md = new MarkdownIt({html: true}); // 初始化 markdown-it
-const user = useUserStore()
+let swiperInstance: Swiper | null = null;
+const md = new MarkdownIt({html: true});
+const user = useUserStore();
+const toast = useToast();
 
 const renderMarkdown = (content: string) => {
   return md.render(content);
@@ -28,16 +31,16 @@ const renderMarkdown = (content: string) => {
 // 初始化 Swiper
 const initSwiper = () => {
   if (swiperInstance) {
-    swiperInstance.destroy(); // 如果已有实例，先销毁
+    swiperInstance.destroy();
   }
   swiperInstance = new Swiper(".swiper", {
     modules: [Navigation, Pagination],
     loop: true,
     pagination: {
       el: ".swiper-pagination",
-      type: 'custom', // 使用自定义分页
+      type: 'custom',
       renderCustom: (swiper, current, total) => {
-        return `${current}/${total}`; // 显示 "1/5"、"2/5" 等格式
+        return `${current}/${total}`;
       },
     },
     navigation: {
@@ -47,24 +50,33 @@ const initSwiper = () => {
   });
 };
 
+// 更新 Swiper
 const updateSwiper = () => {
   if (swiperInstance) {
     swiperInstance.update();
   }
 };
 
-// 检查是否需要初始化 Swiper
+// 初始化 FancyBox
+const initFancybox = () => {
+  // @ts-ignore
+  Fancybox.bind('[data-fancybox="gallery"]', {
+    loop: true,
+    buttons: ['close'],
+    animationEffect: 'zoom-in-out',
+  });
+};
+
+// 检查并初始化 Swiper 和 FancyBox
 const checkAndInitSwiper = async () => {
   if (post.value?.attachments) {
     await nextTick();
     initSwiper();
+    initFancybox(); // 在 Swiper 初始化后绑定 FancyBox
   }
 };
 
-const toast = useToast()
-
 const likedPosts = ref(JSON.parse(localStorage.getItem("liked") || "[]"));
-
 const getLike = computed(() => likedPosts.value.includes(Number(post.value.id)));
 
 const like = async () => {
@@ -80,7 +92,6 @@ const like = async () => {
   }
 };
 
-
 onMounted(() => {
   getPost(route.params.id).then((res) => {
     console.log("帖子详情：", res);
@@ -89,15 +100,34 @@ onMounted(() => {
   });
 });
 
+onUnmounted(() => {
+  if (swiperInstance) {
+    swiperInstance.destroy();
+  }
+  Fancybox.unbind('[data-fancybox="gallery"]');
+  Fancybox.close();
+});
+
 watch(
     () => post.value.attachments,
     async (newAttachments, oldAttachments) => {
       if (newAttachments !== oldAttachments) {
         await nextTick();
         initSwiper();
+        initFancybox(); // 动态更新时重新绑定 FancyBox
       }
     }
 );
+
+const weather = ref()
+
+watch(() => post.value?.coordinates,
+    () => {
+      getWeatherNow(post.value.coordinates).then((res) => {
+        console.log("天气信息：", toRaw(res))
+        weather.value = res;
+      });
+    })
 
 const thisSubscribe = async () => {
   const result = await subscribe(user.user.id, post.value.user_id);
@@ -147,14 +177,14 @@ const cancelReply = () => {
 </script>
 
 <template>
-  <div class="size-full flex items-center justify-center">
-    <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial lg:hidden size-full">
+  <div class="size-full flex items-center justify-center max-lg:flex-col max-lg:justify-between">
+    <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial lg:hidden max-lg:w-full">
       <div
           class="p-1 rounded-full flex items-center justify-center cursor-pointer z-3 hover:bg-gray-100"
           title="返回" @click="$router.back()">
-        <XMarkIcon class="size-6 text-gray-500"/>
+        <RiCloseLine class="size-6 text-gray-500"/>
       </div>
-      <RouterLink class="flex gap-2 items-center" :to="({'name': 'post-me', 'params': {'id': post.user_id}})">
+      <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
         <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
              class="size-10 rounded-full border-gray-100">
         <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
@@ -175,25 +205,27 @@ const cancelReply = () => {
       </template>
     </div>
     <div
-        class="relative lg:max-h-200 lg:rounded-2xl bg-white grid lg:grid-cols-[5fr_4fr] lg:grid-rows-[100%] overflow-hidden border-gray-100 border-1 max-lg:static max-lg:space-y-4">
+        class="size-full relative lg:max-h-200 lg:rounded-2xl bg-white grid lg:grid-cols-[5fr_4fr] lg:grid-rows-[100%] overflow-hidden border-gray-100 border-1 max-lg:static max-lg:space-y-4">
       <template v-if="post?.attachments">
-        <keep-alive>
-          <div class="swiper max-lg:max-h-150 size-full">
-            <div class="swiper-wrapper size-full">
-              <div v-for="attachment of post.attachments" class="swiper-slide size-full">
-                <img
-                    :alt="attachment.file_name"
-                    :src="attachment.file_path"
-                    class="size-full object-cover"
-                    @load="updateSwiper"
-                />
+        <div class="swiper max-lg:max-h-150 size-full">
+          <div class="swiper-wrapper size-full">
+            <div v-for="attachment of post.attachments" class="swiper-slide size-full">
+              <div class="size-full">
+                <a :href="attachment.file_path" data-fancybox="gallery">
+                  <img
+                      :alt="attachment.file_name"
+                      :src="attachment.file_path"
+                      class="size-full object-cover"
+                      @load="updateSwiper"
+                  />
+                </a>
               </div>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
           </div>
-        </keep-alive>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
       </template>
       <template v-else>
         <div class="flex flex-col items-center justify-center h-full">
@@ -202,7 +234,7 @@ const cancelReply = () => {
       </template>
       <div class="h-full flex flex-col flex-initial border-l-1 border-l-gray-200">
         <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial max-lg:hidden">
-          <RouterLink class="flex gap-2 items-center" :to="({'name': 'post-me', 'params': {'id': post.user_id}})">
+          <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
             <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
                  class="size-10 rounded-full border-gray-100">
             <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
@@ -226,14 +258,40 @@ const cancelReply = () => {
           <div class="">
             <div class="font-[550] text-lg">{{ post?.title }}</div>
             <div v-if="post.content" class="markdown-content" v-html="renderMarkdown(post.content)"/>
-            <div class="flex flex-wrap gap-1" v-if="post.categories" v-for="category of post.categories">
-              <RouterLink :to="{'name': 'post-category', 'params': {'id': category.id}}" class="text-blue-500"># {{ category.name }}</RouterLink>
+            <div v-for="category of post.categories" v-if="post.categories" class="flex flex-wrap gap-1 px-1">
+              <RouterLink :to="{'name': 'post-category', 'params': {'id': category.id}}" class="text-blue-500">#
+                {{ category.name }}
+              </RouterLink>
+            </div>
+            <div v-if="post?.coordinates" class="my-2 flex gap-2">
+              <RouterLink :to="`/map?location=${post.coordinates}&zoom=16`"
+                          class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
+                <RiMapPinLine class="size-4"/>
+                {{ post.position_name }}
+              </RouterLink>
+              <RouterLink v-if="weather" :to="{'name': 'weather-home', 'query': {'location': post.position_name}}"
+                          class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
+                <i :class="`qi-${weather.now.icon}-fill`" class="text-base"/>
+                {{ weather.now.text }}
+              </RouterLink>
+            </div>
+            <div v-else-if="post?.position_name" class="my-2 flex gap-2">
+              <div class="flex gap-0.5 items-center cursor-pointer">
+                <RiMapPinLine class="size-4"/>
+                {{ post.position_name }}
+              </div>
             </div>
             <div class="flex items-center justify-between pb-3 border-b-1 border-b-gray-200">
-              <div class="text-gray-500">{{ formatRelativeTime(post.update_time) }}</div>
+              <div class="text-gray-500 flex gap-2">
+                <div class="">{{ formatRelativeTime(post.update_time) }}</div>
+                <RouterLink v-if="user.isLogin && post?.user_id && post.user_id == user.user.id"
+                            :to="{'name': 'post-edit', 'params': {'id': post.id}}"
+                            class="text-blue-500 hover:text-blue-600">编辑
+                </RouterLink>
+              </div>
               <div v-if="post" class="flex gap-1 cursor-pointer" @click="like">
-                <HeartIconSolid v-if="getLike" class="size-5 fill-red-500"/>
-                <HeartIcon v-else class="size-5"/>
+                <RiHeartFill v-if="getLike" class="size-5 fill-red-500"/>
+                <RiHeartLine v-else class="size-5"/>
                 <div class="text-sm text-gray-600">{{ post?.likes }}</div>
               </div>
             </div>
@@ -247,8 +305,8 @@ const cancelReply = () => {
           <div class="rounded-full bg-gray-100 h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 px-3 flex-auto">
             <input
                 v-model="commentContent"
-                class="w-full h-full outline-none"
                 :placeholder="replyToNickname ? `回复 ${replyToNickname}` : '评论'"
+                class="w-full h-full outline-none"
             />
           </div>
           <button
@@ -265,20 +323,22 @@ const cancelReply = () => {
             取消回复
           </button>
         </div>
-          <div v-else class="rounded-full h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 p-2 flex-auto">
-            <div class="text-gray-500 text-center">登录后可评论</div>
+        <div v-else class="rounded-full h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 p-2 flex-auto">
+          <div class="text-gray-500 text-center">登录后可评论</div>
         </div>
       </div>
       <div
           class="absolute left-3 top-3 size-7 bg-gray-500/30 rounded-full flex items-center justify-center cursor-pointer z-3 max-lg:hidden"
           title="返回" @click="$router.back()">
-        <XMarkIcon class="size-5 text-white"/>
+        <RiCloseLine class="size-5 text-white"/>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+@import "@/assets/css/markdown.css";
+
 .swiper-button-prev, .swiper-button-next {
   border-radius: 9999px;
   background-color: rgba(0, 0, 0, 0.2);
@@ -299,130 +359,5 @@ const cancelReply = () => {
   border-radius: 9999px;
   background-color: rgba(0, 0, 0, 0.2);
   color: white;
-}
-
-.markdown-content :deep(h1),
-.markdown-content :deep(h2),
-.markdown-content :deep(h3),
-.markdown-content :deep(h4),
-.markdown-content :deep(h5),
-.markdown-content :deep(h6) {
-  margin: 1rem 0 0.5rem;
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-.markdown-content :deep(h1) {
-  font-size: 1.75rem;
-}
-
-.markdown-content :deep(h2) {
-  font-size: 1.5rem;
-}
-
-.markdown-content :deep(h3) {
-  font-size: 1.25rem;
-}
-
-.markdown-content :deep(h4) {
-  font-size: 1.1rem;
-}
-
-.markdown-content :deep(h5) {
-  font-size: 1rem;
-}
-
-.markdown-content :deep(h6) {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-/* 段落和文本 */
-.markdown-content :deep(p) {
-  margin: 0 0 1rem;
-}
-
-/* 强调 */
-.markdown-content :deep(strong) {
-  font-weight: 700;
-}
-
-.markdown-content :deep(em) {
-  font-style: italic;
-}
-
-/* 链接 */
-.markdown-content :deep(a) {
-  color: #0366d6;
-  text-decoration: none;
-}
-
-.markdown-content :deep(a:hover) {
-  text-decoration: underline;
-}
-
-/* 列表 */
-.markdown-content :deep(ul),
-.markdown-content :deep(ol) {
-  margin: 0 0 1rem;
-  padding-left: 2rem;
-}
-
-.markdown-content :deep(ul) {
-  list-style-type: disc;
-}
-
-.markdown-content :deep(ol) {
-  list-style-type: decimal;
-}
-
-.markdown-content :deep(li) {
-  margin: 0.25rem 0;
-}
-
-/* 代码 */
-.markdown-content :deep(code) {
-  padding: 0.2em 0.4em;
-  background: #f5f5f5;
-  border-radius: 4px;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 0.9em;
-}
-
-.markdown-content :deep(pre) {
-  padding: 1rem;
-  background: #f5f5f5;
-  border-radius: 6px;
-  overflow-x: auto;
-  margin: 0 0 1rem;
-}
-
-.markdown-content :deep(pre code) {
-  padding: 0;
-  background: none;
-}
-
-/* 引用 */
-.markdown-content :deep(blockquote) {
-  margin: 0 0 1rem;
-  padding: 0.5rem 1rem;
-  border-left: 4px solid #ddd;
-  color: #666;
-  background: #fafafa;
-}
-
-/* 分隔线 */
-.markdown-content :deep(hr) {
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 1px solid #ddd;
-}
-
-/* 图片 */
-.markdown-content :deep(img) {
-  max-width: 100%;
-  height: auto;
-  margin: 0.5rem 0;
-  border-radius: 4px;
 }
 </style>

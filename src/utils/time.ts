@@ -136,7 +136,7 @@ export function formatDateToChinese(dateStr: string): string {
  */
 export const formatRelativeTime = (timestamp: number): string => {
   const now = new Date();
-  const date = new Date(timestamp);
+  const date = new Date(timestamp * 1000);
   const diffMs = now.getTime() - date.getTime();
   const diffSeconds = Math.floor(diffMs / 1000);
   const diffMinutes = Math.floor(diffSeconds / 60);
@@ -167,3 +167,21 @@ export const formatRelativeTime = (timestamp: number): string => {
     minute: "2-digit"
   });
 };
+
+/**
+ * 判断当前时间是否在指定时间范围内
+ * @param start_time
+ * @param end_time
+ */
+export function isNowInRange(start_time: string, end_time: string): boolean {
+  const now = new Date();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+
+  const [startHour, startMinute] = start_time.split(':').map(Number);
+  const [endHour, endMinute] = end_time.split(':').map(Number);
+
+  const startMinutes = startHour * 60 + startMinute;
+  const endMinutes = endHour * 60 + endMinute;
+
+  return nowMinutes >= startMinutes && nowMinutes <= endMinutes;
+}

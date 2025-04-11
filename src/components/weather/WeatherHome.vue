@@ -23,7 +23,7 @@ import Sunglasses from "@assets/icons/sunglasses.svg"
 import Traffic from "@assets/icons/traffic.svg"
 import Travel from "@assets/icons/travel.svg"
 import Uv from "@assets/icons/uv.svg"
-import {ChevronRightIcon} from "@heroicons/vue/16/solid";
+import {RiArrowRightDoubleLine} from "@remixicon/vue";
 
 const userStore = useUserStore();
 const information = ref(null);
@@ -144,10 +144,12 @@ onMounted(() => {
 
   <div v-if="weatherInformation"
        class="mt-6 bg-[linear-gradient(225deg,_#fee5ca,_#e9f0ff_55%,_#dce3fb)] p-4 rounded-xl">
-    <div class="text-right text-xs">更新于 {{ formatTimeFromQWeather(weatherInformation?.updateTime) ?? "获取中" }}</div>
+    <div class="text-right text-xs text-gray-700">更新于
+      {{ formatTimeFromQWeather(weatherInformation?.updateTime) ?? "获取中" }}
+    </div>
     <div class="w-full relative mt-6">
       <div v-if="airQuality?.indexes?.[0]?.aqi"
-           :style="`background:${getAQILevel(airQuality?.indexes?.[0]?.aqi).colorClass}`"
+           :style="{background: getAQILevel(airQuality?.indexes?.[0]?.aqi).colorClass}"
            class="absolute -top-2 right-0 px-1.5 py-0.5 text-right rounded-lg w-fit text-white"> AQI
         {{ airQuality?.indexes?.[0]?.aqi }} {{ airQuality?.indexes?.[0]?.category }}
       </div>
@@ -162,40 +164,40 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div v-if="airQuality?.indexes?.[0]?.health?.effect" class="mt-6 text-center text-sm">
+    <div v-if="airQuality?.indexes?.[0]?.health?.effect" class="mt-6 text-center text-sm text-gray-600">
       {{ airQuality?.indexes?.[0]?.health?.effect }}
     </div>
     <div class="flex gap-2 items-center p-4 justify-around mt-8 bg-gray-200/40 rounded-2xl flex-wrap">
       <div v-if="weatherInformation?.now?.windScale" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.windScale }}级</div>
-        <div v-if="weatherInformation?.now?.windDir" class="text-base text-gray-500">
+        <div v-if="weatherInformation?.now?.windDir" class="text-sm text-gray-500">
           {{ weatherInformation?.now?.windDir }}
         </div>
-        <div v-else class="text-base text-gray-500">风力等级</div>
+        <div v-else class="text-sm text-gray-500">风力等级</div>
       </div>
       <div v-if="weatherInformation?.now?.windSpeed" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.windSpeed }}km/h</div>
-        <div class="text-base text-gray-500">风速</div>
+        <div class="text-sm text-gray-500">风速</div>
       </div>
       <div v-if="weatherInformation?.now?.humidity" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.humidity }}%</div>
-        <div class="text-base text-gray-500">相对湿度</div>
+        <div class="text-sm text-gray-500">相对湿度</div>
       </div>
       <div v-if="weatherInformation?.now?.feelsLike" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.feelsLike }}&deg;C</div>
-        <div class="text-base text-gray-500">体感温度</div>
+        <div class="text-sm text-gray-500">体感温度</div>
       </div>
       <div v-if="weatherInformation?.now?.vis" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.vis }}km</div>
-        <div class="text-base text-gray-500">能见度</div>
+        <div class="text-sm text-gray-500">能见度</div>
       </div>
       <div v-if="weatherInformation?.now?.precip" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.precip }}mm/h</div>
-        <div class="text-base text-gray-500">降水量</div>
+        <div class="text-sm text-gray-500">降水量</div>
       </div>
       <div v-if="weatherInformation?.now?.pressure" class="flex flex-col">
         <div class="text-lg text-gray-800">{{ weatherInformation?.now?.pressure }}hPa</div>
-        <div class="text-base text-gray-500">大气压强</div>
+        <div class="text-sm text-gray-500">大气压强</div>
       </div>
     </div>
     <div class="text-right text-xs text-gray-400 mt-3">* 数据来源于<a :href="weatherInformation?.fxLink"
@@ -239,7 +241,7 @@ onMounted(() => {
     </div>
     <div class="text-right mt-2">
       <RouterLink :to="router.resolve({'name': 'weather-hourly'})" class="text-sm text-blue-400"><span
-          class="inline-flex items-center group">查看<ChevronRightIcon
+          class="inline-flex items-center group">查看<RiArrowRightDoubleLine
           class="size-4 group-hover:translate-x-1 duration-100 "/></span></RouterLink>
     </div>
   </div>
@@ -292,7 +294,7 @@ onMounted(() => {
     </div>
     <div class="text-right mt-2">
       <RouterLink :to="router.resolve({'name': 'weather-indices'})" class="text-sm text-blue-400"><span
-          class="inline-flex items-center group">查看<ChevronRightIcon
+          class="inline-flex items-center group">查看<RiArrowRightDoubleLine
           class="size-4 group-hover:translate-x-1 duration-100 "/></span></RouterLink>
     </div>
   </div>

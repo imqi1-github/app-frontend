@@ -16,18 +16,20 @@ const router = useRouter();
 
 watch(() => [userStore.isLogin, userStore.user], () => {
   information.value = userStore.user?.information;
+  city.value = location ? (information.value?.position_city ? information.value?.position_city + location : location) : information.value?.position_city || "秦皇岛"
+  fetchData();
 })
 
-onMounted(() => {
-  try {
-    // 获取基础信息
-    information.value = userStore.user?.information || {};
-    const city = information.value?.position_city || "秦皇岛";
+const url = new URL(window.location.href)
+const location = url.searchParams.has("location") ? url.searchParams.get("location") : null;
+const city = ref(location ? (information.value?.position_city ? information.value?.position_city + location : location) : information.value?.position_city || "秦皇岛")
 
+const fetchData = () => {
+  try {
     // 定义所有异步函数并立即执行
     const fetchData = () => {
       // 获取坐标
-      getCoordinates(city)
+      getCoordinates(city.value)
           .then(result => {
             positionInformation.value = result;
             console.log("位置信息：", toRaw(positionInformation.value));
@@ -35,7 +37,7 @@ onMounted(() => {
           .catch(error => console.error("获取坐标失败：", error));
 
       // 获取当前天气
-      getWeatherNow(city)
+      getWeatherNow(city.value)
           .then(result => {
             weatherInformation.value = result;
             console.log("天气信息：", toRaw(weatherInformation.value));
@@ -48,6 +50,14 @@ onMounted(() => {
   } catch (error) {
     console.error("初始化时发生错误：", error);
   }
+}
+
+onMounted(() => {
+  information.value = userStore.user?.information;
+  if (!information.value) {
+    return;
+  }
+  fetchData();
 });
 
 </script>
@@ -60,9 +70,12 @@ onMounted(() => {
         {{
           positionInformation?.["lat"] && positionInformation?.["lon"] && formatCoordinates(positionInformation?.["lat"], positionInformation?.["lon"]) || "获取中"
         }}
+        <RouterLink v-if="positionInformation" :to="`/map?location=${[positionInformation['lon'], positionInformation['lat']]}&zoom=16`"
+                    class="text-blue-500 hover:text-blue-600">查看位置
+        </RouterLink>
       </div>
       <div class="flex gap-5 items-center">
-        <div class="text-2xl">{{ information?.position_city || "秦皇岛市" }}</div>
+        <div class="text-2xl">{{ city }}</div>
         <div class="rounded-2xl bg-blue-50 flex">
           <RouterLink v-for="route of weatherRoute"
                       :to="router.resolve({'name': route.name}).href"

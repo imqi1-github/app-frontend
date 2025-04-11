@@ -46,7 +46,7 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center">
+  <div class="min-h-screen flex items-center justify-center">
     <div class="min-w-xl py-6 px-12 bg-white flex items-center justify-center rounded-2xl flex-col">
       <div class="text-2xl font-bold">登录后台</div>
       <div class="w-full *:my-4">

@@ -2,6 +2,7 @@
 
 @theme {
   --font-sans: PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+  --font-ms: PingFangSC-Regular, Roboto, Helvetica Neue, Helvetica, Tahoma, Arial, PingFang SC-Light, Microsoft YaHei;
   --text-base: 16px
 }
 
@@ -34,4 +35,9 @@
 .bg-purple-500,
 .bg-rose-500 {
 
+}
+
+
+.fancybox__track {
+  @apply pt-9;
 }

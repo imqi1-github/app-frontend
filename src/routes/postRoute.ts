@@ -35,6 +35,7 @@ export const postRoute: RouteRecordRaw[] = [
     "meta": {
       requiresAuth: true,
       showCategory: false,
+      title: "发布 - 帖子",
     }
   },
   {
@@ -43,6 +44,27 @@ export const postRoute: RouteRecordRaw[] = [
     "component": () => import("@views/post/MeView.vue"),
     "meta": {
       showCategory: false,
+      title: "个人资料"
     }
   },
+  {
+    "path": "edit/:id",
+    "name": "post-edit",
+    "component": () => import("@views/post/WriteView.vue"),
+    "meta": {
+      requiresAuth: true,
+      showCategory: false,
+      title: "编辑 - 帖子",
+    }
+  },
+  {
+    "path": "search/:keywords",
+    "name": "post-search",
+    "component": () => import("@views/post/PostHomeView.vue"),
+    "meta": {
+      searchTo: "/post/search",
+      showCategory: true,
+      title: "搜索结果"
+    }
+  }
 ]

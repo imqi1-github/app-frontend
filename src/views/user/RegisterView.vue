@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-[400px] w-full [&>*]:my-3 p-4">
+  <div class="max-w-[400px] w-full [&>*]:my-3 p-4 bg-white rounded-xl">
     <div class="font-bold text-3xl text-gray-600 text-center">注册</div>
     <LineEdit @updateValue="updateUsername" placeholder="用户名 *"/>
     <Password @updateValue="updatePassword" placeholder="密码 *"/>

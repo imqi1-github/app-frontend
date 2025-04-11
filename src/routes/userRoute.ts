@@ -6,7 +6,8 @@ export const userRoute: RouteRecordRaw[] = [
     name: "login",
     component: () => import("@views/user/LoginView.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: "登录"
     }
   },
   {
@@ -14,7 +15,8 @@ export const userRoute: RouteRecordRaw[] = [
     name: "register",
     component: () => import("@views/user/RegisterView.vue"),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      title: "注册"
     }
   },
   {
@@ -22,7 +24,17 @@ export const userRoute: RouteRecordRaw[] = [
     name: "me",
     component: () => import("@views/user/Me.vue"),
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      title: "账户设置"
+    }
+  },
+  {
+    path: "my-uploads",
+    name: "my-uploads",
+    component: () => import("@views/user/Uploads.vue"),
+    meta: {
+      requiresAuth: true,
+      title: "我的图片"
     }
   }
 ];

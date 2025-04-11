@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import Logo from "@assets/logo.webp";
 import {
-  ArrowLeftEndOnRectangleIcon,
-  Bars3Icon,
-  InformationCircleIcon,
-  UserGroupIcon,
-  XMarkIcon
-} from "@heroicons/vue/16/solid";
+  RiBarChartFill,
+  RiCloseLine,
+  RiGroupLine,
+  RiImage2Line,
+  RiInformationLine,
+  RiLogoutBoxLine
+} from "@remixicon/vue";
 import {onMounted, onUnmounted, ref} from "vue";
 import {logout as logoutApi} from "@api/user.ts";
 import {useUserStore} from "@/stores/user.ts";
@@ -82,7 +83,8 @@ onUnmounted(() => {
       <div class="w-full border-1 border-gray-200 md:hidden">
       </div>
       <span v-if="userStore.user" class="md:hidden">用户已登录：{{ userStore.user?.information.nickname }}</span>
-      <RouterLink v-if="userStore.user" class="hover:text-blue-600 md:hidden" :to="{'name': 'post-me', 'params': {'id': userStore.user.id}}" @click="menuShow=false">
+      <RouterLink v-if="userStore.user" :to="{'name': 'post-me', 'params': {'id': userStore.user.id}}"
+                  class="hover:text-blue-600 md:hidden" @click="menuShow=false">
         我的社交
       </RouterLink>
       <RouterLink v-if="userStore.user" class="hover:text-blue-600 md:hidden" to="/me" @click="menuShow=false">
@@ -93,7 +95,7 @@ onUnmounted(() => {
       </button>
       <RouterLink v-else class="hover:text-blue-600 md:hidden" to="/login" @click="menuShow=false">登录</RouterLink>
       <div class="md:block max-md:hidden">
-        <RouterLink v-if="!userStore.isLogin" class="hover:text-blue-600" active-class="text-blue-600"
+        <RouterLink v-if="!userStore.isLogin" active-class="text-blue-600" class="hover:text-blue-600"
                     to="/login" @click="menuShow = false">
           登录
         </RouterLink>
@@ -101,26 +103,33 @@ onUnmounted(() => {
           <button ref="userAvatar"
                   class="cursor-pointer hover:text-blue-600" @click="userMenuShow = true">
             <img :alt="userStore.user?.information?.nickname"
-                 :src="userStore.user?.information?.avatar_path ?? '/img/default_avatar.png'" class="size-6 rounded-full"/>
+                 :src="userStore.user?.information?.avatar_path ?? '/img/default_avatar.png'"
+                 class="size-6 rounded-full"/>
           </button>
           <div v-if="userMenuShow" ref="userMenu"
                class="absolute p-2 top-full mt-2 bg-white right-0 border-1 border-gray-200 rounded-md overflow-x-hidden overflow-y-auto w-50">
             <div class="font-bold text-base p-3">{{ userStore.user?.information.nickname }}</div>
-            <RouterLink class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
-                        :to="{'name': 'post-me', 'params': {'id': userStore.user.id}}" @click="userMenuShow = false">
+            <RouterLink :to="{'name': 'post-me', 'params': {'id': userStore.user.id}}"
+                        class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
+                        @click="userMenuShow = false">
               <span>我的社交</span>
-              <UserGroupIcon class="size-4 fill-gray-700"/>
+              <RiGroupLine class="size-4 fill-gray-700"/>
+            </RouterLink>
+            <RouterLink class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
+                        :to="{name: 'my-uploads'}" @click="userMenuShow = false">
+              <span>已上传图片</span>
+              <RiImage2Line class="size-4 fill-gray-700"/>
             </RouterLink>
             <RouterLink class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
                         to="/me" @click="userMenuShow = false">
               <span>修改个人信息</span>
-              <InformationCircleIcon class="size-4 fill-gray-700"/>
+              <RiInformationLine class="size-4 fill-gray-700"/>
             </RouterLink>
             <button
                 class="cursor-pointer w-full flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
                 @click="logout">
               <span>退出登录</span>
-              <ArrowLeftEndOnRectangleIcon class="size-4 fill-gray-700"/>
+              <RiLogoutBoxLine class="size-4 fill-gray-700"/>
             </button>
           </div>
         </div>
@@ -129,10 +138,10 @@ onUnmounted(() => {
   </div>
   <div :class="{'max-md:flex': !menuShow, 'max-md:hidden': menuShow}"
        class="hidden cursor-pointer items-center justify-center" @click="()=>menuShow=true">
-    <Bars3Icon class="size-4"/>
+    <RiBarChartFill class="size-4"/>
   </div>
   <div :class="{'max-md:block': menuShow, 'max-md:hidden': !menuShow}" class="hidden fixed top-4 right-4 cursor-pointer"
        @click="()=>menuShow=false">
-    <XMarkIcon class="size-6"/>
+    <RiCloseLine class="size-6"/>
   </div>
 </template>

@@ -29,9 +29,9 @@ const items = [
   },
   {
     icon: Logo4,
-    name: "应用四",
-    description: "应用描述四",
-    to: "/number",
+    name: "景点",
+    description: "游遍秦皇岛",
+    to: {name: "spot-home"},
   },
   {
     icon: Logo5,
@@ -53,8 +53,8 @@ const items = [
     <section
         class="size-full my-24 flex justify-around items-center max-md:flex-col-reverse max-md:items-center gap-20">
       <div class="max-md:text-center">
-        <div class="text-6xl/16 font-bold">秦皇岛本地宝</div>
-        <div class="text-xl/6 font-bold my-4">天气查询、便捷出行、互帮互助、智能AI</div>
+        <div class="text-6xl/16 font-bold font-ms">秦皇岛本地宝</div>
+        <div class="text-xl/6 font-bold my-4 font-ms">天气查询、便捷出行、互帮互助、智能AI</div>
         <RouterLink
             class="group bg-black px-6 py-3 shadow hover:bg-red-600 leading-12 text-white transition-colors duration-200 rounded-3xl"
             to="/about">

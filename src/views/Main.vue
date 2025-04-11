@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import {MagnifyingGlassIcon} from "@heroicons/vue/16/solid";
+import {RiSearchLine} from "@remixicon/vue";
 
 import Header from "@components/Header.vue";
 import Footer from "@components/Footer.vue";
 
-import {onBeforeUnmount, onMounted, ref} from "vue";
-import {useRoute} from "vue-router"
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router"
 import {testLogin} from "@api/user.ts";
 import {useUserStore} from "@/stores/user.ts";
 import {throttle} from "@/utils/func.ts";
+import {useToast} from "vue-toastification";
+
+const router = useRouter();
 
 const isScrolled = ref(true);  // 用来控制是否滚动过
 const route = useRoute();
@@ -17,6 +20,21 @@ const userStore = useUserStore();
 const handleScroll = throttle(() => {
   isScrolled.value = window.scrollY < 50;
 });
+
+const searchInput = ref("");
+const toast = useToast();
+
+const thisSearch = () => {
+  if (searchInput.value.trim() !== "") {
+    router.push({"name": "post-search", "params": {"keywords": searchInput.value}});
+  } else {
+    toast.error("请输入搜索内容")
+  }
+}
+
+watch(() => searchInput.value, (newValue) => {
+
+})
 
 onMounted(async () => {
   window.addEventListener('scroll', throttle(handleScroll));
@@ -52,8 +70,8 @@ onBeforeUnmount(() => {
       <Header>
         <template v-if="route.meta.searchTo">
           <div class="flex py-1 px-3 bg-white rounded-xl items-center justify-self-center border-gray-50">
-            <input class="w-50 max-md:w-35 outline-none" placeholder="搜索" type="text">
-            <MagnifyingGlassIcon class="size-4"/>
+            <input v-model="searchInput" class="w-50 max-md:w-35 outline-none" placeholder="搜索" type="text" @keyup.enter="thisSearch">
+            <RiSearchLine class="size-4" @click="thisSearch"/>
           </div>
         </template>
       </Header>

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import {useToast} from "vue-toastification";
 import {useUserStore} from "@/stores/user";
-import {setNickname as _setNickname, uploadAvatar, setPosition as _setPosition} from "@api/user"
+import {setNickname as _setNickname, setPosition as _setPosition, uploadAvatar} from "@api/user"
 import {computed, onMounted, ref, watch} from "vue";
-import {ChevronDownIcon} from "@heroicons/vue/16/solid";
+import {RiArrowDownDoubleLine} from "@remixicon/vue";
 import Province from "@assets/city/province.json"
 import {getByProvinceName} from "@/utils/city"
 import {useRouter} from "vue-router";
@@ -66,7 +66,8 @@ watch(() => userStore.isLogin, (newValue) => {
 </script>
 <template>
   <div class="w-full flex flex-col items-center">
-    <div class="text-4xl font-bold text-gray-800 border-b-1 border-b-gray-200 w-full flex justify-center max-md:border-b-0">
+    <div
+        class="text-4xl font-bold text-gray-800 border-b-1 border-b-gray-200 w-full flex justify-center max-md:border-b-0">
       <div class="max-w-5xl w-full p-12 pt-24 max-md:text-center max-md:p-4">账户设置</div>
     </div>
     <div class="p-12 w-full max-w-5xl h-full flex flex-col gap-12 items-center justify-center max-md:p-3 max-md:gap-3">
@@ -76,11 +77,12 @@ watch(() => userStore.isLogin, (newValue) => {
           <p class="text-gray-600 text-sm my-3">请输入你的全名或你喜欢的显示名称。</p>
           <input id="userInput"
                  ref="userInput"
-                 type="text"
+                 :value="userStore.user?.information.nickname"
                  class="block max-w-60 w-full border-1 border-gray-200 rounded px-3 py-1 focus:outline-blue-700"
-                 :value="userStore.user?.information.nickname">
+                 type="text">
         </div>
-        <div class="flex justify-between gap-3 items-center w-full px-6 py-4 border-t-1 border-t-gray-200 max-md:flex-col max-md:p-6">
+        <div
+            class="flex justify-between gap-3 items-center w-full px-6 py-4 border-t-1 border-t-gray-200 max-md:flex-col max-md:p-6">
           <div class="text-sm text-gray-500">昵称长度不可超过64字符。</div>
           <button class="block px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded cursor-pointer"
                   @click="setNickname()">提交
@@ -90,7 +92,7 @@ watch(() => userStore.isLogin, (newValue) => {
       <div class="size-full border-1 border-gray-200 rounded-lg overflow-hidden">
         <div class="p-6 bg-white">
           <span class="relative float-end hover:brightness-95 duration-125">
-            <button @click="uploadAvatar" class="absolute inset-0 bg-transparent cursor-pointer"></button>
+            <button class="absolute inset-0 bg-transparent cursor-pointer" @click="uploadAvatar"></button>
             <img :src="userStore.user?.information.avatar_path ?? '/img/default_avatar.png'" alt="头像"
                  class="rounded-full border-1 border-gray-100 size-16"/>
           </span>
@@ -107,38 +109,41 @@ watch(() => userStore.isLogin, (newValue) => {
           <p class="text-gray-600 text-sm my-3">请输入你所在的省市名称。</p>
           <div class="grid grid-cols-2 gap-4 max-md:grid-cols-1 max-md:grid-rows-2">
             <div class="">
-              <label for="province" class="block text-sm/6 font-medium text-gray-900">省</label>
+              <label class="block text-sm/6 font-medium text-gray-900" for="province">省</label>
               <div class="mt-2 grid grid-cols-1">
-                <select id="province" name="province" v-model="provinceSelect"
-                        class="col-start-1 row-start-1 text-sm w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600">
-                  <option v-for="city of Object.entries(Province)" :value="city[1]" :key="city[0]">{{
+                <select id="province" v-model="provinceSelect"
+                        class="col-start-1 row-start-1 text-sm w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                        name="province">
+                  <option v-for="city of Object.entries(Province)" :key="city[0]" :value="city[1]">{{
                       city[1]
                     }}
                   </option>
                 </select>
-                <ChevronDownIcon
-                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 md:size-4"
-                    aria-hidden="true"/>
+                <RiArrowDownDoubleLine
+                    aria-hidden="true"
+                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 md:size-4"/>
               </div>
             </div>
             <div class="">
-              <label for="city" class="block text-sm/6 font-medium text-gray-900">市</label>
+              <label class="block text-sm/6 font-medium text-gray-900" for="city">市</label>
               <div class="mt-2 grid grid-cols-1">
-                <select id="city" name="city" v-model="citySelect"
-                        class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600">
+                <select id="city" v-model="citySelect"
+                        class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-sm text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600"
+                        name="city">
                   <option v-for="city of Object.entries(cityData.cityNames)" :key="city[0]" :value="city[1]">{{
                       city[1]
                     }}
                   </option>
                 </select>
-                <ChevronDownIcon
-                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 md:size-4"
-                    aria-hidden="true"/>
+                <RiArrowDownDoubleLine
+                    aria-hidden="true"
+                    class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 md:size-4"/>
               </div>
             </div>
           </div>
         </div>
-        <div class="flex justify-between gap-3 items-center w-full px-6 py-4 border-t-1 border-t-gray-200 max-md:flex-col max-md:p-6">
+        <div
+            class="flex justify-between gap-3 items-center w-full px-6 py-4 border-t-1 border-t-gray-200 max-md:flex-col max-md:p-6">
           <div class="text-sm text-gray-500">天气功能依赖它。</div>
           <button class="block px-3 py-1 bg-gray-800 hover:bg-gray-700 text-white text-sm rounded cursor-pointer"
                   @click="setPosition">

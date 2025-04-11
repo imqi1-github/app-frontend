@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { HeartIcon as OutlineHeartIcon } from "@heroicons/vue/24/outline";
-import { HeartIcon as SolidHeartIcon } from "@heroicons/vue/24/solid";
+import {RiHeartLine, RiHeartFill} from "@remixicon/vue";
 import { likePost } from "@api/post.ts";
 import { useToast } from "vue-toastification";
 
@@ -43,7 +42,7 @@ onMounted(() => {
     <img
         :alt="post?.attachments?.[0]?.file_name"
         :src="post?.attachments?.[0]?.file_path"
-        class="min-h-100 rounded-2xl bg-gray-100 border-gray-200 overflow-hidden flex-auto hover:brightness-80 duration-300"
+        class="min-h-50 rounded-2xl bg-gray-100 border-gray-200 overflow-hidden flex-auto hover:brightness-80 duration-300"
         @click="router.push({ name: 'post-content', params: { id: post.id } })"
     />
     <div class="py-3 px-2 space-y-1.5">
@@ -59,7 +58,7 @@ onMounted(() => {
         </div>
         <div class="flex gap-1 items-center cursor-pointer" @click.stop="toggleLike">
           <component
-              :is="isLiked ? SolidHeartIcon : OutlineHeartIcon"
+              :is="isLiked ? RiHeartFill : RiHeartLine"
               class="size-5 duration-200"
               :class="isLiked ? 'text-red-500' : 'text-gray-500'"
           />

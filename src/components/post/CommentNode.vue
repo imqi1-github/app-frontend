@@ -17,7 +17,7 @@
                 class="flex gap-1 items-center w-fit h-5 mt-1 text-gray-600 hover:text-gray-900 cursor-pointer"
                 @click="$emit('update-parent-id', comment.id, comment.user.information.nickname)"
         >
-          <ChatBubbleOvalLeftEllipsisIcon class="size-5"/>
+          <RiChat1Line class="size-5"/>
           回复
         </button>
         <div v-if="comment.children.length" class="comment-children ml-3 mt-4">
@@ -37,7 +37,7 @@
                     class="flex gap-1 items-center w-fit h-5 mt-1 text-gray-600 hover:text-gray-900 cursor-pointer"
                     @click="$emit('update-parent-id', child.id, child.user.information.nickname)"
             >
-              <ChatBubbleOvalLeftEllipsisIcon class="size-5"/>
+              <RiChat1Line class="size-5"/>
               回复
             </button>
             <div v-if="child.children.length" class="comment-children ml-3">
@@ -59,7 +59,7 @@
                         class="flex gap-1 items-center w-fit h-5 mt-1 text-gray-600 hover:text-gray-900 cursor-pointer"
                         @click="$emit('update-parent-id', grandchild.id, grandchild.user.information.nickname)"
                 >
-                  <ChatBubbleOvalLeftEllipsisIcon class="size-5"/>
+                  <RiChat1Line class="size-5"/>
                   回复
                 </button>
               </div>
@@ -73,7 +73,7 @@
 
 <script lang="ts" setup>
 import {computed} from 'vue';
-import {ChatBubbleOvalLeftEllipsisIcon} from "@heroicons/vue/24/outline"
+import {RiChat1Line} from "@remixicon/vue";
 import {useUserStore} from "@/stores/user.ts";
 
 interface UserInfo {

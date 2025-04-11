@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import {ref} from 'vue';
-import {EyeIcon} from "@heroicons/vue/16/solid";
-import {EyeSlashIcon} from "@heroicons/vue/16/solid";
+import {RiEyeLine, RiEyeCloseLine} from "@remixicon/vue";
 
 
 defineProps({
@@ -27,7 +26,7 @@ const handleInput = (event: Event) => {
 </script>
 
 <template>
-  <div class="relative bg-inherit w-full">
+  <div class="relative w-full bg-white">
     <label :for="`form-${placeholder}`"
            class="box-content relative block rounded-md border border-gray-200 shadow-xs focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600">
       <input :type="password ? 'password' : 'text'"
@@ -37,14 +36,14 @@ const handleInput = (event: Event) => {
              :placeholder="placeholder"/>
 
       <span
-          class="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-gray-50 p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+          class="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 p-0.5 bg-white text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
           {{ placeholder }}
       </span>
     </label>
     <div class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer"
          @click="()=>password=!password">
-      <EyeIcon class="w-4 h-4" v-if="password"/>
-      <EyeSlashIcon class="w-4 h-4" v-else/>
+      <RiEyeCloseLine class="w-4 h-4" v-if="password"/>
+      <RiEyeLine class="w-4 h-4" v-else/>
     </div>
   </div>
 </template>
