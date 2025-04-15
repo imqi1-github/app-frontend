@@ -5,11 +5,11 @@ export const useUserStore = defineStore("user", () => {
   const user = ref(null);
   const isLogin = ref<boolean | null>(null);
 
-  // 从 localStorage 初始化用户数据（保持原有逻辑）
+
   user.value = JSON.parse(localStorage.getItem("user") || "null");
   console.log("从localStorage内获取用户信息", toRaw(user.value));
 
-  // 原有 setUser 方法保持不变
+
   function setUser(newUser: any) {
     if (newUser) {
       localStorage.setItem("user", JSON.stringify(newUser));

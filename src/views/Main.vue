@@ -13,7 +13,7 @@ import {useToast} from "vue-toastification";
 
 const router = useRouter();
 
-const isScrolled = ref(true);  // 用来控制是否滚动过
+const isScrolled = ref(true);
 const route = useRoute();
 const userStore = useUserStore();
 
@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
       <RouterView/>
     </div>
     <div class="row-start-3 flex flex-col gap-10 justify-center">
-      <div class="px-12 py-5 w-full flex items-center justify-center bg-gray-50">
+      <div class="px-12 py-3 w-full flex items-center justify-center bg-gray-50">
         <Footer/>
       </div>
     </div>

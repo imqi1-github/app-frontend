@@ -6,7 +6,7 @@ import {onBeforeUnmount, onMounted, ref} from "vue";
 import PushButton from "@components/inputs/PushButton.vue";
 import {throttle} from "@/utils/func.ts";
 
-const isScrolled = ref<boolean>(true);  // 用来控制是否滚动过
+const isScrolled = ref<boolean>(true);
 
 const handleScroll = throttle(() => {
   isScrolled.value = window.scrollY < 50;

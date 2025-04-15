@@ -26,9 +26,9 @@ const city = ref(location ? (information.value?.position_city ? information.valu
 
 const fetchData = () => {
   try {
-    // 定义所有异步函数并立即执行
+
     const fetchData = () => {
-      // 获取坐标
+
       getCoordinates(city.value)
           .then(result => {
             positionInformation.value = result;
@@ -36,7 +36,7 @@ const fetchData = () => {
           })
           .catch(error => console.error("获取坐标失败：", error));
 
-      // 获取当前天气
+
       getWeatherNow(city.value)
           .then(result => {
             weatherInformation.value = result;
@@ -45,7 +45,7 @@ const fetchData = () => {
           .catch(error => console.error("获取当前天气失败：", error));
     };
 
-    // 立即执行并行请求
+
     fetchData();
   } catch (error) {
     console.error("初始化时发生错误：", error);
@@ -75,7 +75,7 @@ onMounted(() => {
         </RouterLink>
       </div>
       <div class="flex gap-5 items-center">
-        <div class="text-2xl">{{ city }}</div>
+        <div class="text-2xl line-clamp-1 max-w-[15em]">{{ city }}</div>
         <div class="rounded-2xl bg-blue-50 flex">
           <RouterLink v-for="route of weatherRoute"
                       :to="router.resolve({'name': route.name}).href"

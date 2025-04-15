@@ -15,7 +15,6 @@ const userStore = useUserStore();
 const username = ref("");
 const password = ref("");
 const confirmPasswordValue = ref("");
-const email = ref("");
 
 const updateUsername = (newValue: string): void => {
   username.value = newValue;
@@ -34,7 +33,6 @@ const submit = async () => {
     username: username.value,
     password: password.value,
     confirmPassword: confirmPasswordValue.value,
-    email: email.value,
   };
   if (username.value === "") {
     toast.error("用户名不能为空")

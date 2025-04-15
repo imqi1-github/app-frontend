@@ -32,7 +32,7 @@ watch(
         citySelect.value = newUser.information.position_city || "秦皇岛市";
       }
     },
-    {deep: true} // 如果user是个深层对象需要deep监听
+    {deep: true}
 );
 
 onMounted(() => {

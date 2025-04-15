@@ -4,7 +4,7 @@
       加载中...
     </div>
     <div v-else class="flex gap-6 flex-wrap w-full">
-      <div v-for="(item, index) in images" :key="index" class="flex flex-col gap-2 max-w-64 w-full">
+      <div v-for="(item, index) in images" :key="index" class="flex flex-col gap-2 flex-[1_0_22%]">
         <img :src="item.filepath" :alt="item.filename" data-fancybox="gallery" :data-caption="item.filename" class="size-full rounded-md shadow-md shadow-gray-200">
         <div>
           <div class="text-gray-800 text-lg font-bold line-clamp-1 break-all">{{ item.filename }}</div>
@@ -20,7 +20,7 @@ import {useUserStore} from "@/stores/user.ts";
 import {getMyUploads} from "@api/user.ts";
 import {formatRelativeTime} from "@/utils/time.ts";
 import {Fancybox} from '@fancyapps/ui';
-import '@fancyapps/ui/dist/fancybox/fancybox.css'; // 引入默认样式
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 const userStore = useUserStore();
 const images = ref();

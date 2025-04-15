@@ -26,10 +26,13 @@ export const dashboardOverview = async () => {
 export const addSpot = async (data: any) => {
   return await post(`${adminUrl}/dashboard/spot_new`, data)
 }
+export const editSpot = async (data: any) => {
+  return await post(`${adminUrl}/dashboard/spot_edit`, data)
+}
 
 export const upload = async () => {
   try {
-    // 选择文件
+
     const [fileHandle] = await (window as any).showOpenFilePicker({
       types: [{description: "Images", accept: {"image/*": [".png", ".jpg", ".jpeg", ".gif"]}}],
       multiple: false,
@@ -38,17 +41,17 @@ export const upload = async () => {
     console.log(fileHandle);
     if (!fileHandle) return;
 
-    // 获取文件
+
     const file = await fileHandle.getFile();
     if (!file.type.startsWith("image/")) {
       alert("请选择图片文件！");
       return;
     }
 
-    // 读取二进制数据
+
     const arrayBuffer = await file.arrayBuffer();
 
-    // 发送文件到后端
+
     return (await fetch(`${import.meta.env.VITE_API_URL}/user/upload`, {
       method: "POST",
       headers: {
@@ -56,10 +59,46 @@ export const upload = async () => {
         "X-Filename": encodeURIComponent(file.name),
         "user": userStore.isLogin ? userStore.user.id : null
       },
-      credentials: 'include', // 确保携带 Cookie
+      credentials: 'include',
       body: arrayBuffer,
     })).json();
 
   } catch (e) {
   }
 };
+
+export const getSpotList = async (page?: number) => {
+  return await get(`${adminUrl}/dashboard/spot-list${page ? `?page=${page}` : ""}`)
+}
+
+export const deleteSpot = async (id: number) => {
+  return await get(`${adminUrl}/dashboard/spot-delete?spot_id=${id}`)
+}
+
+export const getPostList = async (page?: number, per_page?: number) => {
+  return await get(`${adminUrl}/dashboard/post-list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
+}
+
+export const setPublished = async (id: number) => {
+  return await get(`${adminUrl}/dashboard/post_set_publish?id=${id}`)
+}
+
+export const getUserList = async (page?: number, per_page?: number) => {
+  return await get(`${adminUrl}/dashboard/user_list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
+}
+
+export const setUserState = async (id: number) => {
+  return await get(`${adminUrl}/dashboard/set_user_state?id=${id}`)
+}
+
+export const setUser = async (data: any) => {
+  return await post(`${adminUrl}/dashboard/set_user`, data)
+}
+
+export const addUser = async (data: any) => {
+  return await post(`${adminUrl}/dashboard/new_user`, data)
+}
+
+export const getUser = async (id: number) => {
+  return await get(`${adminUrl}/dashboard/get_user?id=${id}`)
+}

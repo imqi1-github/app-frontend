@@ -78,7 +78,6 @@ import {useUserStore} from "@/stores/user.ts";
 
 interface UserInfo {
   avatar_path: string;
-  email: string;
   id: number;
   nickname: string;
   position_city: string;

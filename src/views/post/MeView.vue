@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
-import { getInformation } from "@api/user.ts";
-import { useUserStore } from "@/stores/user.ts";
+import {onMounted, onUnmounted, ref, watch} from "vue";
+import {useRoute} from "vue-router";
+import {getInformation} from "@api/user.ts";
+import {useUserStore} from "@/stores/user.ts";
 import PostHomeItem from "@components/post/PostHomeItem.vue";
-import { getSubscribed, subscribe } from "@api/post.ts";
-import { useToast } from "vue-toastification";
-import { debounce } from "@/utils/func.ts";
+import {getSubscribed, subscribe} from "@api/post.ts";
+import {useToast} from "vue-toastification";
+import {debounce} from "@/utils/func.ts";
 import {RiAddLine} from "@remixicon/vue";
 
 const route = useRoute();
@@ -14,7 +14,7 @@ const user = ref(null);
 const userStore = useUserStore();
 const toast = useToast();
 
-// Waterfall layout variables
+
 const columnCount = ref(4);
 const LOAD_THRESHOLD = 200;
 const columns = ref<Array<any[]>>([]);
@@ -24,7 +24,7 @@ const page = ref(1);
 const hasMore = ref(true);
 
 const initializeColumns = () => {
-  columns.value = Array.from({ length: columnCount.value }, () => []);
+  columns.value = Array.from({length: columnCount.value}, (): any => []);
   columnHeights.value = Array(columnCount.value).fill(0);
 };
 
@@ -123,8 +123,8 @@ const thisSubscribe = async () => {
 };
 
 onMounted(async () => {
-  updateColumnCount(); // 初始设置列数
-  initializeColumns(); // 初始创建列数组
+  updateColumnCount();
+  initializeColumns();
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', handleResize);
   getUser();
@@ -171,8 +171,8 @@ onUnmounted(() => {
           </template>
         </div>
       </div>
-      <div class="w-full gap-5 grid p-4"
-           :style="{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }">
+      <div :style="{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }"
+           class="w-full gap-5 grid p-4">
         <div v-for="(col, colIndex) in columns" :key="colIndex" class="space-y-5">
           <PostHomeItem
               v-for="(item, index) in col"
@@ -190,8 +190,8 @@ onUnmounted(() => {
         <div>用户不存在</div>
       </div>
     </template>
-    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}"
-                class="bg-white fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center">
+    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}" data-text="写一篇"
+                class="bg-white !fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center">
       <RiAddLine class="size-6"/>
     </RouterLink>
   </div>

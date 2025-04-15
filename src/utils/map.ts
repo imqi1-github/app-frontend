@@ -8,7 +8,7 @@ export class BiMap<T, U> {
   }
 
   set(forwardValue: T, reverseValue: U): void {
-    // 先删除已有的映射，防止冲突
+
     if (this.forward.has(forwardValue)) this.reverse.delete(this.forward.get(forwardValue)!);
     if (this.reverse.has(reverseValue)) this.forward.delete(this.reverse.get(reverseValue)!);
 

@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build-t": "vite build",
     "test": "vue-tsc -b",
     "preview": "vite preview"
   },
@@ -14,6 +15,7 @@
     "@amap/amap-jsapi-loader": "^1.0.1",
     "@fancyapps/ui": "^5.0.36",
     "@remixicon/vue": "^4.6.0",
+    "axios": "^1.8.4",
     "echarts": "^5.6.0",
     "markdown-it": "^14.1.0",
     "pinia": "^3.0.1",

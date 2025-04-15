@@ -15,7 +15,7 @@ import {useUserStore} from "@/stores/user.ts";
 import CommentNode from "@components/post/CommentNode.vue";
 import {getWeatherNow} from "@api/weather.ts";
 import {Fancybox} from '@fancyapps/ui';
-import '@fancyapps/ui/dist/fancybox/fancybox.css'; // 引入默认样式
+import '@fancyapps/ui/dist/fancybox/fancybox.css';
 
 const route = useRoute();
 const post = ref<any>({});
@@ -28,7 +28,7 @@ const renderMarkdown = (content: string) => {
   return md.render(content);
 };
 
-// 初始化 Swiper
+
 const initSwiper = () => {
   if (swiperInstance) {
     swiperInstance.destroy();
@@ -50,14 +50,14 @@ const initSwiper = () => {
   });
 };
 
-// 更新 Swiper
+
 const updateSwiper = () => {
   if (swiperInstance) {
     swiperInstance.update();
   }
 };
 
-// 初始化 FancyBox
+
 const initFancybox = () => {
   // @ts-ignore
   Fancybox.bind('[data-fancybox="gallery"]', {
@@ -67,12 +67,12 @@ const initFancybox = () => {
   });
 };
 
-// 检查并初始化 Swiper 和 FancyBox
+
 const checkAndInitSwiper = async () => {
   if (post.value?.attachments) {
     await nextTick();
     initSwiper();
-    initFancybox(); // 在 Swiper 初始化后绑定 FancyBox
+    initFancybox();
   }
 };
 
@@ -114,7 +114,7 @@ watch(
       if (newAttachments !== oldAttachments) {
         await nextTick();
         initSwiper();
-        initFancybox(); // 动态更新时重新绑定 FancyBox
+        initFancybox();
       }
     }
 );
@@ -151,13 +151,13 @@ const thisComment = async () => {
     post_id: post.value.id,
     user_id: user.user.id,
     content: commentContent.value,
-    parent_id: parentId.value, // 使用当前的parentId
+    parent_id: parentId.value,
   });
   if (result.msg) {
     toast.success("评论成功");
     commentContent.value = "";
-    parentId.value = null; // 重置parentId
-    replyToNickname.value = null; // 重置回复目标
+    parentId.value = null;
+    replyToNickname.value = null;
     const res = await comments(post.value.id);
     post.value.comments = res.comments;
   }
@@ -169,7 +169,7 @@ const updateCommentParentId = (newValue: number | null, nickname?: string): void
   replyToNickname.value = newValue === null ? null : nickname;
 };
 
-// 处理取消回复
+
 const cancelReply = () => {
   parentId.value = null;
   replyToNickname.value = null;
@@ -177,7 +177,7 @@ const cancelReply = () => {
 </script>
 
 <template>
-  <div class="size-full flex items-center justify-center max-lg:flex-col max-lg:justify-between">
+  <div v-if="post.published==1" class="size-full flex items-center justify-center max-lg:flex-col max-lg:justify-between">
     <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial lg:hidden max-lg:w-full">
       <div
           class="p-1 rounded-full flex items-center justify-center cursor-pointer z-3 hover:bg-gray-100"
@@ -333,6 +333,9 @@ const cancelReply = () => {
         <RiCloseLine class="size-5 text-white"/>
       </div>
     </div>
+  </div>
+  <div v-else class="flex items-center justify-center size-full text-red-600 text-2xl">
+    该帖子被管理员标记为“不合规”
   </div>
 </template>
 

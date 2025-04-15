@@ -4,14 +4,16 @@ import {
   RiArrowLeftLine,
   RiCloseLine,
   RiInformationLine,
+  RiMapPinLine,
   RiPencilLine,
   RiPictureInPictureLine
 } from "@remixicon/vue";
 import {deleteAttachment, deletePost, editPost, getCategories, getPost, newPost, uploadAttachment} from "@api/post.ts";
-import {onMounted, ref, toRaw} from "vue";
+import {onMounted, ref, toRaw, watch} from "vue";
 import {useToast} from "vue-toastification";
 import {useUserStore} from "@/stores/user.ts";
 import {useRoute, useRouter} from "vue-router";
+import ChoosePoint from "@components/ChoosePoint.vue";
 
 const attachments = ref([])
 const toast = useToast();
@@ -138,6 +140,25 @@ onMounted(() => {
   }
 })
 
+interface LocationInfo {
+  show: boolean;
+  e: any;
+  position?: {
+    regeocode?: {
+      formatted_address: string,
+      addressComponent: { province: string, city: string }
+    };
+  };
+  replace: boolean;
+}
+
+const locationInfo = ref<LocationInfo>({
+  show: false,
+  e: {},
+  position: {},
+  replace: false,
+});
+
 const thisDelete = async () => {
   const res = await deletePost(route.params.id as any);
   if (res.msg) {
@@ -145,9 +166,21 @@ const thisDelete = async () => {
     await router.push({'name': 'post-me', 'params': {'id': user.user.id}})
   }
 }
+
+const closeMap = () => {
+  locationInfo.value.show = false;
+};
+
+watch(() => locationInfo.value.position, (newValue) => {
+  placeInput.value = newValue?.regeocode?.formatted_address;
+})
+
+const updateLocationInfo = (newData: any) => {
+  locationInfo.value = {...newData};
+};
 </script>
 <template>
-  <div class="p-6 rounded-2xl min-w-full max-w-full bg-white space-y-4">
+  <div class="max-md:size-full p-6 md:rounded-2xl min-w-full max-w-full bg-white space-y-4">
     <div class="flex gap-1 items-center hover:text-blue-500 cursor-pointer" @click="$router.back()">
       <RiArrowLeftLine class="size-5"/>
       返回
@@ -176,7 +209,7 @@ const thisDelete = async () => {
       <RiPencilLine class="size-5"/>
       <span class="font-bold text-lg">正文内容</span>
     </div>
-    <div class="focus-within:outline-1 focus-within:outline-blue-600 border-1 border-gray-200 rounded-lg w-100">
+    <div class="focus-within:outline-1 focus-within:outline-blue-600 border-1 border-gray-200 rounded-lg w-full max-w-100">
       <input v-model="titleInput" class="w-full px-2 py-1 rounded-lg outline-none" maxlength="50" placeholder="标题"
              type="text">
     </div>
@@ -199,9 +232,23 @@ const thisDelete = async () => {
         <label :for="`category-${category.id}`">{{ category.name }}</label>
       </div>
     </div>
-    <div class="focus-within:outline-1 focus-within:outline-blue-600 border-1 border-gray-200 rounded-lg w-100">
-      <input v-model="placeInput" class="w-full px-2 py-1 rounded-lg outline-none" maxlength="50" placeholder="地点"
-             type="text">
+    <div class="flex gap-3 items-center">
+      <div class="focus-within:outline-1 focus-within:outline-blue-600 border-1 border-gray-200 rounded-lg w-full max-w-125">
+        <input v-model="placeInput" class="w-full px-2 py-1 rounded-lg outline-none" maxlength="75" placeholder="地点"
+               type="text">
+      </div>
+      <button
+          class="w-8 h-8 rounded border-1 border-gray-200 flex items-center justify-center hover:bg-gray-100"
+          data-text="从地图上选位置"
+          @click="locationInfo.show = true"
+      >
+        <RiMapPinLine class="size-4"/>
+      </button>
+      <ChoosePoint
+          :data="locationInfo"
+          @close="closeMap"
+          @update:data="updateLocationInfo"
+      />
     </div>
     <span class="inline-flex divide-x divide-gray-300 overflow-hidden rounded border border-gray-300 bg-white">
       <template v-if="$route.params.id">

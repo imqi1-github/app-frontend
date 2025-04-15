@@ -14,19 +14,16 @@
 }
 
 .Vue-Toastification__toast {
-  min-height: 40px;
-  padding: 10px;
-  align-items: center;
+  @apply min-h-[40px] p-[10px] items-center
 }
 
 .Vue-Toastification__icon {
-  margin: 0
+  @apply m-0
 }
 
 .Vue-Toastification__toast-body {
-  padding-left: 10px
+  @apply pl-[10px]
 }
-
 
 .bg-green-500,
 .bg-yellow-500,
@@ -34,10 +31,26 @@
 .bg-red-500,
 .bg-purple-500,
 .bg-rose-500 {
-
 }
-
 
 .fancybox__track {
   @apply pt-9;
+}
+
+@media (min-width: 768px) {
+  [data-text] {
+    @apply relative cursor-pointer;
+  }
+
+  [data-text]:after {
+    @apply bg-white text-xs absolute z-2 rounded shadow shadow-gray-200 content-[attr(data-text)] h-fit inset-[100%_0_0_50%] opacity-0 px-1.5 py-0.5 pointer-events-none w-max duration-150 translate-y-3 -translate-x-1/2;
+  }
+
+  [data-text]:hover:after {
+    @apply opacity-100 -translate-x-1/2 translate-y-1;
+  }
+}
+
+.amap-logo, .amap-copyright {
+  @apply !hidden;
 }

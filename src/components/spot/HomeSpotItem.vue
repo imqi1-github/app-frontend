@@ -24,7 +24,7 @@ defineProps({
 
 function stripMarkdown(md: string) {
   return md
-      .replace(/!\[.*?\]\(.*?\)/g, "")                  // 去除图片
+      .replace(/!\[.*?\]\(.*?\)/g, "")
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")          // 去除链接，只保留文本
       .replace(/`([^`]+)`/g, "$1")                      // 去除行内代码标记
       .replace(/\*\*([^*]+)\*\*/g, "$1")                // 去除加粗

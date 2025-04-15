@@ -2,15 +2,12 @@
   <div v-if="!data" class="flex items-center justify-center">
     加载中
   </div>
-  <div v-else class="p-4 max-w-300 w-full space-y-6">
-    <div class="text-sm leading-4 text-gray-800">
-      秦皇岛市 > 景点 > {{ data.title }}
-    </div>
+  <div v-else class="p-4 max-w-225 w-full space-y-6">
     <div class="flex w-fit items-center gap-1 cursor-pointer hover:fill-blue-700 hover:text-blue-700">
       <RiArrowGoBackLine class="w-4 h-4"/>
       <div @click="$router.back">返回</div>
     </div>
-    <div class="flex gap-2 items-end">
+    <div class="flex gap-2 items-end flex-wrap">
       <div class="text-4xl font-bold" v-html="data.title"></div>
       <div class="flex items-center gap-1 text-xl cursor-pointer" @click="thisGood">
         <RiThumbUpFill v-if="gooded" class="fill-emerald-400 w-6 h-6"/>
@@ -23,23 +20,34 @@
         {{ data.bad }}
       </div>
     </div>
-    <div class="flex gap-2 items-center">
-      <div v-if="isNowInRange(data.start_time, data.end_time)" class="text-green-500 font-bold">当前可游玩</div>
-      <div v-else class="text-red-500 font-bold">当前已关闭</div>
+    <div class="flex gap-2 items-center flex-wrap">
+      <div v-if="isNowInRange(data.start_time, data.end_time)" class="text-green-500 font-bold text-nowrap">当前可游玩
+      </div>
+      <div v-else class="text-red-500 font-bold text-nowrap">当前已关闭</div>
       <div class="text-gray-600 flex items-center">
         <RiTimeLine class="fill-gray-400 w-4 h-4"/>
-        {{ data.start_time }} - {{ data.end_time }}
+        <div class="text-nowrap">
+          {{ data.start_time }} - {{ data.end_time }}
+        </div>
       </div>
-      <RouterLink :to="{name: 'map', query: {'location': data.coordinates, zoom: 12}}" class="flex items-center text-blue-400 hover:text-blue-600 hover:*:fill-blue-600">
+      <RouterLink :to="{name: 'map', query: {'location': data.coordinates, zoom: 12}}"
+                  class="flex items-center text-blue-400 hover:text-blue-600 hover:*:fill-blue-600 text-nowrap">
         <RiMapPinLine class="size-4 fill-blue-400"/>
         {{ data.position }}
       </RouterLink>
-      <RouterLink :to="{name: 'weather-home', query: {'location': data.position}}" class="flex items-center text-blue-400 hover:text-blue-600 hover:*:fill-blue-600">
+      <RouterLink :to="{name: 'weather-home', query: {'location': data.position}}"
+                  class="flex items-center text-blue-400 hover:text-blue-600 hover:*:fill-blue-600 text-nowrap">
         <RiSunLine class="size-4 fill-blue-400"/>
         晴
       </RouterLink>
+      <div class="text-gray-600 flex items-center gap-1">
+        <RiEyeLine class="fill-gray-700 w-4 h-4"/>
+        <div class="text-nowrap">
+          {{ data.views }}人看过
+        </div>
+      </div>
     </div>
-    <div class="rounded-2xl overflow-hidden flex flex-col gap-2 max-w-[calc(100vw-45px)]">
+    <div class="rounded-xl overflow-hidden flex flex-col gap-2 max-w-[calc(100vw-45px)]">
       <div class="main-swiper swiper w-full h-100">
         <div class="swiper-wrapper">
           <div v-for="(item, index) in images" :key="index" class="swiper-slide">
@@ -47,10 +55,10 @@
           </div>
         </div>
       </div>
-      <div v-show="images.length >= 2" class="flex gap-2 thumbs-swiper swiper w-full mt-2 h-15">
+      <div v-show="images.length >= 2" class="flex gap-2 thumbs-swiper swiper w-full mt-2 h-25">
         <div class="swiper-wrapper max-w-full">
           <div v-for="(item, index) in images" :key="index"
-               class="swiper-slide size-25 cursor-pointer opacity-60">
+               class="swiper-slide size-25 cursor-pointer opacity-60 overflow-hidden first-of-type:rounded-bl-xl last-of-type:rounded-br-xl">
             <img :src="item" alt=""
                  class="w-full h-full object-cover"/>
           </div>
@@ -60,21 +68,19 @@
     <div class="">
       <div class="markdown-content" v-html="renderMarkdown(data.content)"/>
     </div>
-    <div class="">
+    <div v-if="nearbySpots.length > 0">
       <div class="text-3xl font-bold">附近的景点</div>
-    </div>
-    <div class="grid md:grid-cols-3 sm:max-lg:grid-cols-2 gap-4">
-      <div v-for="item of 6" class="max-w-90 w-full flex items-center gap-4">
-        <img alt="景区名称" class="max-w-20 size-full aspect-square rounded-lg" src="/img/spot-cover.png"/>
-        <div class="">
-          <div class="text-base mb-1">老虎石公园</div>
-          <div class="text-gray-500 text-sm">海港区</div>
-          <div class="text-gray-600">500m</div>
-        </div>
+      <div class="grid md:grid-cols-3 sm:max-lg:grid-cols-2 gap-4 mt-6">
+        <RouterLink v-for="spot of nearbySpots" :to="{name: 'spot-detail', params: {id: spot.spot.id}}"
+                    class="max-w-90 w-full flex items-center gap-4 group">
+          <img :alt="spot.spot.title" :src="spot.spot.pictures[0]" class="max-w-20 size-full aspect-square rounded-lg group-hover:brightness-90 duration-150"/>
+          <div class="grow">
+            <div class="text-lg mb-1">{{ spot.spot.title }}</div>
+            <div class="text-gray-500 text-sm">{{ spot.spot.place }}</div>
+            <div class="text-gray-600">{{ spot.distance }}m</div>
+          </div>
+        </RouterLink>
       </div>
-    </div>
-    <div class="text-sm leading-4 text-gray-800">
-      秦皇岛市 > 景点 > {{ data.title }}
     </div>
   </div>
 </template>
@@ -82,8 +88,10 @@
 <script lang="ts" setup>
 import {
   RiArrowGoBackLine,
+  RiEyeLine,
   RiMapPinLine,
-  RiSunLine, RiThumbDownFill,
+  RiSunLine,
+  RiThumbDownFill,
   RiThumbDownLine,
   RiThumbUpFill,
   RiThumbUpLine,
@@ -95,7 +103,7 @@ import {Thumbs} from "swiper/modules";
 import "swiper/css";
 import MarkdownIt from "markdown-it";
 import {useRoute} from "vue-router";
-import {bad, getSpot, good} from "@api/spot.ts";
+import {bad, getNearbySpots, getSpot, good} from "@api/spot.ts";
 import {isNowInRange} from "@/utils/time"
 import {useToast} from "vue-toastification";
 import {Fancybox} from "@fancyapps/ui";
@@ -177,16 +185,22 @@ const thisBad = async () => {
   }
 }
 
-onMounted(async () => {
-  const result = await getSpot(route.params.id as any);
-  console.log("获取到景点详情：", result);
-  images.value = result.pictures || []; // 确保 images 有默认值
-  data.value = result;
+const nearbySpots = ref([])
 
-  // 确保 DOM 更新后再初始化 Swiper
-  await nextTick(() => {
-    initSwiper();
-  });
+onMounted(async () => {
+  getSpot(route.params.id as any).then(result => {
+    console.log("获取到景点详情：", result);
+    images.value = result.pictures || [];
+    data.value = result;
+
+    nextTick(() => {
+      initSwiper();
+    });
+  })
+  getNearbySpots(route.params.id as any).then(res => {
+    console.log("获取到附近的景点：", res);
+    nearbySpots.value = res;
+  })
 });
 
 onUnmounted(() => {

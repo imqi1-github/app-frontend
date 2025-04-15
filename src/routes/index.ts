@@ -43,6 +43,7 @@ const routes: RouteRecordRaw[] = [
         name: "weather",
         children: weatherRoute,
         component: () => import("@views/root/WeatherView.vue"),
+        redirect: {name: 'weather-home'},
         meta: {
           title: '天气'
         }
@@ -52,6 +53,7 @@ const routes: RouteRecordRaw[] = [
         name: "post",
         children: postRoute,
         component: () => import("@views/root/PostView.vue"),
+        redirect: {name: 'post-home'},
         meta: {
           title: '帖子'
         }
@@ -61,6 +63,7 @@ const routes: RouteRecordRaw[] = [
         name: "spot",
         children: spotRoute,
         component: () => import("@views/root/SpotView.vue"),
+        redirect: {name: 'spot-home'},
         meta: {
           title: '景点'
         }
@@ -69,6 +72,16 @@ const routes: RouteRecordRaw[] = [
         path: "map",
         name: "map",
         component: () => import("@views/root/MapView.vue" as any),
+        children: [
+          {
+            path: 'choose',
+            name: 'map-choose',
+            component: () => import("@views/root/MapView.vue" as any),
+            meta: {
+              title: '选择位置'
+            }
+          }
+        ],
         meta: {
           title: '地图'
         }
@@ -88,7 +101,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import("@views/NotFound.vue"),  // 404页面
+    component: () => import("@views/NotFound.vue"),
     meta: {
       title: '页面未找到 '
     }

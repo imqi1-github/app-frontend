@@ -1,81 +1,85 @@
-<!-- PieChart.vue -->
 <template>
   <div class="max-w-4xl mx-auto">
     <div class="text-sm text-gray-700 mb-4 flex items-center gap-0.5">
-      <component class="size-3.5" :is="props.icon"/>
+      <component :is="props.icon" class="size-3.5"/>
       {{ title }}
     </div>
-    <div ref="chart" class="w-full min-h-56 flex items-center justify-center"></div>
+    <div ref="chart" class="w-full h-64"></div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {type Component, onMounted, onUnmounted, useTemplateRef} from 'vue'
-import * as echarts from 'echarts'
+import {type Component, onMounted, onUnmounted, useTemplateRef} from "vue";
+
+// 按需导入 ECharts 模块
+import {type ECharts, init, use} from "echarts/core";
+import {PieChart} from "echarts/charts";
+import {LegendComponent, TooltipComponent} from "echarts/components";
+import {CanvasRenderer} from "echarts/renderers";
+
+// 注册必要的 ECharts 模块
+use([PieChart, TooltipComponent, LegendComponent, CanvasRenderer]);
 
 interface StatItem {
-  name: string
-  value: number
+  name: string;
+  value: number;
 }
 
 const props = defineProps<{
-  title: string
-  stats: StatItem[],
-  icon: Component
-}>()
+  title: string;
+  stats: StatItem[];
+  icon: Component;
+}>();
 
-const chart = useTemplateRef("chart")
-
-let chartInstance: echarts.ECharts | null = null
+const chart = useTemplateRef("chart");
+let chartInstance: ECharts | null = null;
 
 onMounted(() => {
   if (chart.value) {
-    chartInstance = echarts.init(chart.value)
-    const colors = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6'] // 定义颜色数组
+    chartInstance = init(chart.value);
+
     const option = {
       tooltip: {
-        trigger: 'item',
-        formatter: '{b}: {c} ({d}%)' // 显示名称、值和百分比
+        trigger: "item",
+        formatter: "{b}: {c} ({d}%)",
       },
-      // 添加图例配置
       legend: {
-        show: true,
-        bottom: 0, // 图例显示在底部
-        orient: 'horizontal', // 水平排列
-        data: props.stats.map(item => item.name), // 图例数据来源于 stats 的 name
+        bottom: 0,
+        orient: "horizontal",
+        data: props.stats.map((item) => item.name),
       },
       series: [
         {
           name: props.title,
-          type: 'pie',
-          radius: '60%',
-          center: ['50%', '50%'],
-          data: props.stats, // 数据保持不变
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
-            }
-          },
+          type: "pie",
+          radius: "60%",
+          data: props.stats,
           label: {
             show: true,
-            formatter: '{d}%' // 扇区标签显示名称和百分比
-          }
-        }
+            formatter: "{d}%",
+          },
+          itemStyle: {
+            color: (params: any) => {
+              const colors = ["#3B82F6", "#EF4444", "#10B981", "#F59E0B"];
+              return colors[params.dataIndex % colors.length];
+            },
+          },
+        },
       ],
-      color: colors // 全局颜色配置
-    }
-    chartInstance.setOption(option)
+    };
+
+    chartInstance.setOption(option);
   }
-  window.addEventListener('resize', resizeChart)
-})
+
+  window.addEventListener("resize", resizeChart);
+});
 
 const resizeChart = () => {
-  chartInstance?.resize()
-}
+  chartInstance?.resize();
+};
+
 onUnmounted(() => {
-  chartInstance?.dispose()
-  window.removeEventListener('resize', resizeChart)
-})
+  chartInstance?.dispose();
+  window.removeEventListener("resize", resizeChart);
+});
 </script>

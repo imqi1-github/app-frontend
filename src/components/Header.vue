@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import Logo from "@assets/logo.webp";
 import {
-  RiBarChartFill,
   RiCloseLine,
+  RiExternalLinkLine,
   RiGroupLine,
   RiImage2Line,
   RiInformationLine,
-  RiLogoutBoxLine
+  RiLogoutBoxLine,
+  RiMenuFill
 } from "@remixicon/vue";
 import {onMounted, onUnmounted, ref} from "vue";
 import {logout as logoutApi} from "@api/user.ts";
@@ -16,16 +17,20 @@ import {useRouter} from "vue-router"
 
 const routes = [
   {
-    "name": "首页",
-    "path": "/",
+    name: "天气",
+    to: {name: 'weather'},
   },
   {
-    "name": "数字",
-    "path": "/number",
+    name: '帖子',
+    to: {name: 'post'},
   },
   {
-    "name": "天气",
-    "path": "/weather",
+    name: '地图',
+    to: {name: 'map'},
+  },
+  {
+    name: '景点',
+    to: {name: 'spot'},
   }
 ]
 
@@ -76,13 +81,21 @@ onUnmounted(() => {
         :class="{'max-md:hidden': !menuShow, 'max-md:flex': menuShow}"
         class="flex items-center justify-between gap-6 max-md:fixed max-md:inset-0 max-md:flex-col max-md:items-start max-md:p-12 max-md:gap-y-4 max-md:justify-start max-md:bg-gray-50 max-md:text-xl max-md:font-bold">
       <template v-for="route of routes">
-        <RouterLink v-if="route.path.startsWith('/')" :to="route.path" class="hover:text-blue-600"
+        <RouterLink :class="{'text-blue-600': $route.matched.some(_route => _route.name === route.to.name)}"
+                    :to="route.to"
+                    class="hover:text-blue-600"
                     exact-active-class="text-blue-600" @click="menuShow = false" v-html="route.name">
         </RouterLink>
       </template>
+      <RouterLink v-if="userStore.isLogin && userStore.user.role == 'admin'" :to="{name: 'dashboard'}"
+                  class="flex items-center gap-0.5 hover:text-blue-600" target="_blank">管理后台
+        <RiExternalLinkLine class="size-3.5"/>
+      </RouterLink>
       <div class="w-full border-1 border-gray-200 md:hidden">
       </div>
-      <span v-if="userStore.user" class="md:hidden">用户已登录：{{ userStore.user?.information.nickname }}</span>
+      <span v-if="userStore.user" class="font-normal md:hidden">用户已登录：{{
+          userStore.user?.information.nickname
+        }}</span>
       <RouterLink v-if="userStore.user" :to="{'name': 'post-me', 'params': {'id': userStore.user.id}}"
                   class="hover:text-blue-600 md:hidden" @click="menuShow=false">
         我的社交
@@ -115,8 +128,9 @@ onUnmounted(() => {
               <span>我的社交</span>
               <RiGroupLine class="size-4 fill-gray-700"/>
             </RouterLink>
-            <RouterLink class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
-                        :to="{name: 'my-uploads'}" @click="userMenuShow = false">
+            <RouterLink :to="{name: 'my-uploads'}"
+                        class="flex items-center justify-between hover:bg-gray-100 rounded-md px-3 py-2 text-gray-700"
+                        @click="userMenuShow = false">
               <span>已上传图片</span>
               <RiImage2Line class="size-4 fill-gray-700"/>
             </RouterLink>
@@ -138,7 +152,7 @@ onUnmounted(() => {
   </div>
   <div :class="{'max-md:flex': !menuShow, 'max-md:hidden': menuShow}"
        class="hidden cursor-pointer items-center justify-center" @click="()=>menuShow=true">
-    <RiBarChartFill class="size-4"/>
+    <RiMenuFill class="size-4"/>
   </div>
   <div :class="{'max-md:block': menuShow, 'max-md:hidden': !menuShow}" class="hidden fixed top-4 right-4 cursor-pointer"
        @click="()=>menuShow=false">

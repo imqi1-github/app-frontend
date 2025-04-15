@@ -8,7 +8,7 @@ export function formatTimeFromQWeather(isoString: string): string {
   }
   const date = new Date(isoString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，所以要 +1
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -27,10 +27,10 @@ export function formatDateFromQWeather(isoString: string): string {
 
   const date = new Date(isoString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，所以要 +1
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
 
-  // 获取星期
+
   const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
   const weekday = weekdays[date.getDay()];
 
@@ -47,7 +47,7 @@ export function formatOnlyDateFromQWeather(isoString: string): string {
   }
 
   const date = new Date(isoString);
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从 0 开始，所以要 +1
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   return `${month}月${day}日`;
 }
@@ -63,25 +63,25 @@ export function formatTime2FromQWeather(isoString: string): string {
     return undefined;
   }
 
-  // 解析输入时间
-  const date = new Date(isoString);
-  const now = new Date(); // 当前时间
 
-  // 计算日期差（忽略时间部分，只比较日期）
+  const date = new Date(isoString);
+  const now = new Date();
+
+
   const inputDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const timeDiff = inputDate.getTime() - currentDate.getTime();
-  const dayDiff = Math.round(timeDiff / (1000 * 60 * 60 * 24)); // 天数差，四舍五入处理毫秒级误差
+  const dayDiff = Math.round(timeDiff / (1000 * 60 * 60 * 24));
 
-  // 格式化小时和分钟
+
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const timeStr = `${hours}:${minutes}`;
 
-  // 根据天数差调用 getDayAfter 获取描述
+
   const dayDescription = dayDiff > 0 ? `+${dayDiff}` : "";
 
-  // 返回带天数描述的时间字符串
+
   return `${timeStr}${dayDescription}`;
 }
 
@@ -98,7 +98,7 @@ export function getDayAfter(interval: number): string {
   } else if (interval === 2) {
     return "后天";
   } else if (interval < 0) {
-    return `${Math.abs(interval)}天前`; // 处理过去的时间
+    return `${Math.abs(interval)}天前`;
   } else {
     return `${interval}天后`;
   }

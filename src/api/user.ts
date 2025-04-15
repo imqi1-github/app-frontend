@@ -24,7 +24,7 @@ export const setNickname = async (data: any): Promise<any> => {
 
 export const uploadAvatar = async () => {
   try {
-    // 选择文件
+
     const [fileHandle] = await (window as any).showOpenFilePicker({
       types: [{description: "Images", accept: {"image/*": [".png", ".jpg", ".jpeg", ".gif"]}}],
       multiple: false,
@@ -33,24 +33,24 @@ export const uploadAvatar = async () => {
     console.log(fileHandle);
     if (!fileHandle) return;
 
-    // 获取文件
+
     const file = await fileHandle.getFile();
     if (!file.type.startsWith("image/")) {
       alert("请选择图片文件！");
       return;
     }
 
-    // 读取二进制数据
+
     const arrayBuffer = await file.arrayBuffer();
 
-    // 发送文件到后端
+
     const response = await fetch(`${import.meta.env.VITE_API_URL}/user/upload_avatar`, {
       method: "POST",
       headers: {
         "Content-Type": file.type,
         "X-Filename": encodeURIComponent(file.name),
       },
-      credentials: 'include', // 确保携带 Cookie
+      credentials: 'include',
       body: arrayBuffer,
     });
 

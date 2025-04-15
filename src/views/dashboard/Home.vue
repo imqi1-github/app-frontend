@@ -56,7 +56,7 @@
             最新帖子
           </div>
           <div class="text-base text-gray-950 font-bold col-start-1">作者</div>
-          <div class="text-base text-gray-950 font-bold col-start-2">标题</div>
+          <div class="text-base text-gray-950 font-bold col-start-2 pl-3">标题</div>
           <div class="text-base text-gray-950 font-bold col-start-3">发布时间</div>
           <div class="text-base text-gray-950 font-bold col-start-4">操作</div>
           <template v-for="post of data.recent_posts" v-if="data">
@@ -75,35 +75,39 @@
         </div>
       </div>
       <div class="flex max-lg:flex-col gap-6 *:grow">
-        <div class="rounded-xl bg-white col-start-1 col-end-5 px-4 py-3 shadow-md shadow-gray-200">
-          <div class="grid flex-col items-start h-full grid-cols-[repeat(4,_auto)] gap-x-4 gap-y-2">
+        <div class="rounded-xl bg-white px-4 py-3 shadow-md shadow-gray-200">
+          <div class="grid justify-between flex-col items-start h-full gap-x-4 gap-y-2">
             <div class="text-gray-800 text-sm row-span-1 col-span-full flex items-center gap-0.5">
               <RiUserFill class="size-3.5"/>
               最近注册的用户
             </div>
-            <div class="text-base text-gray-950 font-bold col-start-1">id</div>
-            <div class="text-base text-gray-950 font-bold col-start-2">昵称</div>
-            <div class="text-base text-gray-950 font-bold col-start-3">用户名</div>
+            <div class="text-base text-gray-950 font-bold col-start-1">昵称</div>
+            <div class="text-base text-gray-950 font-bold col-start-2">用户名</div>
+            <div class="col-start-3"></div>
             <template v-for="user of data.recent_users" v-if="data">
-              <div class="text-base text-gray-900 col-start-1">{{ user.id }}</div>
-              <div class="text-base text-gray-900 col-start-2">{{ user.information.nickname }}</div>
-              <div class="text-base text-gray-900 col-start-3">{{ user.username }}</div>
+              <div class="text-base text-gray-900 col-start-1">{{ user.information.nickname }}</div>
+              <div class="text-base text-gray-900 col-start-2">{{ user.username }}</div>
+              <div class="text-base text-blue-600 col-start-3">
+                <RouterLink :to="{name: 'post-me', params: {id: user.id }}">查看</RouterLink>
+              </div>
             </template>
           </div>
         </div>
-        <div class="rounded-xl bg-white col-start-5 col-end-11 px-4 py-3 shadow-md shadow-gray-200">
-          <div class="grid flex-col items-start h-full grid-cols-[repeat(4,_auto)] gap-x-4 gap-y-2">
+        <div class="rounded-xl bg-white px-4 py-3 shadow-md shadow-gray-200">
+          <div class="grid justify-between flex-col items-start h-full gap-x-4 gap-y-2">
             <div class="text-gray-800 text-sm row-span-1 col-span-full flex items-center gap-0.5">
               <RiAncientGateFill class="size-3.5"/>
-              最近注册的用户
+              最近添加的景点
             </div>
-            <div class="text-base text-gray-950 font-bold col-start-1">id</div>
-            <div class="text-base text-gray-950 font-bold col-start-2">昵称</div>
-            <div class="text-base text-gray-950 font-bold col-start-3">用户名</div>
-            <template v-for="user of data.recent_users" v-if="data">
-              <div class="text-base text-gray-900 col-start-1">{{ user.id }}</div>
-              <div class="text-base text-gray-900 col-start-2">{{ user.information.nickname }}</div>
-              <div class="text-base text-gray-900 col-start-3">{{ user.username }}</div>
+            <div class="text-base text-gray-950 font-bold col-start-1">名称</div>
+            <div class="text-base text-gray-950 font-bold col-start-2">地点</div>
+            <div class="col-start-3"></div>
+            <template v-for="spot of data.recent_spots" v-if="data">
+              <div class="text-base text-gray-900 col-start-1">{{ spot.title }}</div>
+              <div class="text-base text-gray-900 col-start-2">{{ spot.position }}</div>
+              <div class="text-base text-blue-600 col-start-3">
+                <RouterLink :to="{name: 'spot-detail', params:{id: spot.id}}">查看</RouterLink>
+              </div>
             </template>
           </div>
         </div>
@@ -116,7 +120,7 @@
           <PieChart v-if="data" :icon="RiBuildingFill" :stats="data.city_statistics" title="城市分布"/>
         </div>
         <div class="rounded-xl bg-white px-4 py-3 shadow-md shadow-gray-200">
-          <div class="grid flex-col items-start h-full grid-cols-[repeat(4,_auto)] gap-x-4 gap-y-2">
+          <div class="grid justify-between flex-col items-start h-full gap-x-4 gap-y-2">
             <div class="text-gray-800 text-sm row-span-1 col-span-full flex items-center gap-0.5">
               <RiHeartFill class="size-3.5"/>
               被订阅者数量排名
@@ -141,7 +145,7 @@
           </div>
         </div>
         <div class="rounded-xl bg-white px-4 py-3 shadow-md shadow-gray-200">
-          <div class="grid flex-col items-start h-full grid-cols-[repeat(4,_auto)] gap-x-4 gap-y-2">
+          <div class="grid justify-between flex-col items-start h-full gap-x-4 gap-y-2">
             <div class="text-gray-800 text-sm row-span-1 col-span-full flex items-center gap-0.5">
               <RiRssFill class="size-3.5"/>
               订阅者数量排名
@@ -199,7 +203,7 @@ import BarChart from "@components/dashboard/BarChart.vue";
 const data = ref(null);
 onMounted(() => {
   dashboardOverview().then(res => {
-    console.log(res)
+    console.log('总览数据：', res)
     data.value = res;
   })
 })

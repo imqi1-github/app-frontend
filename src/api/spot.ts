@@ -17,3 +17,7 @@ export const bad = async (id: number) => {
 export const getSpotsRandom = async () => {
   return await get(`${spotApi}/random`);
 };
+
+export const getNearbySpots = async (id: number) => {
+  return await get(`${spotApi}/nearby/${id}`);
+};

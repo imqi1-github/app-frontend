@@ -1,7 +1,21 @@
 <script setup>
 import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
-import {RiFullscreenLine, RiFullscreenExitFill} from "@remixicon/vue";
+import {RiCloseLine, RiFullscreenExitFill, RiFullscreenLine} from "@remixicon/vue";
+import {getSpots} from "@api/map.js";
+import {useRouter} from "vue-router";
+
+const props = defineProps({
+  exit: {
+    type: Boolean,
+    default: false,
+  },
+  clickEventObj: {
+    type: [Object, String],
+    default: "NoNeed",
+  },
+});
+const emit = defineEmits(["exitHandle", "clickHandle"]);
 
 const mainMap = useTemplateRef("mainMap");
 const container = useTemplateRef("container");
@@ -17,7 +31,16 @@ const query = parseQuery();
 let location;
 let zoom;
 
-onMounted(() => {
+const points = ref()
+let mapLoaded = false;
+
+const thisClickHandler = (e) => {
+  e = e.lnglat.getLng() + ',' + e.lnglat.getLat()
+  emit("clickHandle", e)
+  console.log("点击了地图", e);
+};
+
+const loadMap = () => {
   window._AMapSecurityConfig = {
     securityJsCode: "98a9fac5ea2056c6af5f1b2c027b9e9f",
   };
@@ -25,7 +48,7 @@ onMounted(() => {
     location = query.get("location").split(",");
   }
   if (query.has("zoom")) {
-    zoom = Number(query.get("zoom"))
+    zoom = Number(query.get("zoom"));
   }
   AMapLoader.load({
     key: import.meta.env.VITE_MAP_KEY,
@@ -36,46 +59,90 @@ onMounted(() => {
         map = new AMap.Map(mainMap.value, {
           viewMode: "3D",
           zoom: zoom || 10,
-          center: location
+          center: location,
         });
-        AMap.plugin('AMap.ToolBar', function () {
-          var scale = new AMap.Scale(); //缩放工具条实例化
-          map.addControl(scale); //添加控件
+        AMap.plugin("AMap.ToolBar", function () {
+          var scale = new AMap.Scale();
+          map.addControl(scale);
         });
-        AMap.plugin('AMap.Geolocation', function () {
+        AMap.plugin("AMap.Geolocation", function () {
           var geolocation = new AMap.Geolocation({
-            enableHighAccuracy: true, // 是否使用高精度定位，默认：true
-            timeout: 10000, // 设置定位超时时间，默认：无穷大
-            offset: [8, 50],  // 定位按钮的停靠位置的偏移量
-            zoomToAccuracy: true,  //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            position: 'RB' //  定位按钮的排放位置,  RB表示右下
-          })
+            enableHighAccuracy: true,
+            timeout: 10000,
+            offset: [8, 50],
+            zoomToAccuracy: true,
+            position: "RB",
+          });
 
           geolocation.getCurrentPosition(function (status, result) {
-            if (status === 'complete') {
-              onComplete(result)
+            if (status === "complete") {
+              onComplete(result);
             } else {
-              onError(result)
+              onError(result);
             }
           });
 
           function onComplete(data) {
-            // data是具体的定位信息
+
           }
 
           function onError(data) {
-            // 定位出错
+
           }
 
-          map.addControl(geolocation); //添加控件
-        })
+          map.addControl(geolocation);
+          if (!props.exit) {
+            loadPoints();
+            mapLoaded = true;
+          }
+          if (location) {
+            const marker = new AMap.Marker({
+              position: new AMap.LngLat(...location),
+            });
+            map.add(marker);
+          }
+          if (props.clickEventObj !== "NoNeed") {
+            console.log("为地图组件添加点击事件")
+            map.on("click", thisClickHandler);
+          }
+        });
       })
       .catch((e) => {
         console.error(e);
       });
+}
+
+const router = useRouter();
+
+const loadPoints = () => {
+  if (!points.value) return;
+  for (let point of points.value) {
+    const marker = new AMap.Marker({
+      position: new AMap.LngLat(...point.coordinates.split(",")), //经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+      title: point.title,
+    });
+    marker.on("click", () => {
+      router.push({name: 'spot-detail', params: {id: point.id}})
+    })
+    map.add(marker);
+  }
+}
+
+onMounted(() => {
+  if (!props.exit) {
+    getSpots().then(res => {
+      console.log("获取到景点列表：", res);
+      points.value = res;
+      if (mapLoaded) {
+        loadPoints();
+      }
+    });
+  }
+  loadMap();
 });
 
 onUnmounted(() => {
+  map.off("click", thisClickHandler);
   map?.destroy();
 });
 
@@ -102,11 +169,17 @@ const toggleFullScreen = () => {
 
 <template>
   <div ref="container" class="size-full relative">
+    <div ref="mainMap" class="size-full bg-white"></div>
+    <div v-if="exit">
+      <button
+          class="bg-white rounded-full flex p-2 absolute bottom-2 right-2 cursor-pointer"
+          @click="$emit('exitHandle')"
+      >
+        <RiCloseLine class="size-4 fill-gray-500"/>
+      </button>
+    </div>
     <div
-        ref="mainMap"
-        class="size-full bg-white"
-    ></div>
-    <div
+        v-else
         class="bg-white rounded-full flex p-2 absolute bottom-2 right-2 cursor-pointer"
         @click="toggleFullScreen"
     >

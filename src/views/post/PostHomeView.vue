@@ -14,7 +14,7 @@ defineProps({
   }
 })
 
-const columnCount = ref(4) // 默认值，稍后会根据窗口宽度调整
+const columnCount = ref(4)
 const LOAD_THRESHOLD = 200
 const route = useRoute()
 const columns = ref<Array<any[]>>([])
@@ -23,9 +23,9 @@ const loading = ref(false)
 const page = ref(1)
 const hasMore = ref(true)
 const skeletonCounts = ref<number[]>([])
-const isFirstLoad = ref(true) // 标记是否第一次加载
+const isFirstLoad = ref(true)
 
-// 初始化列数和骨架屏
+
 const initColumns = () => {
   const width = window.innerWidth
   let newColumnCount = 4
@@ -36,27 +36,27 @@ const initColumns = () => {
   columnCount.value = newColumnCount
   columns.value = Array.from({length: newColumnCount}, (): [] => [])
   columnHeights.value = Array(newColumnCount).fill(0)
-  skeletonCounts.value = Array(newColumnCount).fill(2) // 每列 2 个骨架屏
+  skeletonCounts.value = Array(newColumnCount).fill(2)
 }
 
-// 首次加载前初始化列数
+
 initColumns()
 
 watch(() => route.params.id, () => {
   isFirstLoad.value = true
   getPostList(() => {
     columns.value = columns.value.map<[]>(() => [])
-    skeletonCounts.value = Array(columnCount.value).fill(2) // 重置时显示动态列数的骨架屏
+    skeletonCounts.value = Array(columnCount.value).fill(2)
   })
 })
 
-const noContent = ref(false); // 新增：用于控制是否显示"暂无内容"
+const noContent = ref(false);
 
 const getPostList = async (before: Function | null = null) => {
   if (loading.value || (!isFirstLoad.value && !hasMore.value)) return;
   loading.value = true;
 
-  // 除第一次加载外，后续加载在开始时设置骨架屏
+
   if (!isFirstLoad.value) {
     skeletonCounts.value = skeletonCounts.value.map(() => 2);
   }
@@ -76,7 +76,7 @@ const getPostList = async (before: Function | null = null) => {
       if (!isFirstLoad.value) {
         skeletonCounts.value = skeletonCounts.value.map(() => 0);
       }
-      noContent.value = true; // 如果没有帖子，设置“暂无内容”
+      noContent.value = true;
       return;
     }
 
@@ -96,7 +96,7 @@ const getPostList = async (before: Function | null = null) => {
       isFirstLoad.value = false;
     }
 
-    noContent.value = false; // 重置“暂无内容”
+    noContent.value = false;
   } catch (error) {
     console.error("加载帖子失败:", error);
   } finally {
@@ -180,8 +180,8 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}"
-                class="bg-white fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center">
+    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}" data-text="写一篇"
+                class="bg-white !fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center">
       <RiAddLine class="size-6"/>
     </RouterLink>
   </div>
