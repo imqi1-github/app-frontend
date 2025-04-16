@@ -70,7 +70,7 @@ onMounted(() => {
         {{
           positionInformation?.["lat"] && positionInformation?.["lon"] && formatCoordinates(positionInformation?.["lat"], positionInformation?.["lon"]) || "获取中"
         }}
-        <RouterLink v-if="positionInformation" :to="`/map?location=${[positionInformation['lon'], positionInformation['lat']]}&zoom=16`"
+        <RouterLink v-if="positionInformation" :to="`/map?location=${[positionInformation['lon'], positionInformation['lat']]}&zoom=16&p=1`"
                     class="text-blue-500 hover:text-blue-600">查看位置
         </RouterLink>
       </div>

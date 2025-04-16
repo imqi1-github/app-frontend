@@ -41,7 +41,7 @@
         </div>
         <div class="rounded-xl bg-white col-start-9 col-end-11 px-4 py-2 shadow-md shadow-gray-200">
           <div class="justify-center flex flex-col items-start gap-1 h-full">
-            <div class="text-xl font-bold">暂无数据</div>
+            <div class="text-xl font-bold">{{ data?.spots_count || "获取中" }}</div>
             <div class="text-sm text-gray-500 flex items-center gap-0.5">
               <RiLandscapeLine class="size-4"/>
               景点数量

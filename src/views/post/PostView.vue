@@ -23,6 +23,7 @@ let swiperInstance: Swiper | null = null;
 const md = new MarkdownIt({html: true});
 const user = useUserStore();
 const toast = useToast();
+const loaded = ref(false);
 
 const renderMarkdown = (content: string) => {
   return md.render(content);
@@ -97,6 +98,7 @@ onMounted(() => {
     console.log("帖子详情：", res);
     post.value = res;
     checkAndInitSwiper();
+    loaded.value = true;
   });
 });
 
@@ -177,165 +179,170 @@ const cancelReply = () => {
 </script>
 
 <template>
-  <div v-if="post.published==1" class="size-full flex items-center justify-center max-lg:flex-col max-lg:justify-between">
-    <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial lg:hidden max-lg:w-full">
-      <div
-          class="p-1 rounded-full flex items-center justify-center cursor-pointer z-3 hover:bg-gray-100"
-          title="返回" @click="$router.back()">
-        <RiCloseLine class="size-6 text-gray-500"/>
-      </div>
-      <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
-        <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
-             class="size-10 rounded-full border-gray-100">
-        <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
-        <div v-if="post.user" class="">{{ post?.user.information.nickname }}</div>
-      </RouterLink>
-      <template v-if="user.isLogin">
-        <button v-if="!post?.subscribed"
-                class="cursor-pointer bg-blue-600 py-2 px-6 ml-auto font-bold rounded-full text-white"
-                @click="thisSubscribe">关注
-        </button>
-        <button v-else class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-600"
-                @click="thisSubscribe">已关注
-        </button>
-      </template>
-      <template v-else>
-        <div class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-500">登录后可关注
+  <div v-if="loaded">
+    <div v-if="post.published==1" class="size-full flex items-center justify-center max-lg:flex-col max-lg:justify-between">
+      <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial lg:hidden max-lg:w-full">
+        <div
+            class="p-1 rounded-full flex items-center justify-center cursor-pointer z-3 hover:bg-gray-100"
+            title="返回" @click="$router.back()">
+          <RiCloseLine class="size-6 text-gray-500"/>
         </div>
-      </template>
-    </div>
-    <div
-        class="size-full relative lg:max-h-200 lg:rounded-2xl bg-white grid lg:grid-cols-[5fr_4fr] lg:grid-rows-[100%] overflow-hidden border-gray-100 border-1 max-lg:static max-lg:space-y-4">
-      <template v-if="post?.attachments">
-        <div class="swiper max-lg:max-h-150 size-full">
-          <div class="swiper-wrapper size-full">
-            <div v-for="attachment of post.attachments" class="swiper-slide size-full">
-              <div class="size-full">
-                <a :href="attachment.file_path" data-fancybox="gallery">
-                  <img
-                      :alt="attachment.file_name"
-                      :src="attachment.file_path"
-                      class="size-full object-cover"
-                      @load="updateSwiper"
-                  />
-                </a>
-              </div>
-            </div>
+        <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
+          <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
+               class="size-10 rounded-full border-gray-100">
+          <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
+          <div v-if="post.user" class="">{{ post?.user.information.nickname }}</div>
+        </RouterLink>
+        <template v-if="user.isLogin">
+          <button v-if="!post?.subscribed"
+                  class="cursor-pointer bg-blue-600 py-2 px-6 ml-auto font-bold rounded-full text-white"
+                  @click="thisSubscribe">关注
+          </button>
+          <button v-else class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-600"
+                  @click="thisSubscribe">已关注
+          </button>
+        </template>
+        <template v-else>
+          <div class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-500">登录后可关注
           </div>
-          <div class="swiper-pagination"></div>
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
-      </template>
-      <template v-else>
-        <div class="flex flex-col items-center justify-center h-full">
-          <div class="text-gray-500">暂无图片</div>
-        </div>
-      </template>
-      <div class="h-full flex flex-col flex-initial border-l-1 border-l-gray-200">
-        <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial max-lg:hidden">
-          <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
-            <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
-                 class="size-10 rounded-full border-gray-100">
-            <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
-            <div v-if="post.user" class="">{{ post?.user.information.nickname }}</div>
-          </RouterLink>
-          <template v-if="user.isLogin">
-            <button v-if="!post?.subscribed"
-                    class="cursor-pointer bg-blue-600 py-2 px-6 ml-auto font-bold rounded-full text-white"
-                    @click="thisSubscribe">关注
-            </button>
-            <button v-else class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-600"
-                    @click="thisSubscribe">已关注
-            </button>
-          </template>
-          <template v-else>
-            <div class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-500">登录后可关注
-            </div>
-          </template>
-        </div>
-        <div class="px-5 pb-5 space-y-2 flex-auto overflow-y-auto">
-          <div class="">
-            <div class="font-[550] text-lg">{{ post?.title }}</div>
-            <div v-if="post.content" class="markdown-content" v-html="renderMarkdown(post.content)"/>
-            <div v-for="category of post.categories" v-if="post.categories" class="flex flex-wrap gap-1 px-1">
-              <RouterLink :to="{'name': 'post-category', 'params': {'id': category.id}}" class="text-blue-500">#
-                {{ category.name }}
-              </RouterLink>
-            </div>
-            <div v-if="post?.coordinates" class="my-2 flex gap-2">
-              <RouterLink :to="`/map?location=${post.coordinates}&zoom=16`"
-                          class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
-                <RiMapPinLine class="size-4"/>
-                {{ post.position_name }}
-              </RouterLink>
-              <RouterLink v-if="weather" :to="{'name': 'weather-home', 'query': {'location': post.position_name}}"
-                          class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
-                <i :class="`qi-${weather.now.icon}-fill`" class="text-base"/>
-                {{ weather.now.text }}
-              </RouterLink>
-            </div>
-            <div v-else-if="post?.position_name" class="my-2 flex gap-2">
-              <div class="flex gap-0.5 items-center cursor-pointer">
-                <RiMapPinLine class="size-4"/>
-                {{ post.position_name }}
+        </template>
+      </div>
+      <div
+          class="size-full relative lg:max-h-200 lg:rounded-2xl bg-white grid lg:grid-cols-[5fr_4fr] lg:grid-rows-[100%] overflow-hidden border-gray-100 border-1 max-lg:static max-lg:space-y-4">
+        <template v-if="post?.attachments">
+          <div class="swiper max-lg:max-h-150 size-full">
+            <div class="swiper-wrapper size-full">
+              <div v-for="attachment of post.attachments" class="swiper-slide size-full">
+                <div class="size-full">
+                  <a :href="attachment.file_path" data-fancybox="gallery">
+                    <img
+                        :alt="attachment.file_name"
+                        :src="attachment.file_path"
+                        class="size-full object-cover"
+                        @load="updateSwiper"
+                    />
+                  </a>
+                </div>
               </div>
             </div>
-            <div class="flex items-center justify-between pb-3 border-b-1 border-b-gray-200">
-              <div class="text-gray-500 flex gap-2">
-                <div class="">{{ formatRelativeTime(post.update_time) }}</div>
-                <RouterLink v-if="user.isLogin && post?.user_id && post.user_id == user.user.id"
-                            :to="{'name': 'post-edit', 'params': {'id': post.id}}"
-                            class="text-blue-500 hover:text-blue-600">编辑
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="flex flex-col items-center justify-center h-full">
+            <div class="text-gray-500">暂无图片</div>
+          </div>
+        </template>
+        <div class="h-full flex flex-col flex-initial border-l-1 border-l-gray-200">
+          <div class="flex gap-2 p-5 items-center text-gray-700 flex-initial max-lg:hidden">
+            <RouterLink :to="({'name': 'post-me', 'params': {'id': post.user_id}})" class="flex gap-2 items-center">
+              <img v-if="post?.user" :src="post?.user.information.avatar_path" alt="头像"
+                   class="size-10 rounded-full border-gray-100">
+              <img v-else alt="头像" class="size-10 rounded-full border-gray-100" src="/img/default_avatar.png">
+              <div v-if="post.user" class="">{{ post?.user.information.nickname }}</div>
+            </RouterLink>
+            <template v-if="user.isLogin">
+              <button v-if="!post?.subscribed"
+                      class="cursor-pointer bg-blue-600 py-2 px-6 ml-auto font-bold rounded-full text-white"
+                      @click="thisSubscribe">关注
+              </button>
+              <button v-else class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-600"
+                      @click="thisSubscribe">已关注
+              </button>
+            </template>
+            <template v-else>
+              <div class="cursor-pointer bg-gray-200 py-2 px-6 ml-auto font-bold rounded-full text-gray-500">登录后可关注
+              </div>
+            </template>
+          </div>
+          <div class="px-5 pb-5 space-y-2 flex-auto overflow-y-auto">
+            <div class="">
+              <div class="font-[550] text-lg">{{ post?.title }}</div>
+              <div v-if="post.content" class="markdown-content" v-html="renderMarkdown(post.content)"/>
+              <div v-for="category of post.categories" v-if="post.categories" class="flex flex-wrap gap-1 px-1">
+                <RouterLink :to="{'name': 'post-category', 'params': {'id': category.id}}" class="text-blue-500">#
+                  {{ category.name }}
                 </RouterLink>
               </div>
-              <div v-if="post" class="flex gap-1 cursor-pointer" @click="like">
-                <RiHeartFill v-if="getLike" class="size-5 fill-red-500"/>
-                <RiHeartLine v-else class="size-5"/>
-                <div class="text-sm text-gray-600">{{ post?.likes }}</div>
+              <div v-if="post?.coordinates" class="my-2 flex gap-2">
+                <RouterLink :to="`/map?location=${post.coordinates}&zoom=16`"
+                            class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
+                  <RiMapPinLine class="size-4"/>
+                  {{ post.position_name }}
+                </RouterLink>
+                <RouterLink v-if="weather" :to="{'name': 'weather-home', 'query': {'location': post.position_name}}"
+                            class="flex gap-0.5 hover:text-blue-500 items-center cursor-pointer">
+                  <i :class="`qi-${weather.now.icon}-fill`" class="text-base"/>
+                  {{ weather.now.text }}
+                </RouterLink>
               </div>
+              <div v-else-if="post?.position_name" class="my-2 flex gap-2">
+                <div class="flex gap-0.5 items-center cursor-pointer">
+                  <RiMapPinLine class="size-4"/>
+                  {{ post.position_name }}
+                </div>
+              </div>
+              <div class="flex items-center justify-between pb-3 border-b-1 border-b-gray-200">
+                <div class="text-gray-500 flex gap-2">
+                  <div class="">{{ formatRelativeTime(post.update_time) }}</div>
+                  <RouterLink v-if="user.isLogin && post?.user_id && post.user_id == user.user.id"
+                              :to="{'name': 'post-edit', 'params': {'id': post.id}}"
+                              class="text-blue-500 hover:text-blue-600">编辑
+                  </RouterLink>
+                </div>
+                <div v-if="post" class="flex gap-1 cursor-pointer" @click="like">
+                  <RiHeartFill v-if="getLike" class="size-5 fill-red-500"/>
+                  <RiHeartLine v-else class="size-5"/>
+                  <div class="text-sm text-gray-600">{{ post?.likes }}</div>
+                </div>
+              </div>
+              <CommentNode
+                  :comments="post?.comments || []"
+                  @update-parent-id="updateCommentParentId"
+              />
             </div>
-            <CommentNode
-                :comments="post?.comments || []"
-                @update-parent-id="updateCommentParentId"
-            />
+          </div>
+          <div v-if="user.isLogin" class="p-3 border-t-1 border-t-gray-200 flex gap-2">
+            <div class="rounded-full bg-gray-100 h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 px-3 flex-auto">
+              <input
+                  v-model="commentContent"
+                  :placeholder="replyToNickname ? `回复 ${replyToNickname}` : '评论'"
+                  class="w-full h-full outline-none"
+              />
+            </div>
+            <button
+                class="rounded-full bg-blue-500 text-white flex items-center px-4 h-full cursor-pointer"
+                @click="thisComment()"
+            >
+              发送
+            </button>
+            <button
+                v-if="parentId != null"
+                class="rounded-full bg-gray-500 text-white flex items-center px-4 h-full cursor-pointer"
+                @click="cancelReply"
+            >
+              取消回复
+            </button>
+          </div>
+          <div v-else class="rounded-full h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 p-2 flex-auto">
+            <div class="text-gray-500 text-center">登录后可评论</div>
           </div>
         </div>
-        <div v-if="user.isLogin" class="p-3 border-t-1 border-t-gray-200 flex gap-2">
-          <div class="rounded-full bg-gray-100 h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 px-3 flex-auto">
-            <input
-                v-model="commentContent"
-                :placeholder="replyToNickname ? `回复 ${replyToNickname}` : '评论'"
-                class="w-full h-full outline-none"
-            />
-          </div>
-          <button
-              class="rounded-full bg-blue-500 text-white flex items-center px-4 h-full cursor-pointer"
-              @click="thisComment()"
-          >
-            发送
-          </button>
-          <button
-              v-if="parentId != null"
-              class="rounded-full bg-gray-500 text-white flex items-center px-4 h-full cursor-pointer"
-              @click="cancelReply"
-          >
-            取消回复
-          </button>
+        <div
+            class="absolute left-3 top-3 size-7 bg-gray-500/30 rounded-full flex items-center justify-center cursor-pointer z-3 max-lg:hidden"
+            title="返回" @click="$router.back()">
+          <RiCloseLine class="size-5 text-white"/>
         </div>
-        <div v-else class="rounded-full h-9 has-[:focus]:outline-2 has-[:focus]:outline-blue-600 p-2 flex-auto">
-          <div class="text-gray-500 text-center">登录后可评论</div>
-        </div>
-      </div>
-      <div
-          class="absolute left-3 top-3 size-7 bg-gray-500/30 rounded-full flex items-center justify-center cursor-pointer z-3 max-lg:hidden"
-          title="返回" @click="$router.back()">
-        <RiCloseLine class="size-5 text-white"/>
       </div>
     </div>
+    <div v-else class="flex items-center justify-center size-full text-red-600 text-2xl">
+      该帖子被管理员标记为“不合规”
+    </div>
   </div>
-  <div v-else class="flex items-center justify-center size-full text-red-600 text-2xl">
-    该帖子被管理员标记为“不合规”
+  <div v-else class="flex items-center justify-center">
+    加载中...
   </div>
 </template>
 

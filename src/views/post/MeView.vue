@@ -190,8 +190,9 @@ onUnmounted(() => {
         <div>用户不存在</div>
       </div>
     </template>
-    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}" data-text="写一篇"
-                class="bg-white !fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center">
+    <RouterLink v-if="useUserStore().isLogin" :to="{'name': 'post-write'}"
+                class="bg-white !fixed bottom-10 right-10 size-12 rounded-full border-1 border-gray-200 hover:outline-2 hover:outline-blue-700 flex items-center justify-center"
+                data-text="写一篇">
       <RiAddLine class="size-6"/>
     </RouterLink>
   </div>

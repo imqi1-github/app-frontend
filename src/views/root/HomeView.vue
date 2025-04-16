@@ -4,9 +4,10 @@ import WeatherIcon from "@assets/icons/weather.png";
 import MapLogo from "@assets/icons/map.png"
 import Logo3 from "@assets/icons/icon3.jpg";
 import Logo4 from "@assets/icons/icon4.jpg";
-import Logo5 from "@assets/icons/icon5.jpg";
-import Logo6 from "@assets/icons/icon6.jpg";
 import AppItem from "@components/home/AppItem.vue";
+import {usePWAInstall} from "@/composables/usePWAInstall.ts";
+import Images from "@assets/home-imgs"
+import {RiMouseLine} from "@remixicon/vue";
 
 const items = [
   {
@@ -33,19 +34,10 @@ const items = [
     description: "游遍秦皇岛",
     to: {name: "spot-home"},
   },
-  {
-    icon: Logo5,
-    name: "应用五",
-    description: "应用描述五",
-    to: "/number",
-  },
-  {
-    icon: Logo6,
-    name: "应用六",
-    description: "应用描述六",
-    to: "/number",
-  },
 ]
+
+const {canInstall, installApp} = usePWAInstall()
+const images = Images();
 
 </script>
 <template>
@@ -55,11 +47,9 @@ const items = [
       <div class="max-md:text-center">
         <div class="text-6xl/16 font-bold font-ms">秦皇岛本地宝</div>
         <div class="text-xl/6 font-bold my-4 font-ms">天气查询、便捷出行、互帮互助、智能AI</div>
-        <RouterLink
-            class="group bg-black px-6 py-3 shadow hover:bg-red-600 leading-12 text-white transition-colors duration-200 rounded-3xl"
-            to="/about">
-          了解我们
-        </RouterLink>
+        <div class="flex max-md:justify-center">
+          <RiMouseLine class="size-4 animate-bounce" />
+        </div>
       </div>
       <div class="size-44 mr-44 relative max-xl:mr-22 max-md:mr-0">
         <div class="-inset-12 absolute bg-gradient-favicon"></div>
@@ -73,5 +63,33 @@ const items = [
         <AppItem v-for="item in items" :item="item"/>
       </div>
     </section>
+    <section class="my-8 max-w-225 w-full text-right">
+      <div class="font-bold text-xl">游遍秦皇岛</div>
+      <div class="text-gray-600">海滩、动物园；阿那亚、山海关...</div>
+      <div class="w-full h-96 overflow-hidden">
+        <div class="h-full flex items-center gap-9 animate-[move] [animation-duration:60s] [animation-timing-function:linear] [animation-iteration-count:infinite]">
+          <img v-for="image of images" :src="image" class="max-h-72 max-w-128 size-full object-cover" alt="景点"/>
+        </div>
+      </div>
+    </section>
+    <section v-if="canInstall" class="my-8 max-w-225 w-full flex flex-col items-center">
+      <div class="font-bold text-xl">立即使用</div>
+      <div class="text-gray-600">点击下方按钮安装应用</div>
+      <button @click="installApp"
+          class="mt-3 cursor-pointer text-lg px-4 py-2 rounded-full bg-blue-100 text-gray-700 hover:bg-blue-700 hover:text-white">
+        安装
+      </button>
+    </section>
   </div>
 </template>
+<style>
+@keyframes move {
+  0% {
+    transform: translateX(0)
+  }
+
+  to {
+    transform: translateX(-3200px)
+  }
+}
+</style>

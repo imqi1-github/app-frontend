@@ -3,7 +3,7 @@ import {onMounted, onUnmounted, ref, useTemplateRef} from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
 import {RiCloseLine, RiFullscreenExitFill, RiFullscreenLine} from "@remixicon/vue";
 import {getSpots} from "@api/map.js";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 const props = defineProps({
   exit: {
@@ -19,6 +19,12 @@ const emit = defineEmits(["exitHandle", "clickHandle"]);
 
 const mainMap = useTemplateRef("mainMap");
 const container = useTemplateRef("container");
+const showOtherPins = ref(true);
+const route = useRoute();
+
+if (props.exit || route.query?.p === "1") {
+  showOtherPins.value = false;
+}
 
 function parseQuery() {
   const url = new URL(window.location.href);
@@ -91,7 +97,7 @@ const loadMap = () => {
           }
 
           map.addControl(geolocation);
-          if (!props.exit) {
+          if (showOtherPins.value) {
             loadPoints();
             mapLoaded = true;
           }
@@ -129,7 +135,7 @@ const loadPoints = () => {
 }
 
 onMounted(() => {
-  if (!props.exit) {
+  if (showOtherPins.value) {
     getSpots().then(res => {
       console.log("获取到景点列表：", res);
       points.value = res;

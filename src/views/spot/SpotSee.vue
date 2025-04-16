@@ -30,7 +30,7 @@
           {{ data.start_time }} - {{ data.end_time }}
         </div>
       </div>
-      <RouterLink :to="{name: 'map', query: {'location': data.coordinates, zoom: 12}}"
+      <RouterLink :to="{name: 'map', query: {'location': data.coordinates, zoom: 12, p: '1'}}"
                   class="flex items-center text-blue-400 hover:text-blue-600 hover:*:fill-blue-600 text-nowrap">
         <RiMapPinLine class="size-4 fill-blue-400"/>
         {{ data.position }}
