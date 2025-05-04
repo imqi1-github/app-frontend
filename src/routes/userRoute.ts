@@ -24,7 +24,7 @@ export const userRoute: RouteRecordRaw[] = [
     name: "me",
     component: () => import("@views/user/Me.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: "user",
       title: "账户设置"
     }
   },
@@ -33,7 +33,7 @@ export const userRoute: RouteRecordRaw[] = [
     name: "my-uploads",
     component: () => import("@views/user/Uploads.vue"),
     meta: {
-      requiresAuth: true,
+      requiresAuth: "user",
       title: "我的图片"
     }
   }

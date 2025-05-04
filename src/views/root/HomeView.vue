@@ -4,7 +4,8 @@ import WeatherIcon from "@assets/icons/weather.png";
 import MapLogo from "@assets/icons/map.png"
 import Logo3 from "@assets/icons/icon3.jpg";
 import Logo4 from "@assets/icons/icon4.jpg";
-import AppItem from "@components/home/AppItem.vue";
+import Logo5 from "@assets/icons/ai.png"
+import AppItem from "@components/items/AppItem.vue";
 import {usePWAInstall} from "@/composables/usePWAInstall.ts";
 import Images from "@assets/home-imgs"
 import {RiMouseLine} from "@remixicon/vue";
@@ -33,6 +34,12 @@ const items = [
     name: "景点",
     description: "游遍秦皇岛",
     to: {name: "spot-home"},
+  },
+  {
+    icon: Logo5,
+    name: "智能导游",
+    description: "获取游玩秦皇岛的指导",
+    to: {name: "ai"},
   },
 ]
 

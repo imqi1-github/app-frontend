@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {onMounted, onUnmounted, ref, watch} from 'vue'
-import PostHomeItem from "@components/post/PostHomeItem.vue"
+import PostHomeItem from "@components/items/PostHomeItem.vue"
 import {getPostList as _getPostList, searchPost} from "@api/post.ts"
 import {debounce} from "@/utils/func.ts"
 import {useRoute} from "vue-router";

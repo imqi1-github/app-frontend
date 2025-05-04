@@ -3,7 +3,7 @@ import {onMounted, onUnmounted, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {getInformation} from "@api/user.ts";
 import {useUserStore} from "@/stores/user.ts";
-import PostHomeItem from "@components/post/PostHomeItem.vue";
+import PostHomeItem from "@components/items/PostHomeItem.vue";
 import {getSubscribed, subscribe} from "@api/post.ts";
 import {useToast} from "vue-toastification";
 import {debounce} from "@/utils/func.ts";

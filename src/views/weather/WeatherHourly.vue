@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import WeatherHourlyChart from "@components/weather/charts/WeatherHourlyChart.vue";
+import WeatherHourlyChart from "@components/charts/WeatherHourlyChart.vue";
 import {onMounted, ref, toRaw} from "vue";
 import {getWeatherHourly} from "@api/weather.ts";
 import {useUserStore} from "@/stores/user.ts";
-import WeatherHourlyHumidityChart from "@components/weather/charts/WeatherHourlyHumidityChart.vue";
-import WeatherHourlyPrecipChart from "@components/weather/charts/WeatherHourlyPrecipChart.vue";
-import WeatherHourlyWindChart from "@components/weather/charts/WeatherHourlyWindChart.vue";
+import WeatherHourlyHumidityChart from "@components/charts/WeatherHourlyHumidityChart.vue";
+import WeatherHourlyPrecipChart from "@components/charts/WeatherHourlyPrecipChart.vue";
+import WeatherHourlyWindChart from "@components/charts/WeatherHourlyWindChart.vue";
 
 const userStore = useUserStore();
 const weatherHourly = ref<any>(null);

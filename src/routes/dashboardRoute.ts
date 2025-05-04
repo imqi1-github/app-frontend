@@ -1,5 +1,5 @@
 import type {RouteRecordRaw} from "vue-router";
-import {RiAncientGateLine, RiBarChartLine, RiFileLine, RiSettingsLine, RiUserLine} from "@remixicon/vue";
+import {RiAncientGateLine, RiBarChartLine, RiChat1Line, RiFileLine, RiSettingsLine, RiUserLine} from "@remixicon/vue";
 
 export const dashboardRoute: RouteRecordRaw[] = [
   {
@@ -114,6 +114,26 @@ export const dashboardRoute: RouteRecordRaw[] = [
     meta: {
       title: "管理帖子 - 仪表盘",
       icon: RiFileLine
+    }
+  },
+  {
+    path: "comment",
+    name: "dashboard-manage-comment",
+    component: () => import("@views/dashboard/ManageComment.vue"),
+    children: [
+      {
+        path: ":page",
+        name: "dashboard-manage-comment-page",
+        component: () => import("@views/dashboard/ManageComment.vue"),
+        meta: {
+          title: "管理评论 - 仪表盘",
+          icon: RiChat1Line
+        }
+      },
+    ],
+    meta: {
+      title: "管理评论 - 仪表盘",
+      icon: RiChat1Line
     }
   }
 ]

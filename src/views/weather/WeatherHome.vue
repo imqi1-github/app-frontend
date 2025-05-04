@@ -227,7 +227,7 @@ onMounted(() => {
            class="flex flex-col items-center gap-1.5 max-[850px]:even:hidden">
         <div class="">{{ forecast?.temp }}&deg;</div>
         <div :style="`height: ${16 + 4 * ((forecast?.temp||1) - minimumTemp)}px`"
-             class="w-2 bg-blue-600 rounded"></div>
+             class="w-1.5 bg-blue-500 rounded"></div>
         <i v-if="forecast?.icon" :class="`qi-${forecast?.icon}-fill`" class="text-xl text-blue-400"></i>
         <div class="flex flex-col items-center">
           <svg :style="`rotate: ${90 + Number(forecast?.wind360)}deg`" class="size-4 fill-gray-500" fill="currentColor"

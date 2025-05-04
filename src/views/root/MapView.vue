@@ -4,6 +4,7 @@ import AMapLoader from "@amap/amap-jsapi-loader";
 import {RiCloseLine, RiFullscreenExitFill, RiFullscreenLine} from "@remixicon/vue";
 import {getSpots} from "@api/map.js";
 import {useRoute, useRouter} from "vue-router";
+import PositionIcon from "@/assets/icons/position.svg"
 
 const props = defineProps({
   exit: {
@@ -102,9 +103,18 @@ const loadMap = () => {
             mapLoaded = true;
           }
           if (location) {
+            const icon = new AMap.Icon({
+              size: new AMap.Size(25, 25), //图标尺寸
+              image: PositionIcon, //Icon 的图像
+              // imageOffset: new AMap.Pixel(-10, -10), //图像相对展示区域的偏移量，适于雪碧图等
+              imageSize: new AMap.Size(25, 25), //根据所设置的大小拉伸或压缩图片
+            });
             const marker = new AMap.Marker({
               position: new AMap.LngLat(...location),
+              offset: new AMap.Pixel(-11, -25), //偏移量
+              icon: icon, //添加 Icon 实例
             });
+            marker.dom.dataset.text = "此位置在这里";
             map.add(marker);
           }
           if (props.clickEventObj !== "NoNeed") {
@@ -123,10 +133,18 @@ const router = useRouter();
 const loadPoints = () => {
   if (!points.value) return;
   for (let point of points.value) {
+    const icon = new AMap.Icon({
+      size: new AMap.Size(25, 25), //图标尺寸
+      image: PositionIcon, //Icon 的图像
+      // imageOffset: new AMap.Pixel(-10, -10), //图像相对展示区域的偏移量，适于雪碧图等
+      imageSize: new AMap.Size(25, 25), //根据所设置的大小拉伸或压缩图片
+    });
     const marker = new AMap.Marker({
       position: new AMap.LngLat(...point.coordinates.split(",")), //经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-      title: point.title,
+      offset: new AMap.Pixel(-11, -25), //偏移量
+      icon: icon, //添加 Icon 实例
     });
+    marker.dom.dataset.text = point.title;
     marker.on("click", () => {
       router.push({name: 'spot-detail', params: {id: point.id}})
     })

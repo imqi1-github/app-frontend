@@ -12,7 +12,7 @@ import MarkdownIt from "markdown-it";
 import {formatRelativeTime} from "@/utils/time.ts";
 import {useToast} from "vue-toastification";
 import {useUserStore} from "@/stores/user.ts";
-import CommentNode from "@components/post/CommentNode.vue";
+import CommentNode from "@components/items/CommentNode.vue";
 import {getWeatherNow} from "@api/weather.ts";
 import {Fancybox} from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';

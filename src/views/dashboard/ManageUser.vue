@@ -15,7 +15,7 @@
               <button :class="{'cursor-not-allowed *:fill-gray-400': page === 1}"
                       :disabled="page === 1"
                       text="上一页"
-                      @click="$router.push({'name': 'dashboard-spot-page', params: {page: page - 1}})">
+                      @click="$router.push({'name': 'dashboard-manage-user-page', params: {page: page - 1}})">
                 <RiArrowLeftSLine class="size-6 fill-gray-700"/>
               </button>
               <div class="flex-1 flex justify-center items-center">
@@ -24,7 +24,7 @@
               <button :class="{'cursor-not-allowed *:fill-gray-400': page === data.pages}"
                       :disabled="page === data.pages"
                       text="下一页"
-                      @click="$router.push({'name': 'dashboard-spot-page', params: {page: page + 1}})">
+                      @click="$router.push({'name': 'dashboard-manage-user-page', params: {page: page + 1}})">
                 <RiArrowRightSLine class="size-6 fill-gray-700"/>
               </button>
             </div>

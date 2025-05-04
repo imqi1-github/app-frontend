@@ -4,7 +4,7 @@ import {useUserStore} from "@/stores/user.ts";
 
 const user_api = import.meta.env.VITE_API_URL + "/user";
 const toast = useToast();
-const userStore = useUserStore();
+let userStore = null as any;
 
 export const login = async (data: any): Promise<any> => {
   return await post(`${user_api}/login`, data);
@@ -58,6 +58,9 @@ export const uploadAvatar = async () => {
     if (response.ok) {
       toast.success("上传成功！");
       console.log("上传成功:", result);
+      if (!userStore) {
+        userStore = useUserStore();
+      }
       userStore.setUser(result.user);
     } else {
       toast.warning("上传失败：" + result.error);

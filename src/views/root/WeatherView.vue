@@ -22,11 +22,11 @@ watch(() => [userStore.isLogin, userStore.user], () => {
 
 const url = new URL(window.location.href)
 const location = url.searchParams.has("location") ? url.searchParams.get("location") : null;
-const city = ref(location ? (information.value?.position_city ? information.value?.position_city + location : location) : information.value?.position_city || "秦皇岛")
+const city = ref("秦皇岛")
 
 const fetchData = () => {
   try {
-
+    city.value = location ? (information.value?.position_city ? information.value?.position_city + location : location) : information.value?.position_city || "秦皇岛"
     const fetchData = () => {
 
       getCoordinates(city.value)

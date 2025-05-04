@@ -33,7 +33,7 @@ export const postRoute: RouteRecordRaw[] = [
     "name": "post-write",
     "component": () => import("@views/post/WriteView.vue"),
     "meta": {
-      requiresAuth: true,
+      requiresAuth: "user",
       showCategory: false,
       title: "发布 - 帖子",
     }
@@ -52,7 +52,7 @@ export const postRoute: RouteRecordRaw[] = [
     "name": "post-edit",
     "component": () => import("@views/post/WriteView.vue"),
     "meta": {
-      requiresAuth: true,
+      requiresAuth: "user",
       showCategory: false,
       title: "编辑 - 帖子",
     }
@@ -66,5 +66,5 @@ export const postRoute: RouteRecordRaw[] = [
       showCategory: true,
       title: "搜索结果"
     }
-  }
+  },
 ]

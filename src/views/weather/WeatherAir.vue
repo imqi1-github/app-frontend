@@ -2,7 +2,7 @@
 import {onMounted, ref, toRaw} from "vue";
 import {getCurrentAirQuality, getDailyAirQuality} from "@api/weather.ts";
 import {useUserStore} from "@/stores/user.ts";
-import Ring from "@components/weather/charts/Ring.vue";
+import Ring from "@components/charts/Ring.vue";
 import {formatOnlyDateFromQWeather, getDayAfter} from "@/utils/time.ts";
 
 const userStore = useUserStore();

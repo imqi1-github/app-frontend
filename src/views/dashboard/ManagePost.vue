@@ -19,7 +19,7 @@ const data = ref()
 const route = useRoute()
 const page = Number(route.params.page ?? 1)
 const toast = useToast()
-const per_page = ref(12)
+const per_page = ref(route.query.per_page ?? 12)
 
 const thisGetPostList = async () => {
   const res = await getPostList(page, per_page.value)
@@ -66,7 +66,7 @@ onMounted(() => {
               <button :class="{'cursor-not-allowed *:fill-gray-400': page === 1}"
                       :disabled="page === 1"
                       text="上一页"
-                      @click="$router.push({'name': 'dashboard-manage-post-page', params: {page: page - 1}})">
+                      @click="$router.push({'name': 'dashboard-manage-post-page', params: {page: page - 1}, query: {per_page: per_page}})">
                 <RiArrowLeftSLine class="size-6 fill-gray-700"/>
               </button>
               <div class="flex-1 flex justify-center items-center">
@@ -75,7 +75,7 @@ onMounted(() => {
               <button :class="{'cursor-not-allowed *:fill-gray-400': page === data.pages}"
                       :disabled="page === data.pages"
                       text="下一页"
-                      @click="$router.push({'name': 'dashboard-manage-post-page', params: {page: page + 1}})">
+                      @click="$router.push({'name': 'dashboard-manage-post-page', params: {page: page + 1}, query: {per_page: per_page}})">
                 <RiArrowRightSLine class="size-6 fill-gray-700"/>
               </button>
             </div>

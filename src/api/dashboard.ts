@@ -24,10 +24,10 @@ export const dashboardOverview = async () => {
 }
 
 export const addSpot = async (data: any) => {
-  return await post(`${adminUrl}/dashboard/spot_new`, data)
+  return await post(`${adminUrl}/dashboard/spot/new`, data)
 }
 export const editSpot = async (data: any) => {
-  return await post(`${adminUrl}/dashboard/spot_edit`, data)
+  return await post(`${adminUrl}/dashboard/spot/edit`, data)
 }
 
 export const upload = async () => {
@@ -68,37 +68,45 @@ export const upload = async () => {
 };
 
 export const getSpotList = async (page?: number) => {
-  return await get(`${adminUrl}/dashboard/spot-list${page ? `?page=${page}` : ""}`)
+  return await get(`${adminUrl}/dashboard/spot/list${page ? `?page=${page}` : ""}`)
 }
 
 export const deleteSpot = async (id: number) => {
-  return await get(`${adminUrl}/dashboard/spot-delete?spot_id=${id}`)
+  return await get(`${adminUrl}/dashboard/spot/delete?spot_id=${id}`)
 }
 
-export const getPostList = async (page?: number, per_page?: number) => {
-  return await get(`${adminUrl}/dashboard/post-list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
+export const getPostList = async (page?: number, per_page?: any) => {
+  return await get(`${adminUrl}/dashboard/post/list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
 }
 
 export const setPublished = async (id: number) => {
-  return await get(`${adminUrl}/dashboard/post_set_publish?id=${id}`)
+  return await get(`${adminUrl}/dashboard/post/set_publish?id=${id}`)
 }
 
 export const getUserList = async (page?: number, per_page?: number) => {
-  return await get(`${adminUrl}/dashboard/user_list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
+  return await get(`${adminUrl}/dashboard/user/list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
 }
 
 export const setUserState = async (id: number) => {
-  return await get(`${adminUrl}/dashboard/set_user_state?id=${id}`)
+  return await get(`${adminUrl}/dashboard/user/set_state?id=${id}`)
 }
 
 export const setUser = async (data: any) => {
-  return await post(`${adminUrl}/dashboard/set_user`, data)
+  return await post(`${adminUrl}/dashboard/user/set`, data)
 }
 
 export const addUser = async (data: any) => {
-  return await post(`${adminUrl}/dashboard/new_user`, data)
+  return await post(`${adminUrl}/dashboard/user/new`, data)
 }
 
 export const getUser = async (id: number) => {
-  return await get(`${adminUrl}/dashboard/get_user?id=${id}`)
+  return await get(`${adminUrl}/dashboard/user/get?id=${id}`)
+}
+
+export const getComments = async (page?: number, per_page?: any) => {
+  return await get(`${adminUrl}/dashboard/comment/list${page ? `?page=${page}` : ""}&per_page=${per_page}`)
+}
+
+export const deleteComment = async (id: number) => {
+  return await get(`${adminUrl}/dashboard/comment/delete?id=${id}`)
 }

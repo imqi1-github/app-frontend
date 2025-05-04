@@ -21,7 +21,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import HomeSpotItem from "@components/spot/HomeSpotItem.vue";
+import HomeSpotItem from "@components/items/HomeSpotItem.vue";
 import {onMounted, ref} from "vue";
 import {getSpotsRandom} from "@api/spot.ts";
 

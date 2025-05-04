@@ -11,6 +11,9 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard/login',
     name: 'dashboard-login',
     component: () => import("@views/dashboard/Login.vue"),
+    meta: {
+      requiresAuth: false
+    },
     children: []
   },
   {
@@ -46,6 +49,14 @@ const routes: RouteRecordRaw[] = [
         redirect: {name: 'weather-home'},
         meta: {
           title: '天气'
+        }
+      },
+      {
+        path: "/ai",
+        name: 'ai',
+        component: () => import("@views/root/Ai.vue" as any),
+        meta: {
+          title: '智能导游'
         }
       },
       {
@@ -92,8 +103,9 @@ const routes: RouteRecordRaw[] = [
     path: '/dashboard',
     name: 'dashboard',
     component: () => import("@views/root/Dashboard.vue"),
+    redirect: {name: 'dashboard-home'},
     meta: {
-      requiresAuth: true,
+      requiresAuth: "admin",
       title: '仪表盘'
     },
     children: dashboardRoute,
@@ -114,31 +126,40 @@ const router = createRouter({
 })
 
 
-router.beforeEach(async (to, from, next) => {
-  document.title = to.meta.title as string || 'Vue App'; // 默认标题为 'Vue App'
+router.beforeEach(async (to) => {
   const userStore = useUserStore();
 
-  // 确保用户状态已初始化
+  document.title = to.meta.title as string || '秦皇岛本地宝';
+
   await userStore.checkLoginStatus();
 
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (userStore.isLogin !== true) { // 明确检查 isLogin 是否为 true
-      // 未登录，重定向到 login 并带上 from 参数
-      next("/login",);
-    } else {
-      // 已登录，继续导航
-      next();
-    }
-  } else if (to.matched.some(record => record.meta.requiresGuest)) {
-    if (userStore.isLogin === true) {
-      // 已登录，重定向到 /me
-      next("/me");
-    } else {
-      next();
-    }
-  } else {
-    next();
+  const isLogin = userStore.isLogin;
+  const role = userStore.role;
+  const requireAuth = to.meta.requiresAuth;
+
+  if (to.name === 'login' && isLogin) {
+    return {name: 'me'}
   }
+
+  if (requireAuth === 'user' && !isLogin) {
+    return {name: 'login'}
+  }
+
+  if (to.name === 'dashboard-login' && isLogin && role === 'admin') {
+    return {name: 'dashboard'}
+  }
+
+  if (
+    typeof to.name === 'string' &&
+    to.name.startsWith('dashboard-') &&
+    to.name !== 'dashboard-login' &&
+    role !== 'admin'
+  ) {
+    return {name: 'dashboard-login'};
+  }
+
+  return true;
 });
+
 
 export default router

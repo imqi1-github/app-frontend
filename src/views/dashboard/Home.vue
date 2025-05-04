@@ -197,8 +197,8 @@ import {
   RiUserFill,
   RiUserLine
 } from "@remixicon/vue";
-import PieChart from "@components/dashboard/PieChart.vue";
-import BarChart from "@components/dashboard/BarChart.vue";
+import PieChart from "@components/charts/PieChart.vue";
+import BarChart from "@components/charts/BarChart.vue";
 
 const data = ref(null);
 onMounted(() => {

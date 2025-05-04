@@ -6,9 +6,11 @@ import {onMounted, ref} from "vue";
 import {adminInfo, adminLogin} from "@api/dashboard.ts";
 import {useRouter} from "vue-router";
 import {useToast} from "vue-toastification";
+import {useUserStore} from "@/stores/user.ts";
 
 const toast = useToast();
 const router = useRouter();
+const userStore = useUserStore();
 
 const [
   username, password
@@ -34,6 +36,7 @@ const dashboardLogin = async () => {
   })
   if (result) {
     toast.success(result.msg);
+    userStore.setUser(result.user);
     await router.push("/dashboard");
   }
 }

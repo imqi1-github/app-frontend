@@ -8,6 +8,7 @@ import {
   RiAncientGateLine,
   RiArrowLeftSLine,
   RiBarChartLine,
+  RiChat1Line,
   RiFileLine,
   RiHomeLine,
   RiLogoutCircleLine,
@@ -49,6 +50,12 @@ const items = [
     to: "dashboard-manage-post"
   },
   {
+    type: "link",
+    name: "评论",
+    icon: RiChat1Line,
+    to: "dashboard-manage-comment"
+  },
+  {
     type: "tag",
     name: "站点",
   },
@@ -71,7 +78,7 @@ const dashboardLogout = async () => {
 
   if (result.msg) {
     toast.success(result.msg)
-
+    userStore.setUser(null)
     setTimeout(() => {
       router.push('/dashboard/login')
     })
